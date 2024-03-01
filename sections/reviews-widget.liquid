@@ -1,0 +1,86 @@
+{{ 'collection-wdget-reviews.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+  
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+
+    .section-{{ section.id }}.page-width {
+      max-width: {{ section.settings.page_width }}px;
+    }
+{%- endstyle -%}
+  
+<section class="section-{{ section.id }} section-{{ section.id }}-padding page-width collection-wdget-reviews {% if section.settings.hide_desktop %} large-up-hide{% endif %}">
+  <div class="collection-wdget-reviews__trust-index">
+    <script defer async src='https://cdn.trustindex.io/loader.js?74ae3389872f16632356fb4a23'></script>
+  </div>
+  <div class="collection-wdget-reviews__buttons">
+    <a href="https://www.trustindex.io/reviews/welzo.com" class="collection-wdget-reviews__button">Show all reviews</a>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Revies widget",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "hide_desktop",
+        "default": false,
+        "label": "Hide on desktop"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.all.padding.section_padding_heading"
+      },
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1000,
+        "max": 1600,
+        "step": 10,
+        "default": 1330,
+        "unit": "px",
+        "label": "t:settings_schema.layout.settings.page_width.label"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_top",
+        "default": 36
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_bottom",
+        "default": 36
+      }
+    ],
+    "presets": [
+      {
+        "name": "Revies widget"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

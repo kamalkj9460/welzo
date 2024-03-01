@@ -1,0 +1,29 @@
+{% comment %}
+    Renders a accordion item with title and text
+
+    Accepts:
+    - title: {Object} title
+    - text: {Object} text
+    - title_tag: {String} title tag
+
+    Usage:
+    {% render 'accordion-item', title: 'some title', text: 'some text' %}
+{% endcomment %}
+
+<div class="accordion1__item">
+    <div class="accordion1__title">
+        <div class="accordion1__arrow">
+            {% render 'icon-arrow-down' %}
+        </div>
+        {% if title_tag != blank %}
+            <{{ title_tag }} class="accordion1__title-text accordion1__title-text">{{ title }}</{{ title_tag }}>
+        {% else %}
+            <h2 class="accordion1__title-text accordion1__title-text">{{ title }}</h2>
+        {% endif %}
+    </div>
+    <div class="accordion1__content accordion1__content-text">
+        <div class="accordion1__wrapper">
+            <div class="accordion1__text">{{ text }}</div>
+        </div>
+    </div>
+</div>

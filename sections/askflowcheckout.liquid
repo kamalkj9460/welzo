@@ -1,0 +1,93 @@
+<script>
+      const getQueryParams = (query) => {
+		let params = {};
+		new URLSearchParams(query).forEach((value, key) => {
+		let decodedKey = decodeURIComponent(key);
+		let decodedValue = decodeURIComponent(value);
+		// This key is part of an array
+		if (decodedKey.endsWith("[]")) {
+		decodedKey = decodedKey.replace("[]", "");
+		params[decodedKey] || (params[decodedKey] = []);
+		params[decodedKey].push(decodedValue);
+		// Just a regular parameter
+		} else {
+		params[decodedKey] = decodedValue;
+		}
+		});
+
+		return params;
+	};
+
+	let obj = getQueryParams(window.location.search);
+	let newObj = {};
+
+	for (const i in obj) {
+		let a = i.match(/([^\[\]]+)(\[[^\[\]]+[^\]])*?/g),
+		p = obj[i];
+		j = a.length;
+
+		while (j--) {
+		q = {};
+		q[a[j]] = p;
+		p = q;
+		}
+		// merge object
+		let k = Object.keys(p)[0],
+		o = newObj;
+
+		while (k in o) {
+		p = p[k];
+		o = o[k];
+		k = Object.keys(p)[0];
+		}
+
+		o[k] = p[k];
+	}
+
+  console.log(newObj);
+  if(newObj.customerStatId){
+    let statId = newObj.customerStatId;
+    let variantId = newObj.variantId;
+    let quantity = newObj.quantity || 1;
+
+    let askflowdata = localStorage.getItem('askflowdata') || [];
+    if(askflowdata.length){
+      console.log(askflowdata);
+      askflowdata = JSON.parse(askflowdata);
+    }
+    var index = askflowdata.findIndex(item => item.variantId === variantId);
+    if(index >= 0) askflowdata.splice(index, 1);
+    
+    let data = {
+      variantId,
+      statId
+    };
+    askflowdata.push(data);
+    
+    localStorage.setItem('askflowdata', JSON.stringify(askflowdata));
+
+
+    fetch('/cart/add.js', {
+        method: "post",
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+            items: [
+                {
+                    id: variantId,
+                    quantity: quantity
+                }
+            ]
+        })
+    }).then((response) => {
+      location.href = '/checkout';
+    })
+
+    
+  }
+</script>
+{% schema %}
+  {
+    "name": "Section name",
+    "settings": []
+  }
+{% endschema %}

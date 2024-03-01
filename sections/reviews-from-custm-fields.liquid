@@ -1,0 +1,132 @@
+{% if product.metafields.accentuate.cr_title %}
+  {{ 'section-reviews-from-custm-fields.aio.min.css' | asset_url | stylesheet_tag }}
+
+  {%- style -%}
+    .section-{{ section.id }}-rfcf {
+      background-color: {{ section.settings.rfcf_bg_color }};
+    }
+    
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
+    }
+  
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+
+  <div class="reviews-from-custm-fields section-{{ section.id }}-rfcf section-{{ section.id }}-padding">
+    <div class="page-width rfcf__wrapper">   
+    
+      {% if product.metafields.accentuate.cr_title %}
+        <div class="rfcf__review-list">
+          {%- for cr_title in product.metafields.accentuate.cr_title -%}
+            {% if product.metafields.accentuate.img[forloop.index0] and product.metafields.accentuate.img[forloop.index0] != blank and product.metafields.accentuate.cr_name[forloop.index0] and product.metafields.accentuate.cr_name[forloop.index0] != blank %}
+              <div class="rfcf__review-item">
+                <div class="rfcf__review-item-title">{{ cr_title }}</div>
+                <div class="rfcf__review-item-info">
+                    <div class="rfcf__review-item-info-img">
+                      <img class="snippet-image__image"
+                          loading="lazy"
+                          srcset="{{ product.metafields.accentuate.img[forloop.index0] }}"
+                          src="{{ product.metafields.accentuate.img[forloop.index0] }}"
+                          alt="{{ product.metafields.accentuate.cr_name[forloop.index0] }}">                    
+                    </div>
+                    <div class="rfcf__review-item-info-text">
+                      <div class="rfcf__review-item-info-name">{{ product.metafields.accentuate.cr_name[forloop.index0] }}</div>
+                      {% if product.metafields.accentuate.cr_sub_title[forloop.index0] and product.metafields.accentuate.cr_sub_title[forloop.index0] != blank %}
+                        <div class="rfcf__review-item-info-subtitle">{{ product.metafields.accentuate.cr_sub_title[forloop.index0] }}</div>
+                      {% endif %}
+                      {% if product.metafields.accentuate.cr_sub_title_2[forloop.index0] and product.metafields.accentuate.cr_sub_title_2[forloop.index0] != blank %}
+                        <div class="rfcf__review-item-info-subtitle2">{{ product.metafields.accentuate.cr_sub_title_2[forloop.index0] }}</div>
+                      {% endif %}
+                    </div>
+                </div>
+                {% if product.metafields.accentuate.cr_text[forloop.index0] and product.metafields.accentuate.cr_text[forloop.index0] != blank %}
+                  <div class="rfcf__review-item-text">{{ product.metafields.accentuate.cr_text[forloop.index0] }}</div>
+                {% endif %}
+              </div>
+            {% endif %}
+        
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      <ul class="rfcf__review-info">
+        {% if product.metafields.accentuate.cri_title21 and product.metafields.accentuate.cri_title21 != blank and product.metafields.accentuate.cri_date_1 and product.metafields.accentuate.cri_date_1 != blank %}
+          <li class="rfcf__review-info-item">
+            <span>{{ product.metafields.accentuate.cri_title21 }}</span>
+            <span>{{ product.metafields.accentuate.cri_date_1 }}</span>
+          </li>
+        {% endif %}
+        {% if product.metafields.accentuate.cri_title2 and product.metafields.accentuate.cri_title2 != blank and product.metafields.accentuate.cri_date_2 and product.metafields.accentuate.cri_date_2 != blank %}
+          <li class="rfcf__review-info-item">
+            <span>{{ product.metafields.accentuate.cri_title2 }}</span>
+            <span>{{ product.metafields.accentuate.cri_date_2 }}</span>
+          </li>
+        {% endif %}
+        {% if product.metafields.accentuate.cri_title3 and product.metafields.accentuate.cri_title3 != blank and product.metafields.accentuate.cri_date_3 and product.metafields.accentuate.cri_date_3 != blank %}
+          <li class="rfcf__review-info-item">
+            <span>{{ product.metafields.accentuate.cri_title3 }}</span>
+            <span>{{ product.metafields.accentuate.cri_date_3 }}</span>
+          </li>
+        {% endif %}
+        {% if product.metafields.accentuate.cri_title4 and product.metafields.accentuate.cri_title4 != blank and product.metafields.accentuate.cri_date_4 and product.metafields.accentuate.cri_date_4 != blank %}
+          <li class="rfcf__review-info-item">
+            <span>{{ product.metafields.accentuate.cri_title4 }}</span>
+            <span>{{ product.metafields.accentuate.cri_date_4 }}</span>
+          </li>
+        {% endif %}
+      </ul>    
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Reviews from CF",
+  "tag": "section",
+  "class": "section",
+  "settings": [    
+    {
+      "type": "header",
+      "content": "Section settings"
+    },
+    {
+      "type": "color",
+      "id": "rfcf_bg_color",
+      "label": "Section background",
+      "default": "#F8FAFB"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 150
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews from CF"
+    }
+  ]
+}
+{% endschema %}

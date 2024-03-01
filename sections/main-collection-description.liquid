@@ -1,0 +1,215 @@
+{{ 'component-collection-description.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .section-{{ section.id }} .page-width {
+    max-width: {{ section.settings.page_width }}px;
+  }
+{%- endstyle -%}
+
+<div class="section-{{ section.id }} main-collection-description section-{{ section.id }}-padding">
+  <div class="page-width mcd_wrapper">
+    <div class="mcd_description">
+      <h1 class="mcd_description-title">
+        <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
+        {{- collection.title | escape -}}
+      </h1>
+      <div class="mcd_description-text short">
+        <div class="mcd_description-text-small">
+          {{ collection.description | truncatewords: 39 }}
+          <div><a href="#" class="mcd_description-text-open">{{ 'sections.collection_read_more.title' | t }}</a></div>
+        </div>
+        <div class="mcd_description-text-full">
+          {{ collection.description }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="mcd_moreinfo">
+      {% if section.settings.enable_reviews %}        
+        <div class="mcd_moreinfo-review">
+          <style>
+            .mcd_moreinfo-review {
+                margin: 0 0 23px;
+            }
+            
+            .mcd_moreinfo-review .ti-widget[data-layout-id='11'][data-set-id='light-minimal'] .ti-widget-container {
+              text-align: left;
+            }
+            
+            .mcd_moreinfo-review .ti-widget[data-layout-id='11'][data-set-id='light-minimal'] .ti-header {
+              padding: 0;
+            }
+
+            .mcd_moreinfo-review .ti-widget[data-layout-id='58'][data-set-id='light-minimal'] a.ti-header:hover {
+              background: none !important;
+              border: none !important;
+            }
+            
+            .mcd_moreinfo-review .ti-widget-container .ti-header {
+              display: flex !important;
+              flex-direction: row !important;
+              align-items: center;
+            }
+            
+            
+            .mcd_moreinfo-review .ti-large-logo {
+              width: 110px;
+              order: 1;
+              position: relative;
+              margin: 0 5px;
+              padding-left: 5px;
+            }
+
+            .mcd_moreinfo-review .ti-large-logo:after {
+              content: '';
+              position: absolute;
+              top: 2px;
+              bottom: 2px;
+              left: 0;
+              width: 2px;
+              background: #D9D9D9;
+            }
+            
+            .mcd_moreinfo-review .ti-stars {
+              order: 0;
+              margin-top: 0 !important;
+              background-image: url({{ 'review-star.png' | asset_img_url: 'master' }});
+              background-size: contain;
+              background-repeat: no-repeat;
+              background-position: left center;              
+            }
+                
+            .mcd_moreinfo-review .ti-stars .ti-star {
+              opacity: 0;
+            }
+            
+            .mcd_moreinfo-review .ti-text {
+              order: 2;
+              position: relative;
+              padding: 0 6px;
+            }
+            
+            .mcd_moreinfo-review .ti-text:before {
+              content: '(';
+              position: absolute;
+              left: 0;
+              top: 2px;
+            }
+            
+            .mcd_moreinfo-review .ti-text:after {
+              content: ')';
+              position: absolute;
+              right: 0;
+              top: 2px;
+            }
+
+            .mcd_moreinfo-review .ti-rating {
+              display: none;
+            }
+
+            .mcd_moreinfo-review .ti-widget[data-layout-id='56'][data-set-id='light-minimal'] .ti-large-logo {
+              margin-bottom: 0!important;
+            }
+
+            .mcd_moreinfo-review .ti-widget[data-layout-id='56'][data-set-id='light-minimal'][data-pid='2ff7541186a82522fe065ae717f'] .ti-header {
+              background-color: transparent!important;
+            }
+          </style>
+          {% comment %}<script defer async src='https://cdn.trustindex.io/loader.js?ac297c511a5f1631bc465f1fabd'></script>{% endcomment %}
+          <script defer async src='https://cdn.trustindex.io/loader.js?2ff7541186a82522fe065ae717f'></script>
+        </div>
+      {%- endif -%}
+      {% if section.settings.enable_delivery_icon or section.settings.enable_licenced_icon %}
+        <div class="mcd_moreinfo-icons">
+        {% if section.settings.enable_delivery_icon %}
+          <div class="mcd_moreinfo-icon">
+            <div class="mcd_moreinfo-icon-icon">{% render 'icon-delivery' %}</div>
+            <div class="mcd_moreinfo-icon-text">Next day delivery</div>
+          </div>
+        {%- endif -%}
+        {% if section.settings.enable_delivery_icon %}
+          <div class="mcd_moreinfo-icon">
+            <div class="mcd_moreinfo-icon-icon">{% render 'icon-licensed' %}</div>
+            <div class="mcd_moreinfo-icon-text">UK licensed medication</div>
+          </div>
+        {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+  
+{% schema %}
+  {
+    "name": "Collection description",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_reviews",
+        "default": true,
+        "label": "t:sections.main-collection-product-grid2.settings.enable_reviews.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_delivery_icon",
+        "default": true,
+        "label": "t:sections.main-collection-product-grid2.settings.enable_delivery_icon.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_licenced_icon",
+        "default": true,
+        "label": "t:sections.main-collection-product-grid2.settings.enable_delivery_icon.label"
+      },
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1000,
+        "max": 1600,
+        "step": 10,
+        "default": 1140,
+        "unit": "px",
+        "label": "t:settings_schema.layout.settings.page_width.label"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_top",
+        "default": 40
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_bottom",
+        "default": 20
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

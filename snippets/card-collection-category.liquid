@@ -1,0 +1,21 @@
+{% comment %}
+    Usage:
+    {% render 'card-collection-category', category: collection %}
+{% endcomment %}
+
+<div class="snippet-card-category">
+  <a class="snippet-card-category__link" href="{{ category.url }}">
+    <div class="snippet-card-category__image-wrapper">
+      <img loading="lazy" class="snippet-card-category__image"
+     
+      srcset="{%- if category.image.width >= 275 -%}{{ category.image | img_url: '275x' }} 275w,{%- endif -%}
+              {%- if category.image.width >= 550 -%}{{ category.image | img_url: '550x' }} 550w,{%- endif -%}
+              {%- if category.image.width >= 710 -%}{{ category.image | img_url: '710x' }} 710w,{%- endif -%}
+              {%- if category.image.width >= 1420 -%}{{ category.image | img_url: '1420x' }} 1420w,{%- endif -%}
+              {{ category.image | img_url: 'master' }} {{ category.image.width }}w"
+      src="{{ category.image | img_url: '550x' }}"
+      alt="{{ category.image.alt }}">
+    </div>
+    <span class="snippet-card-category__caption">{{ category.title }}</span>
+  </a>
+</div>

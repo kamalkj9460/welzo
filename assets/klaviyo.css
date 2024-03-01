@@ -1,0 +1,108 @@
+.klaviyo {
+    width: 100%;
+}
+
+.klaviyo__wrapper {
+    position: relative;
+    width: 100%;
+    padding: 7% 20px;
+}
+.klaviyo__wrapper.without-background {
+    background-color: #213b94;
+    border-radius: 30px;
+}
+.klaviyo__background-block {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 32px;
+    overflow: hidden;
+    z-index: -1;
+}
+.klaviyo__image-background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.klaviyo__content {
+    margin: 0 auto;
+    max-width: 540px;
+    width: 100%;
+    text-align: center;
+}
+
+.klaviyo__content input {
+  position: relative;
+  border: none !important;
+  border-bottom: 1px solid #ffffff66 !important;
+  background-color: #FFFFFF00 !important;
+  padding-left: 40px !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M17%203H7C4.23858%203%202%205.23858%202%208V16C2%2018.7614%204.23858%2021%207%2021H16.9919L17.2087%2020.9952C19.8687%2020.8794%2021.9901%2018.6885%2021.9939%2016.0014L21.997%208.006L22%207.99797C22%205.23601%2019.7607%202.99747%2017%203ZM17.0009%205L17.1771%205.00494C18.6929%205.09145%2019.907%206.30518%2019.9949%207.8217L19.998%207.99949L19.9939%2015.9995C19.9916%2017.6556%2018.6479%2018.9985%2016.991%2019H7C5.34315%2019%204%2017.6569%204%2016V8C4%206.34315%205.34315%205%207%205L17.0009%205Z%22%20fill%3D%22white%22%2F%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M7.29289%208.29289C7.65338%207.93241%208.22061%207.90468%208.6129%208.2097L8.70711%208.29289L9.87868%209.46447C11.0034%2010.5892%2012.799%2010.6342%2013.9773%209.59943L14.1213%209.46447L15.2929%208.29289C15.6834%207.90237%2016.3166%207.90237%2016.7071%208.29289C17.0676%208.65338%2017.0953%209.22061%2016.7903%209.6129L16.7071%209.70711L15.5355%2010.8787C13.6421%2012.7721%2010.6078%2012.8295%208.64525%2011.0508L8.46447%2010.8787L7.29289%209.70711C6.90237%209.31658%206.90237%208.68342%207.29289%208.29289Z%22%20fill%3D%22%23E5007D%22%2F%3E%0A%3C%2Fsvg%3E%0A") !important;
+  background-repeat: no-repeat !important;
+  background-position: 0 !important;
+}
+
+.klaviyo__content input:hover,
+.klaviyo__content input:focus {
+  border-color: #ffffff !important; 
+}
+
+.klaviyo__content button {
+  width: 305px !important;
+  margin: 30px auto 0;
+  transition: 0.4s all;
+}
+
+@media (hover: hover) {
+
+  .klaviyo__content button:hover {
+    background-color: #D32F7C !important;
+    border-color:  #D32F7C !important;
+  }
+}
+
+.klaviyo__title {
+    font-family: 'Quicksand';
+    font-style: normal;
+    text-align: center;
+    color: #FFFFFF;
+}
+.klaviyo__text {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    color: #FFFFFF;
+    mix-blend-mode: normal;
+    opacity: 0.5;
+}
+
+@media screen and (max-width: 767px) {
+
+  .klaviyo__title {
+    max-width: 80%;
+    text-align: left;
+  }
+
+  .klaviyo__text p {
+    font-size: 14px;
+    line-height: 24px;
+    text-align: left;
+  }
+
+  .klaviyo__content input,
+  .klaviyo__content input::placeholder {
+    font-size: 16px !important;
+    line-height: 26px !important;
+  }
+
+  .klaviyo__content button {
+    font-weight: 600 !important;
+    font-size: 16px !important;
+  }
+}

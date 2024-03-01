@@ -1,0 +1,11 @@
+{% if product.metafields.accentuate.popup_question_field %}
+  {%- for popup_question_field in product.metafields.accentuate.popup_question_field -%}
+    {% if product.metafields.accentuate.popup_question_title[forloop.index0] and product.metafields.accentuate.popup_question_title[forloop.index0] != blank %}
+       <input id="popup-question-{{ forloop.index0 }}-h" class="properties_other" type="text" name="properties[_popup-question-{{ forloop.index0 }}]" value="{{ product.metafields.accentuate.popup_question_title[forloop.index0] }}" >
+    {% endif %}
+    {% if product.metafields.accentuate.popup_question_text[forloop.index0] and product.metafields.accentuate.popup_question_text[forloop.index0] != blank %}
+      <input id="popup-question-{{ forloop.index0 }}-h" class="properties_other" type="text" name="properties[_popup-question-{{ forloop.index0 }}-additional-text]" value="{{ product.metafields.accentuate.popup_question_text[forloop.index0]  | escape }}" >
+    {% endif %}
+    <input id="popup_question_field-{{ forloop.index0 }}-h" class="properties_other" type="text" name="properties[_popup-question-answer-{{ forloop.index0 }}]" value="popup_question" >
+  {% endfor %}
+{% endif %}

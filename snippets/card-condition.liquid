@@ -1,0 +1,24 @@
+{% comment %}
+    Usage:
+    {% render 'card-condition', caption: c, link: url, icon: icon, more: text, slider: false %}
+{% endcomment %}
+
+{%- if slider == true -%}
+  {%- assign classes = "snippet-card-condition swiper-slide" -%}
+{%- else -%}
+  {%- assign classes = "snippet-card-condition" -%}
+{%- endif -%}
+
+<div class="{{ classes }}">
+  <a class="snippet-card-condition__link" href="{{ link }}">
+    <div class="snippet-card-condition__icon-wrapper">
+      <img loading="lazy" class="snippet-card-condition__icon" src="{{ icon | img_url: 'master' }}" alt="{{ icon.alt }}">
+    </div>
+    <span class="snippet-card-condition__caption">{{ caption }}</span>
+
+    <div class="snippet-card-condition__more unselectable">
+      <span>{{ more }}</span>
+      {% render 'icon-arrow' %}
+    </div>
+  </a>
+</div>

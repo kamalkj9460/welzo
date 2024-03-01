@@ -1,0 +1,13 @@
+{% comment %}
+    Usage:
+    {% render 'card-category', image: image, link: link, caption: text %}
+{% endcomment %}
+
+<div class="snippet-category__item">
+  <a class="snippet-category__link" href="{{ link }}">
+    <div class="snippet-category__image-wrapper">
+        <img loading="lazy" class="snippet-category__image" src="{{ image | img_url: 'master' }}" alt="">
+    </div>
+    <span class="snippet-category__caption">{{ caption }}</span>
+  </a>
+</div>

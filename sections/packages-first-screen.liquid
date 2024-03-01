@@ -1,0 +1,309 @@
+{{ 'packages-first-screen.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="packages-first-screen color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
+  {% if section.settings.show_background %}
+    <div class="packages-first-screen__background-block">
+      <img loading="lazy"
+        class="packages-first-screen__image-background"
+       
+        srcset="{%- if section.settings.image_background.width >= 275 -%}{{ section.settings.image_background | img_url: '275x' }} 275w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 550 -%}{{ section.settings.image_background | img_url: '550x' }} 550w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 710 -%}{{ section.settings.image_background | img_url: '710x' }} 710w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 1420 -%}{{ section.settings.image_background | img_url: '1420x' }} 1420w,{%- endif -%}
+        {{ section.settings.image_background | img_url: 'master' }} {{ section.settings.image_background.width }}w"
+        src="{{ section.settings.image_background | img_url: '550x' }}"
+        alt="{{ section.settings.title }}"
+      >
+    </div>
+  {% endif %}
+  <div class="page-width section-{{ section.id }}-padding isolate">
+
+    <div class="packages-first-screen__wrapper {% if section.settings.content_vertical_alignment == "center" %}packages-first-screen__wrapper-center{% endif %}{% unless section.settings.show_background %} without-background{% endunless %}">
+      <div class="packages-first-screen__content">
+        <h1 class="packages-first-screen__title">{{ section.settings.title | escape }}</h1>
+        {% if section.settings.reviews %}
+          <div class="packages-first-screen__review">
+            {%- render 'trustindex-small-black' %}
+          </div>
+        {% endif %}
+        <div class="packages-first-screen__subtitle">{{ section.settings.subtitle }}</div>
+        {%- if section.settings.button_title != blank -%}
+          <a href="{{ section.settings.button_link }}" class="packages-first-screen__button"><span>{{ section.settings.button_title }}</span></a>
+        {% endif %}
+        {% if section.settings.show_logos %}
+          <div class="packages-first-screen__logos-holder packages-first-screen__logos__desktop">
+            {% if section.settings.title_news != blank %}
+              <h6 class="packages-first-screen__logos-title">{{ section.settings.title_news }}</h6>
+            {%- endif -%}
+            <div class="packages-first-screen__logos-list">
+              {% if section.settings.image_news1 %}
+                <div class="packages-first-screen__logos-item">
+                  <img loading="lazy" class="packages-first-screen__logos__image"
+                   
+                    srcset="{%- if section.settings.image_news1.width >= 275 -%}{{ section.settings.image_news1 | img_url: '275x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news1.width >= 550 -%}{{ section.settings.image_news1 | img_url: '550x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news1.width >= 710 -%}{{ section.settings.image_news1 | img_url: '710x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news1.width >= 1420 -%}{{ section.settings.image_news1 | img_url: '1420x' }} master,{%- endif -%}
+                            {{ section.settings.image_news1 | img_url: 'master' }} {{ section.settings.image_news1.width }}w"
+                    src="{{ section.settings.image_news1 | img_url: '64x' }}"
+                    alt="{{ section.settings.image_news1.alt }}">
+                </div>  
+              {%- endif -%}
+              {% if section.settings.image_news2 %}
+                <div class="packages-first-screen__logos-item">
+                  <img loading="lazy" class="packages-first-screen__logos__image"
+                   
+                    srcset="{%- if section.settings.image_news2.width >= 275 -%}{{ section.settings.image_news2 | img_url: '275x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news2.width >= 550 -%}{{ section.settings.image_news2 | img_url: '550x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news2.width >= 710 -%}{{ section.settings.image_news2 | img_url: '710x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news2.width >= 1420 -%}{{ section.settings.image_news2 | img_url: '1420x' }} master,{%- endif -%}
+                            {{ section.settings.image_news2 | img_url: 'master' }} {{ section.settings.image_news2.width }}w"
+                    src="{{ section.settings.image_news2 | img_url: '64x' }}"
+                    alt="{{ section.settings.image_news2.alt }}">
+                </div>  
+              {%- endif -%}
+              {% if section.settings.image_news3 %}
+                <div class="packages-first-screen__logos-item">
+                  <img loading="lazy" class="packages-first-screen__logos__image"
+                   
+                    srcset="{%- if section.settings.image_news3.width >= 275 -%}{{ section.settings.image_news3 | img_url: '275x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news3.width >= 550 -%}{{ section.settings.image_news3 | img_url: '550x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news3.width >= 710 -%}{{ section.settings.image_news3 | img_url: '710x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news3.width >= 1420 -%}{{ section.settings.image_news3 | img_url: '1420x' }} master,{%- endif -%}
+                            {{ section.settings.image_news3 | img_url: 'master' }} {{ section.settings.image_news3.width }}w"
+                    src="{{ section.settings.image_news3 | img_url: '64x' }}"
+                    alt="{{ section.settings.image_news3.alt }}">
+                </div>  
+              {%- endif -%}
+              {% if section.settings.image_news4 %}
+                <div class="packages-first-screen__logos-item">
+                  <img loading="lazy" class="packages-first-screen__logos__image"
+                   
+                    srcset="{%- if section.settings.image_news4.width >= 275 -%}{{ section.settings.image_news4 | img_url: '275x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news4.width >= 550 -%}{{ section.settings.image_news4 | img_url: '550x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news4.width >= 710 -%}{{ section.settings.image_news4 | img_url: '710x' }} master,{%- endif -%}
+                            {%- if section.settings.image_news4.width >= 1420 -%}{{ section.settings.image_news4 | img_url: '1420x' }} master,{%- endif -%}
+                            {{ section.settings.image_news4 | img_url: 'master' }} {{ section.settings.image_news4.width }}w"
+                    src="{{ section.settings.image_news4 | img_url: '64x' }}"
+                    alt="{{ section.settings.image_news4.alt }}">
+                </div>  
+              {%- endif -%}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+      <div class="packages-first-screen__photo">
+        {% render 'image-with-back', image: section.settings.image_photo %}
+      </div>
+    </div>
+
+    {% if section.settings.show_logos %}
+      <div class="packages-first-screen__logos-holder packages-first-screen__logos__mobile">
+        {% if section.settings.title_news != blank %}
+          <h6 class="packages-first-screen__logos-title">{{ section.settings.title_news }}</h6>
+        {%- endif -%}
+        <div class="packages-first-screen__logos-list">
+          {% if section.settings.image_news1 %}
+            <div class="packages-first-screen__logos-item">
+              <img loading="lazy" class="packages-first-screen__logos__image"
+               
+                srcset="{%- if section.settings.image_news1.width >= 275 -%}{{ section.settings.image_news1 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news1.width >= 550 -%}{{ section.settings.image_news1 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news1.width >= 710 -%}{{ section.settings.image_news1 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news1.width >= 1420 -%}{{ section.settings.image_news1 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news1 | img_url: 'master' }} {{ section.settings.image_news1.width }}w"
+                src="{{ section.settings.image_news1 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news1.alt }}">
+            </div>  
+          {%- endif -%}
+          {% if section.settings.image_news2 %}
+            <div class="packages-first-screen__logos-item">
+              <img loading="lazy" class="packages-first-screen__logos__image"
+               
+                srcset="{%- if section.settings.image_news2.width >= 275 -%}{{ section.settings.image_news2 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news2.width >= 550 -%}{{ section.settings.image_news2 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news2.width >= 710 -%}{{ section.settings.image_news2 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news2.width >= 1420 -%}{{ section.settings.image_news2 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news2 | img_url: 'master' }} {{ section.settings.image_news2.width }}w"
+                src="{{ section.settings.image_news2 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news2.alt }}">
+            </div>  
+          {%- endif -%}
+          {% if section.settings.image_news3 %}
+            <div class="packages-first-screen__logos-item">
+              <img loading="lazy" class="packages-first-screen__logos__image"
+               
+                srcset="{%- if section.settings.image_news3.width >= 275 -%}{{ section.settings.image_news3 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news3.width >= 550 -%}{{ section.settings.image_news3 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news3.width >= 710 -%}{{ section.settings.image_news3 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news3.width >= 1420 -%}{{ section.settings.image_news3 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news3 | img_url: 'master' }} {{ section.settings.image_news3.width }}w"
+                src="{{ section.settings.image_news3 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news3.alt }}">
+            </div>  
+          {%- endif -%}
+          {% if section.settings.image_news4 %}
+            <div class="packages-first-screen__logos-item">
+              <img loading="lazy" class="packages-first-screen__logos__image"
+               
+                srcset="{%- if section.settings.image_news4.width >= 275 -%}{{ section.settings.image_news4 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news4.width >= 550 -%}{{ section.settings.image_news4 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news4.width >= 710 -%}{{ section.settings.image_news4 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news4.width >= 1420 -%}{{ section.settings.image_news4 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news4 | img_url: 'master' }} {{ section.settings.image_news4.width }}w"
+                src="{{ section.settings.image_news4 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news4.alt }}">
+            </div>  
+          {%- endif -%}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.packages-first-screen.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_background",
+      "label": "t:sections.packages-first-screen.settings.image_background.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background",
+      "label": "Show background image",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image_photo",
+      "label": "t:sections.packages-first-screen.settings.image_photo.label"
+    },
+    {
+      "type": "select",
+      "id": "content_vertical_alignment",
+      "options": [
+        {
+          "value": "top",
+          "label": "Alignment top"
+        },
+        {
+          "value": "center",
+          "label": "Alignment center"
+        }
+      ],
+      "default": "top",
+      "label": "Vertical alignment"
+    },
+    {
+      "type": "checkbox",
+      "id": "reviews",
+      "default": true,
+      "label": "t:sections.packages-first-screen.settings.reviews.label"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Pre-employment medical health checkup",
+      "label": "t:sections.packages-first-screen.settings.title.label"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "default": "<p>Easily manage the health records of all your employees and maintain workplace safety.</p>",
+      "label": "t:sections.packages-first-screen.settings.subtitle.label"
+    },
+    {
+      "type": "text",
+      "id": "button_title",
+      "default": "Choose package",
+      "label": "t:sections.packages-first-screen.settings.button_title.label"
+    },
+    {
+      "type": "text",
+      "id": "button_link",
+      "default": "#",
+      "label": "t:sections.packages-first-screen.settings.button_link.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logos",
+      "label": "Show logos",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title_news",
+      "label": "Title logos",
+      "default": "AS SEEN IN"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news1",
+      "label": "Icon logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news2",
+      "label": "Icon logo 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news3",
+      "label": "Icon logo 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news4",
+      "label": "Icon logo 4"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.packages-first-screen.presets.name"
+    }
+  ]
+}
+{% endschema %}

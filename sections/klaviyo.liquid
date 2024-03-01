@@ -1,0 +1,104 @@
+{{ 'klaviyo.aio.min.css' | asset_url | stylesheet_tag }}
+{%- style -%}
+.section-{{ section.id }}-padding {
+  padding-top: calc({{ section.settings.padding_top }}px * 0.75);
+  padding-bottom: calc({{ section.settings.padding_bottom }}px  * 0.75);
+}
+
+@media screen and (min-width: 750px) {
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+}
+{%- endstyle -%}
+<div class="klaviyo color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width section-{{ section.id }}-padding isolate">
+    <div class="klaviyo__wrapper {%- unless section.settings.show_background -%} {{ ' without-background' }}{%- endunless -%}">
+      {%- if section.settings.show_background -%}
+        <div class="klaviyo__background-block">
+          <img loading="lazy"
+                  class="klaviyo__image-background"
+
+                  srcset="{%- if section.settings.image_background.width >= 275 -%}{{ section.settings.image_background | img_url: '275x' }} 275w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 550 -%}{{ section.settings.image_background | img_url: '550x' }} 550w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 710 -%}{{ section.settings.image_background | img_url: '710x' }} 710w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 1420 -%}{{ section.settings.image_background | img_url: '1420x' }} 1420w,{%- endif -%}
+        {{ section.settings.image_background | img_url: 'master' }} {{ section.settings.image_background.width }}w"
+                  src="{{ section.settings.image_background | img_url: '550x' }}"
+                  alt="{{ section.settings.title }}"
+          >
+        </div>
+      {%- endif -%}
+      <div class="klaviyo__content">
+        <div class="klaviyo__title main-title">{{ section.settings.title }}</div>
+        <div class="klaviyo__text">{{ section.settings.text }}</div>
+        <div class="klaviyo-form-RbHDAt"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.klaviyo.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_background",
+      "label": "t:sections.experts-opinion.settings.image_background.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background",
+      "label": "Show background image",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.experts-opinion.settings.title.label",
+      "info": "t:sections.experts-opinion.settings.title.info",
+      "default": "Get 10% off your first order"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:sections.experts-opinion.settings.text.label",
+      "info": "t:sections.experts-opinion.settings.text.info",
+      "default": "<p>Plus get the inside scoop on our latest content and updates in our monthly newsletter.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.klaviyo.presets.name"
+    }
+  ]
+}
+{% endschema %}

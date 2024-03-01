@@ -1,0 +1,131 @@
+.health {
+  position: relative;
+  width: 100%;
+}
+.health__wrapper {
+  display: flex;
+}
+.health__wrapper-left {
+  flex-direction: row-reverse;
+}
+.health-content {
+  width: 50%;
+  margin-right: 10%;
+}
+.health-content-left {
+  margin-right: 0;
+  margin-left: 10%;
+}
+.health-photo-block {
+  flex: 0 0 50%;
+}
+
+.health-photo-block__container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 80%;
+}
+.health-photo-block__background {
+  position: absolute;
+  display: block !important;
+  z-index: 0;
+  right: 0;
+  bottom: 0;
+  border-bottom: 0;
+  width: 85%;
+  height: 85%;
+  background: #D32F7C;
+  border-radius: 32px;
+}
+.health-photo-block__photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 87%;
+  height: 85%;
+  border-radius: 32px;
+  overflow: hidden;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.health-content__title {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 46px;
+  letter-spacing: -0.8px;
+  color: #12022F;
+}
+
+.health-content__text {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: -0.4px;
+  color: #12022F;
+  padding-bottom: 20px;
+}
+
+.health-content__items {
+  width: 100%;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.health-content__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  width: 100%;
+  margin: 15px 0 20px 0;
+}
+.health-content__link span {
+  display: block;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: -0.355556px;
+  color: #12022F;
+}
+
+.health-content__item hr {
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 750px) {
+  .health__wrapper {
+    display: block;
+  }
+  .health-content__title {
+    font-size: 24px;
+    line-height: 34px;
+  }
+
+  .health-content__text {
+    font-size: 14px;
+    line-height: 24px;
+    padding-bottom: 15px;
+  }
+  .health-content__link span {
+    font-size: 16px;
+    line-height: 26px;
+  }
+  .health-content {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 32px;
+  }
+  .health-photo-block {
+    width: 100%;
+  }
+}
+

@@ -1,0 +1,581 @@
+{{ 'section-hero.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  {% if section.settings.background_image != blank and section.settings.show_background %}
+    #Hero-{{ section.id }} {
+    background-image: url({{ section.settings.background_image | img_url: 'original'}});
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
+
+    #Hero-{{ section.id }} * {
+    color: {{ section.settings.body_text }};
+    }
+  {% endif %}
+
+  {% if section.settings.show_background == false %}
+    #Hero-{{ section.id }} {
+    background-color: #213b94;
+    color: #FFFFFF;
+    }
+  {% endif %}
+
+  {% if section.settings.background_image_mobile != blank and section.settings.show_background %}
+  @media screen and (max-width: 767px) {
+    #Hero-{{ section.id }} {
+      background-image: url({{ section.settings.background_image_mobile | img_url: 'original'}});
+    }
+  }
+  {% endif %}
+
+  .section-{{ section.id }}-padding {
+    padding-top: 24px;
+    padding-bottom: 50px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+{%- endstyle -%}
+
+<div id="Hero-{{ section.id }}" class="hero-section hero-section-2">
+  <div class="hero-section__content page-width section-{{ section.id }}-padding isolate">
+    <div class="hero-section__wrapper">
+      <div class="hero-section__box content-container content-container--full-width-mobile">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'heading' -%}
+              <h1 class="hero-section__heading {% if block.settings.heading_size == 'medium' %}h1{% else %}h0{% endif %} {% if block.settings.show_line == true %}hero-section__heading--line{% endif %}" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.heading | escape }}</span>
+              </h1>
+            {%- when 'text' -%}
+              <div class="hero-section__text {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.text | escape }}</span>
+              </div>
+            {%- when 'html' -%}
+            <script>
+              window.map_lat_m = '{{ block.settings.latitude_mobile }}';
+              window.map_lng_m = '{{ block.settings.longitude_mobile }}';
+              window.map_zoom_m = '{{ block.settings.zoom_m }}';
+            </script>
+            <div class="helper_wrap only_mobile">
+              <div class="helper"></div>
+              <div class="map" id="map_mobile"></div>
+            </div>
+            {%- when 'buttons' -%}
+              <div class="hero-section__buttons{% if block.settings.button_label_1 != blank and block.settings.button_label_2 != blank %} hero-section__buttons--multiple{% endif %}" {{ block.shopify_attributes }}>
+                {%- if block.settings.button_label_1 != blank -%}
+                  <a{% if block.settings.button_link_1 == blank %} role="link" aria-disabled="true"{% else %} href="{{ block.settings.button_link_1 }}"{% endif %} class="button{% if block.settings.button_style_secondary_1 %} button--secondary{% else %} button--primary{% endif %}">{{ block.settings.button_label_1 | escape }}</a>
+                {%- endif -%}
+                {%- if block.settings.button_label_2 != blank -%}
+                  <a{% if block.settings.button_link_2 == blank %} role="link" aria-disabled="true"{% else %} href="{{ block.settings.button_link_2 }}"{% endif %} class="button{% if block.settings.button_style_secondary_2 %} button--secondary{% else %} button--primary{% endif %}">{{ block.settings.button_label_2 | escape }}</a>
+                {%- endif -%}
+              </div>
+            {%- when 'advantage' -%}
+              <div class="hero-section__trustindex">
+                {%- render 'trustindex-small-black' %}
+              </div>
+              <div class="hero-section__advantage">
+                
+                <div class="hero-section__advantage-block">
+                  {%- render 'icon-stethoscope' %}
+                  <span class="hero-section__advantage-text">
+                    {{ block.settings.advantage_first }}
+                  </span>
+                </div>
+                <div class="hero-section__advantage-block">
+                  {%- render 'icon-check-circle' %}
+                  <span class="hero-section__advantage-text">
+                    {{ block.settings.advantage_second }}
+                  </span>
+                </div>
+              </div>
+              <h2 class="hero-section__heading {% if block.settings.heading_size == 'medium' %}h1{% else %}h0{% endif %}" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.heading | escape }}</span>
+              </h2>
+            {%- when 'richtext' -%}
+            {% comment %}{% if block.settings.contacts_html != blank %}
+              <div class="hero_contacts">
+                <div class="hero_contacts__inner">
+                  {{ block.settings.contacts_html }}
+                </div>
+              </div>
+            {% endif %}{% endcomment %}
+            <div class="hero_contacts">
+              <div class="hero_contacts__inner {{ block.settings.theme_contact }}">
+                <ul>
+                  <li class="address">
+                    {{ block.settings.icon_address }}
+                    <span>
+                       {{ block.settings.text_address }}
+                    </span>
+                  </li>
+                  <li class="phone">
+                    {{ block.settings.icon_tel }}
+                    {{ block.settings.text_tel }}
+                  </li>
+                  {% if block.settings.text_email != blank %}
+                  <li class="email">
+                    {{ block.settings.icon_email }}
+                    {{ block.settings.text_email }}
+                  </li>
+                  {% endif %}
+                  <li class="dates">
+                    {{ block.settings.icon_day }}
+                    <ul>
+                      <li>
+                        <span>
+                          {{ block.settings.text_weekdays }}
+                        </span>
+                        <span>
+                          {{ block.settings.text_weekdays_time }}
+                        </span>
+                      </li>
+                      <li>
+                        <span>
+                          {{ block.settings.text_saturday }}
+                        </span>
+                        <span>
+                          {{ block.settings.text_saturday_time }}
+                        </span>
+                      </li>
+                      <li>
+                        <span>
+                          {{ block.settings.text_sunday }}
+                        </span>
+                        <span>
+                          {{ block.settings.text_sunday_time }}
+                        </span>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+      <div class="hero-section__box hero-section__box-image hero-section__box-map">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'image' -%}
+              {% render 'image-with-back', image: block.settings.image %}
+            {%- when 'number' -%}
+            <script>
+              window.map_lat = '{{ block.settings.latitude }}';
+              window.map_lng = '{{ block.settings.longitude }}';
+              window.map_zoom = '{{ block.settings.zoom }}';
+            </script>
+            <div class="helper_wrap">
+              <div class="helper"></div>
+              <div id="map" class="map"></div>
+            </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {% if section.settings.show_logos %}
+      <div class="hero-section__logos">
+        {%- render 'logo-images-block' %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDAAF3Rp03IiWpiNWIBTl3-G20jTW7lrs&callback=initMap">
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    // Initialize and add the map
+    function initMap(id_map, lat, lng, zoom) {
+      // The location of Uluru
+      const uluru = { lat: lat, lng: lng };
+      // The map, centered at Uluru
+      const map = new google.maps.Map(id_map, {
+        zoom: zoom,
+        center: uluru,
+        disableDefaultUI: true
+      });
+      // The marker, positioned at Uluru
+      const marker = new google.maps.Marker({
+        position: uluru,
+        map: map,
+        icon: "https://cdn.shopify.com/s/files/1/0571/9752/7133/files/marker.png?v=1664486489"
+      });
+    }
+
+    window.initMap = initMap;
+    
+    initMap(document.getElementById("map"), Number(window.map_lat), Number(window.map_lng), Number(window.map_zoom));
+    setTimeout(function (){
+      initMap(document.getElementById("map_mobile"), Number(window.map_lat_m), Number(window.map_lng_m), Number(window.map_zoom_m));
+    }, 500);
+  });
+
+</script>
+
+{% schema %}
+{
+  "name": "Hero section 2",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "t:sections.hero-section.settings.background_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background",
+      "label": "Show background image",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "t:sections.hero-section.settings.background_image_mobile.label"
+    },
+    {
+      "type": "color",
+      "id": "body_text",
+      "label": "Section text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logos",
+      "label": "Show logos",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 150
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.hero-section.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Image banner",
+          "label": "t:sections.hero-section.blocks.heading.settings.heading.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "medium",
+              "label": "t:sections.hero-section.blocks.heading.settings.heading_size.options__1.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.hero-section.blocks.heading.settings.heading_size.options__2.label"
+            }
+          ],
+          "default": "medium",
+          "label": "t:sections.hero-section.blocks.heading.settings.heading_size.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_line",
+          "label": "t:sections.hero-section.blocks.heading.settings.show_line.label",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "t:sections.hero-section.blocks.image.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.hero-section.blocks.image.settings.image.label"
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "name": "Hero Contacts",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "theme_contact",
+          "label": "Theme contacts bg",
+          "options": [
+            {
+              "value": "default",
+              "label": "Default"
+            },
+            {
+              "value": "white",
+              "label": "White"
+            }
+          ]
+        },
+        {
+          "type": "html",
+          "id": "icon_address",
+          "label": "Icon SVG address"
+        },
+        {
+          "type": "richtext",
+          "id": "text_address",
+          "label": "Address"
+        },
+        {
+          "type": "html",
+          "id": "icon_tel",
+          "label": "Icon SVG tel"
+        },
+        {
+          "type": "richtext",
+          "id": "text_tel",
+          "label": "Telephone"
+        },
+        {
+          "type": "html",
+          "id": "icon_email",
+          "label": "Icon SVG email"
+        },
+        {
+          "type": "richtext",
+          "id": "text_email",
+          "label": "Email"
+        },
+        {
+          "type": "html",
+          "id": "icon_day",
+          "label": "Icon SVG day"
+        },
+        {
+          "type": "richtext",
+          "id": "text_weekdays",
+          "label": "Weekdays"
+        },
+        {
+          "type": "richtext",
+          "id": "text_weekdays_time",
+          "label": "Weekdays time"
+        },
+        {
+          "type": "richtext",
+          "id": "text_saturday",
+          "label": "Day Saturday"
+        },
+        {
+          "type": "richtext",
+          "id": "text_saturday_time",
+          "label": "Saturday time"
+        },
+        {
+          "type": "richtext",
+          "id": "text_sunday",
+          "label": "Day Sunday"
+        },
+        {
+          "type": "richtext",
+          "id": "text_sunday_time",
+          "label": "Sunday time"
+        }
+      ]
+    },
+    {
+      "type": "number",
+      "name": "Map location Desktop",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "number",
+          "id": "latitude",
+          "label": "Latitude"
+        },
+        {
+          "type": "number",
+          "id": "longitude",
+          "label": "Longitude"
+        },
+        {
+          "type": "number",
+          "id": "zoom",
+          "label": "Zoom",
+          "default": 16
+        }
+      ]
+    },
+    {
+      "type": "html",
+      "name": "Map location Mobile",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "number",
+          "id": "latitude_mobile",
+          "label": "Latitude Mobile"
+        },
+        {
+          "type": "number",
+          "id": "longitude_mobile",
+          "label": "Longitude Mobile"
+        },
+        {
+          "type": "number",
+          "id": "zoom_mobile",
+          "label": "Zoom",
+          "default": 16
+        }
+      ]
+    },
+    {
+      "type": "advantage",
+      "name": "t:sections.hero-section.blocks.advantage.name",
+      "limit": 1,
+      "settings": [
+      {
+        "type": "text",
+        "id": "advantage_first",
+        "label": "t:sections.hero-section.blocks.advantage.first.label",
+        "default": "Serviced by GMC registered NHS doctors and labs"
+      },
+      {
+        "type": "text",
+        "id": "advantage_second",
+        "label": "t:sections.hero-section.blocks.advantage.second.label",
+        "default": "97% satisfaction from over 500,000 patients nationwide"
+      }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.hero-section.blocks.text.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Give customers details about the banner image(s) or content on the template.",
+          "label": "t:sections.hero-section.blocks.text.settings.text.label"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "body",
+              "label": "t:sections.hero-section.blocks.text.settings.text_style.options__1.label"
+            },
+            {
+              "value": "subtitle",
+              "label": "t:sections.hero-section.blocks.text.settings.text_style.options__2.label"
+            },
+            {
+              "value": "caption-with-letter-spacing",
+              "label": "t:sections.hero-section.blocks.text.settings.text_style.options__3.label"
+            }
+          ],
+          "default": "body",
+          "label": "t:sections.hero-section.blocks.text.settings.text_style.label"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "t:sections.hero-section.blocks.buttons.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Button label",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_label_1.label",
+          "info": "t:sections.hero-section.blocks.buttons.settings.button_label_1.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_link_1.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_1",
+          "default": false,
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_style_secondary_1.label"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "default": "Button label",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_label_2.label",
+          "info": "t:sections.hero-section.blocks.buttons.settings.button_label_2.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_link_2.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_2",
+          "default": false,
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_style_secondary_2.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero section 2",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "buttons"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "html"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

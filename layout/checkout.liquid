@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+    <style>
+      .product__description__property.order-summary__small-text {display: none;}
+    </style>
+  <!-- Google Tag Manager -->
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TKGB3FH');</script>
+
+<!-- End Google Tag Manager -->
+
+</head>
+  
+
+  
+  <body class="gradient">
+    <!-- Google Tag Manager (noscript) -->
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKGB3FH" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+    <!-- End Google Tag Manager (noscript) -->
+  
+    {{ skip_to_content_link }}
+
+    <header class="banner" data-header role="banner">
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </header>
+
+    {{ order_summary_toggle }}
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main">
+          <header class="main__header" role="banner">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </header>
+          <main class="main__content" role="main">
+            {{ content_for_layout }}
+          </main>
+          <footer class="main__footer" role="contentinfo">
+            {{ content_for_footer }}
+          </footer>
+        </div>
+        <aside class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    {{ tracking_code }}
+
+      <script>        
+          const getQueryParams = (query) => {
+        		let params = {};
+        		new URLSearchParams(query).forEach((value, key) => {
+        		let decodedKey = decodeURIComponent(key);
+        		let decodedValue = decodeURIComponent(value);
+        		// This key is part of an array
+        		if (decodedKey.endsWith("[]")) {
+        		decodedKey = decodedKey.replace("[]", "");
+        		params[decodedKey] || (params[decodedKey] = []);
+        		params[decodedKey].push(decodedValue);
+        		// Just a regular parameter
+        		} else {
+        		params[decodedKey] = decodedValue;
+        		}
+        		});
+        
+        		return params;
+        	};
+
+          let obj = getQueryParams(window.location.search);
+          let newObj = {};
+          
+          for (const i in obj) {
+            let a = i.match(/([^\[\]]+)(\[[^\[\]]+[^\]])*?/g),
+            p = obj[i];
+            j = a.length;
+          
+            while (j--) {
+            q = {};
+            q[a[j]] = p;
+            p = q;
+            }
+            // merge object
+            let k = Object.keys(p)[0],
+            o = newObj;
+          
+            while (k in o) {
+            p = p[k];
+            o = o[k];
+            k = Object.keys(p)[0];
+            }
+          
+            o[k] = p[k];
+          }
+          const $cartForms = document.querySelectorAll('form[method="post"].edit_checkout');
+          if(localStorage.getItem('askflowdata')){
+            let $newInputcustomerStatId = document.createElement('input');
+            $newInputcustomerStatId.type = 'hidden';
+            $newInputcustomerStatId.value = localStorage.getItem('askflowdata');
+            $newInputcustomerStatId.name = `checkout[attributes][askflowdata]`;
+            $cartForms[0].appendChild($newInputcustomerStatId);
+          }
+        
+      </script>
+
+  {% render 'banana-stand-footer' %}
+</body>
+</html>
+
+<!-- Rebuy Speed Load Script -->
+<script async src="https://cdn.rebuyengine.com/onsite/js/rebuy.js?shop={{ shop.permanent_domain }}"></script>
+<div data-rebuy-id="100109"></div>
+
+{% raw %}
+  <script id="rebuy-widget-100109" type="text/template">
+ <div class="rebuy-widget"
+        v-cloak
+        v-on:click="stopPropagation($event)"
+        v-bind:id="'rebuy-widget-' + id"
+        v-bind:class="['widget-type-' + config.type.replace('_','-'), 'widget-display-' + config.display_type, products.length > 0 ? 'is-visible' : 'is-hidden', 'widget-layout-' + currentLayout()]">
+    
+        <div
+            class="rebuy-widget-container"
+            v-cloak
+            v-bind:class="['widget-display-' + config.display_type, visible ? 'is-visible' : 'is-hidden' ]"
+            v-on:click.self="hide()">
+    
+            <div class="rebuy-widget-content">
+                <div class="rebuy-modal-close" v-on:click="hide()">
+                    <i class="fas fa-times"></i>
+                </div>
+
+                <div class="rebuy-timer" v-if="hasTimer()">
+                    <h5 class="rebuy-timer-title" v-if="config.language.timer_title">
+                        <span v-html="config.language.timer_title"></span> <span class="rebuy-timer-minutes" v-html="config.timer.duration_minutes"></span>:<span class="rebuy-timer-seconds" v-html="config.timer.duration_seconds"></span>
+                    </h5>
+                </div>
+    
+                <h4 class="super-title" v-if="config.language.super_title != ''" v-html="config.language.super_title"></h4>
+    
+                <h3 class="primary-title" v-if="config.language.title != ''" v-html="config.language.title"></h3>
+
+                <div class="description" v-if="config.language.description != ''" v-html="config.language.description"></div>
+    
+                <div class="rebuy-product-grid" v-bind:class="layoutClasses">
+    
+                    <div class="rebuy-product-block" v-for="(product, product_index) in products" v-bind:class="[product.handle, 'product-id-' + product.id, cartHasProduct(product) ? 'cart-has-item' : '', productTagClasses(product)]">
+    
+                        <div class="rebuy-product-media">
+                            <a class="rebuy-product-image" v-bind:href="learnMoreURL(product)" v-bind:style="imageStyles" v-on:click="learnMore(product);" v-bind:class="[hasLearnMore() ? 'clickable' : '']">
+                                <img v-bind:src="itemImage(product, product.selected_variant, '400x400')" v-bind:alt="'View ' + product.title">
+                            </a>
+                        </div>
+                        <div class="rebuy-product-info">
+                            <a class="rebuy-product-title" v-bind:href="learnMoreURL(product)" v-on:click="learnMore(product);" v-html="product.title" v-bind:class="[hasLearnMore() ? 'clickable' : '']" v-bind:alt="'View ' + product.title"></a>
+                            <div class="rebuy-variant-title" v-if="showVariantTitle(product)" v-html="product.selected_variant.title"></div>
+                            <div class="rebuy-product-review" v-if="hasProductReviews(product)">
+    <div class="rebuy-review-section">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="0.404968" y="0.837433" width="14.949" height="14.949" rx="2" fill="currentColor"></rect>
+                              <g clip-path="url(#clip0_11_421)">
+                              <path d="M11.5972 7.44181C11.5483 7.29126 11.4141 7.18434 11.2552 7.1701L9.09789 6.97525L8.24482 4.98916C8.18191 4.84361 8.03866 4.74939 7.8795 4.74939C7.72034 4.74939 7.57708 4.84361 7.51418 4.9895L6.66111 6.97525L4.50342 7.1701C4.34489 7.18468 4.21099 7.29126 4.16177 7.44181C4.11256 7.59235 4.15801 7.75748 4.27794 7.86157L5.90863 9.2841L5.42778 11.391C5.39259 11.5459 5.45304 11.7061 5.58227 11.799C5.65173 11.8489 5.73299 11.8743 5.81494 11.8743C5.88559 11.8743 5.95568 11.8554 6.01858 11.8179L7.8795 10.7116L9.73973 11.8179C9.87586 11.8994 10.0475 11.8919 10.1764 11.799C10.3057 11.7058 10.3661 11.5456 10.3309 11.391L9.85002 9.2841L11.4807 7.86185C11.6006 7.75748 11.6464 7.59264 11.5972 7.44181Z" fill="white"></path>
+                              </g>
+                              <defs>
+                              <clipPath id="clip0_11_421">
+                              <rect width="7.4745" height="7.4745" fill="white" transform="translate(4.14221 4.57481)"></rect>
+                              </clipPath>
+                              </defs>
+                              </svg>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="0.404968" y="0.837433" width="14.949" height="14.949" rx="2" fill="currentColor"></rect>
+                              <g clip-path="url(#clip0_11_421)">
+                              <path d="M11.5972 7.44181C11.5483 7.29126 11.4141 7.18434 11.2552 7.1701L9.09789 6.97525L8.24482 4.98916C8.18191 4.84361 8.03866 4.74939 7.8795 4.74939C7.72034 4.74939 7.57708 4.84361 7.51418 4.9895L6.66111 6.97525L4.50342 7.1701C4.34489 7.18468 4.21099 7.29126 4.16177 7.44181C4.11256 7.59235 4.15801 7.75748 4.27794 7.86157L5.90863 9.2841L5.42778 11.391C5.39259 11.5459 5.45304 11.7061 5.58227 11.799C5.65173 11.8489 5.73299 11.8743 5.81494 11.8743C5.88559 11.8743 5.95568 11.8554 6.01858 11.8179L7.8795 10.7116L9.73973 11.8179C9.87586 11.8994 10.0475 11.8919 10.1764 11.799C10.3057 11.7058 10.3661 11.5456 10.3309 11.391L9.85002 9.2841L11.4807 7.86185C11.6006 7.75748 11.6464 7.59264 11.5972 7.44181Z" fill="white"></path>
+                              </g>
+                              <defs>
+                              <clipPath id="clip0_11_421">
+                              <rect width="7.4745" height="7.4745" fill="white" transform="translate(4.14221 4.57481)"></rect>
+                              </clipPath>
+                              </defs>
+                              </svg>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="0.404968" y="0.837433" width="14.949" height="14.949" rx="2" fill="currentColor"></rect>
+                              <g clip-path="url(#clip0_11_421)">
+                              <path d="M11.5972 7.44181C11.5483 7.29126 11.4141 7.18434 11.2552 7.1701L9.09789 6.97525L8.24482 4.98916C8.18191 4.84361 8.03866 4.74939 7.8795 4.74939C7.72034 4.74939 7.57708 4.84361 7.51418 4.9895L6.66111 6.97525L4.50342 7.1701C4.34489 7.18468 4.21099 7.29126 4.16177 7.44181C4.11256 7.59235 4.15801 7.75748 4.27794 7.86157L5.90863 9.2841L5.42778 11.391C5.39259 11.5459 5.45304 11.7061 5.58227 11.799C5.65173 11.8489 5.73299 11.8743 5.81494 11.8743C5.88559 11.8743 5.95568 11.8554 6.01858 11.8179L7.8795 10.7116L9.73973 11.8179C9.87586 11.8994 10.0475 11.8919 10.1764 11.799C10.3057 11.7058 10.3661 11.5456 10.3309 11.391L9.85002 9.2841L11.4807 7.86185C11.6006 7.75748 11.6464 7.59264 11.5972 7.44181Z" fill="white"></path>
+                              </g>
+                              <defs>
+                              <clipPath id="clip0_11_421">
+                              <rect width="7.4745" height="7.4745" fill="white" transform="translate(4.14221 4.57481)"></rect>
+                              </clipPath>
+                              </defs>
+                              </svg>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="0.404968" y="0.837433" width="14.949" height="14.949" rx="2" fill="currentColor"></rect>
+                              <g clip-path="url(#clip0_11_421)">
+                              <path d="M11.5972 7.44181C11.5483 7.29126 11.4141 7.18434 11.2552 7.1701L9.09789 6.97525L8.24482 4.98916C8.18191 4.84361 8.03866 4.74939 7.8795 4.74939C7.72034 4.74939 7.57708 4.84361 7.51418 4.9895L6.66111 6.97525L4.50342 7.1701C4.34489 7.18468 4.21099 7.29126 4.16177 7.44181C4.11256 7.59235 4.15801 7.75748 4.27794 7.86157L5.90863 9.2841L5.42778 11.391C5.39259 11.5459 5.45304 11.7061 5.58227 11.799C5.65173 11.8489 5.73299 11.8743 5.81494 11.8743C5.88559 11.8743 5.95568 11.8554 6.01858 11.8179L7.8795 10.7116L9.73973 11.8179C9.87586 11.8994 10.0475 11.8919 10.1764 11.799C10.3057 11.7058 10.3661 11.5456 10.3309 11.391L9.85002 9.2841L11.4807 7.86185C11.6006 7.75748 11.6464 7.59264 11.5972 7.44181Z" fill="white"></path>
+                              </g>
+                              <defs>
+                              <clipPath id="clip0_11_421">
+                              <rect width="7.4745" height="7.4745" fill="white" transform="translate(4.14221 4.57481)"></rect>
+                              </clipPath>
+                              </defs>
+                              </svg>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="0.404968" y="0.837433" width="14.949" height="14.949" rx="2" fill="currentColor"></rect>
+                              <g clip-path="url(#clip0_11_421)">
+                              <path d="M11.5972 7.44181C11.5483 7.29126 11.4141 7.18434 11.2552 7.1701L9.09789 6.97525L8.24482 4.98916C8.18191 4.84361 8.03866 4.74939 7.8795 4.74939C7.72034 4.74939 7.57708 4.84361 7.51418 4.9895L6.66111 6.97525L4.50342 7.1701C4.34489 7.18468 4.21099 7.29126 4.16177 7.44181C4.11256 7.59235 4.15801 7.75748 4.27794 7.86157L5.90863 9.2841L5.42778 11.391C5.39259 11.5459 5.45304 11.7061 5.58227 11.799C5.65173 11.8489 5.73299 11.8743 5.81494 11.8743C5.88559 11.8743 5.95568 11.8554 6.01858 11.8179L7.8795 10.7116L9.73973 11.8179C9.87586 11.8994 10.0475 11.8919 10.1764 11.799C10.3057 11.7058 10.3661 11.5456 10.3309 11.391L9.85002 9.2841L11.4807 7.86185C11.6006 7.75748 11.6464 7.59264 11.5972 7.44181Z" fill="white"></path>
+                              </g>
+                              <defs>
+                              <clipPath id="clip0_11_421">
+                              <rect width="7.4745" height="7.4745" fill="white" transform="translate(4.14221 4.57481)"></rect>
+                              </clipPath>
+                              </defs>
+                              </svg>
+                        
+                            </div>
+                                <span class="rebuy-star-rating">
+                                    <span class="rebuy-star-rating-background"></span>
+                                    <span class="rebuy-star-rating-foreground" v-bind:style="{ width: productReviewRatingPercentage(product) }"></span>
+                                </span>
+                                <span class="rebuy-review-count" v-html="productReviewCount(product)"></span>
+                            </div>
+                            <div class="rebuy-product-description" v-if="showProductDescription(product)" v-html="text(product.body_html)"></div>
+                        </div>
+                        <div class="rebuy-product-options" v-if="showVariantSelect(product)">
+                            <select
+                                :id="id + '-' + 'select' + '-' + product_index"
+                                :class="{ hide : settings.view_options.variant_selector == 'buttons' }"
+                                class="rebuy-select"
+                                v-model="product.selected_variant_id"
+                                v-on:change="selectVariant(product)">
+                                <option v-for="variant in product.variants" v-bind:value="variant.id">{{ variant.title }}</option>
+                            </select>
+                            <div v-if="displayColorSwatches(option)" v-for="option in product.options" class="rebuy-color-swatches">
+                                <div v-for="(value, value_index) in filterOOSOptions(option, product)" class="rebuy-color-swatch">
+                                    <input
+                                        :name="id + '-color-' + product_index" 
+                                        :id="id + '-color-' + product_index + '-' + value + '-' + value_index"
+                                        :checked="value_index == 0" 
+                                        :value="value"
+                                        type="radio" 
+                                        class="rebuy-color-input hide"
+                                        v-on:change="selectVariantByColor(product, value, product_index)">
+                                    <label
+                                        :for="id + '-color-' + product_index + '-' + value + '-' + value_index"
+                                        :style="{ backgroundColor: value }"
+                                        :title="value"
+                                        class="rebuy-color-label"></label>
+                                </div>
+                            </div>
+
+                            <div v-if="displaySizeSwatches(option)" v-for="option in product.options" class="mt-10 rebuy-size-swatches">
+                                <div v-for="(value, value_index) in filterOOSOptions(option, product)" class="rebuy-size-swatch">
+                            
+                                    <input
+                                        :name="id + '-size-' + product_index" 
+                                        :id="id + '-size-' + product_index + '-' + value"
+                                        :checked="value_index == 0" 
+                                        :value="value"
+                                        type="radio" 
+                                        class="rebuy-size-input hide"
+                                        v-on:change="selectVariantBySize(product, value, product_index)">
+                                    <label
+                                        :for="id + '-size-' + product_index + '-' + value"
+                                        class="rebuy-size-label">{{ value }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rebuy-product-actions">
+                             <div class="rebuy-product-price">
+                                <div v-if="variantOnSale(product, product.selected_variant)">
+                                    <span class="rebuy-money sale" v-html="formatMoney(variantPrice(product, product.selected_variant))"></span>
+                                    <span class="rebuy-money compare-at" v-html="formatMoney(variantCompareAtPrice(product, product.selected_variant))"></span>
+                                </div>
+                                <div v-if="!(variantOnSale(product, product.selected_variant))">
+                                    <span class="rebuy-money" v-html="formatMoney(variantPrice(product, product.selected_variant))"></span>
+                                </div>
+                            </div>
+                            <div class="subscription-checkbox" v-if="showSubscriptionOptions(product)">
+                                <label class="rebuy-checkbox-label">
+                                    <input
+                                        class="checkbox-input rebuy-checkbox"
+                                        v-model="product.subscription"
+                                        v-on:change="toggleSubscription(product)"
+                                        type="checkbox" />
+                                    <span class="checkbox-label" v-html="upgradeToSubscriptionLabel(product)"></span>
+                                </label>
+                            </div>
+    
+                            <div class="subscription-frequency" v-if="showSubscriptionFrequency(product)">
+                                <select
+                                    class="rebuy-select"
+                                    v-model="product.subscription_frequency"
+                                    v-on:change="updateSubscriptionFrequency(product)">
+                                    <option v-for="frequency in product.subscription_frequencies" v-bind:value="frequency">{{ frequencyLabel(frequency, product.subscription_interval) }}</option>
+                                </select>
+                            </div>
+    
+                            <div class="product-quantity" v-if="hasQuantityInputEnabled()">
+                                <div class="rebuy-select-wrapper">
+                                    <label class="rebuy-label">Quantity</label>
+                                    <select 
+                                        class="rebuy-select" 
+                                        v-model="product.quantity">
+                                        <option v-for="n in maxQuantityInputValue()" v-bind:value="n">{{ n }}</option>
+                                    </select>
+                                </div>
+                            </div>
+    
+                             <button
+                                v-if="product.tags.includes('prescription-required') || product.tags.includes('pop-up')"
+                                class="rebuy-button"
+                                v-bind:class="{ working: (product.status != 'ready' && product.status != 'selecting') }"
+                                v-bind:disabled="!(variantAvailable(product.selected_variant)) || (product.status != 'ready' && product.status != 'selecting')"
+                                v-bind:alt="'Add ' + product.title + ' to Cart'"
+                                v-on:click="learnMore(product)"
+                                type="button"
+                              >
+                                <span>View</span>
+                              </button>
+                          
+                              <!-- Render the button to add to cart if the product does not contain any of the specified tags -->
+                              <button
+                                v-else
+                                class="rebuy-button"
+                                v-bind:class="{ working: (product.status != 'ready' && product.status != 'selecting') }"
+                                v-bind:disabled="!(variantAvailable(product.selected_variant)) || (product.status != 'ready' && product.status != 'selecting')"
+                                v-bind:alt="'Add ' + product.title + ' to Cart'"
+                                v-on:click="addToCart(product)"
+                                type="button"
+                              >
+                                <span v-html="buttonLabel(product)"></span>
+                           </button>
+                        </div>
+                    </div>
+    
+                </div>
+    
+                <div class="rebuy-modal-actions" v-if="showContinueButton()">
+                    <button
+                        class="rebuy-button decline"
+                        v-on:click="hide()"
+                        type="button">
+                            <span v-html="continueLabel()"></span>
+                    </button>
+                </div>
+    
+                <div class="powered-by-rebuy">
+                    <a v-bind:href="'https://rebuyengine.com/?shop=' + config.shop.myshopify_domain" target="_blank" rel="noopener">
+                        Powered by Rebuy
+                    </a>
+                </div>
+    
+            </div>
+    
+        </div>
+    </div>
+</script>
+
+{% endraw %}

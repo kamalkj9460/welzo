@@ -1,0 +1,101 @@
+{{ 'all-condition-list.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div id="All-condition-list" class="all-condition">
+	<div class="all-condition page-width section-{{ section.id }}-padding isolate">
+	<div class="all-condition__header">
+		<h2 class="title main-title">
+      {{ section.settings.title | escape }}
+    </h2>
+	</div>
+
+  <div class="all-condition__list">
+    {%- for block in section.blocks -%}
+      {% render 'card-condition', caption: block.settings.caption, link: block.settings.link_condition, icon: block.settings.icon, more: block.settings.link_more_caption %}
+  {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.all-condition-section.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.all-condition-section.settings.title.label",
+      "default": "Shop by condition"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "condition_block",
+      "name": "t:sections.all-condition-section.blocks.condition-block.label",
+      "settings": [ 
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "t:sections.all-condition-section.blocks.condition-block.settings.caption.label",
+          "default": "Heart Attack"
+        },
+        {
+          "type": "url",
+          "id": "link_condition",
+          "label": "t:sections.all-condition-section.blocks.condition-block.settings.link_condition.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "t:sections.all-condition-section.blocks.condition-block.settings.icon.label"
+        },
+        {
+          "type": "text",
+          "id": "link_more_caption",
+          "label": "t:sections.all-condition-section.blocks.condition-block.settings.link_more_caption.label",
+          "default": "Learn more"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.all-condition-section.name"
+    }
+  ]
+}
+{% endschema %}

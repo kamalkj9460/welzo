@@ -1,0 +1,389 @@
+<link rel="stylesheet" href="{{ 'section-subscription-page.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+{{ 'customer.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+    .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+        padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+        .section-{{ section.id }}-padding {
+            padding-top: {{ section.settings.padding_top }}px;
+            padding-bottom: {{ section.settings.padding_bottom }}px;
+        }
+    }
+{%- endstyle -%}
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign pageUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |
+        replace:'\/','/' |
+        replace:'%20',' ' |
+        replace:'\u0026','&'
+-%}
+{%- assign split1 = pageUrl | split: "/" -%}
+{%- assign split2 = split1[3] | split: "?" -%}
+{%- assign product_handle = split2[0] -%}
+{% assign main_product = all_products[product_handle] %}
+{% assign price = main_product.selected_or_first_available_variant.price | money_without_currency %}
+
+{% assign selling_plan_group = main_product.selling_plan_groups | first %}
+{% assign selling_plan_main = selling_plan_group.selling_plans | first %}
+{% assign price_adjustments = selling_plan_main.price_adjustments | first %}
+{% assign value_type = price_adjustments.value_type %}
+{% assign value = price_adjustments.value %}
+
+{% assign tmp_value = value | times: 1.0 %}
+{% assign value_percentage = tmp_value | divided_by: 100 %}
+{% assign discount_price = price | times: value_percentage %}
+
+<div class="subscription-page page-width section-{{ section.id }}-padding">
+    <div class="subscription-page__wrapper">
+
+        <div class="subscription-page__content">
+            <div class="subscription-page__title">
+                Set up your subscription
+            </div>
+            <div class="subscription-page__list">List</div>
+
+            <div class="subscription-page__summary">
+                <div class="subscription-page__total">
+                    <div class="subscription-page__total-title">Total:</div>
+                    <div class="subscription-page__cost">
+                        <span id="price-container"> £ {{ price | minus: discount_price }}</span>
+                    </div>
+                </div>
+                <div class="subscription-page__total">
+                    <div class="subscription-page__total-title">Delivery every</div>
+                    <div class="subscription-page__total-select">
+                        <select class="subscription-page__select-plan" id="selling_plan">
+                            {% for plan in selling_plan_group.selling_plans %}
+                                {% if forloop.first %}
+                                    <option value="{{ plan.id }}" selected>{{ plan.name | replace: "Delivery every ", "" }}</option>
+                                {% else %}
+                                    <option value="{{ plan.id }}">{{ plan.name | replace: "Delivery every ", "" }}</option>
+                                {% endif %}
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="subscription-page__highlights">
+                {% if product.metafields.accentuate.highlights_subscription_list %}
+                    {% assign list = product.metafields.accentuate.highlights_subscription_list | split: '|' %}
+                    {% render 'highlights', list: list %}
+                {% endif %}
+            </div>
+            <subscription-form id="button-add-to-cart" class="product-form">
+                <div class="product-form__error-message-wrapper" role="alert" hidden>
+                    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-error" viewBox="0 0 13 13">
+                        <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
+                        <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
+                        <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
+                        <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7"/>
+                    </svg>
+                    <span class="product-form__error-message"></span>
+                </div>
+                <div class="customer subscription-page__buttons">
+                    {%- form 'product', main_product, id: product_form_id, class: 'form', data-type: 'add-to-cart-form' -%}
+                        <input type="hidden" name="id" value="" disabled>
+                        <input id="variants_ids" type="hidden" name="variants_ids" value="" disabled>
+
+                        {% render 'order-properties-fields-hide' %}
+
+                        <div class="product-form__buttons">
+                            <button
+                                    id="form-add-to-cart-button-id"
+                                    type="submit"
+                                    name="add"
+                                    style="display: none"
+                                    class="subscription-page__button"
+                                    {% if main_product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+                                <span>
+                                  {%- if main_product.selected_or_first_available_variant.available -%}
+                                      Go to checkout{%- else -%}Sold out{%- endif -%}
+                                </span>
+                                <div class="loading-overlay__spinner hidden">
+                                    <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                                        <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                                    </svg>
+                                </div>
+                            </button>
+                        </div>
+                    {% endform %}
+                </div>
+            </subscription-form>
+
+            <modal-opener data-modal="#PopupModal-{{main_product.id}}" class="included-section__opener">
+                <button
+                        id="add-to-cart-modal-opener"
+                        type="submit"
+                        name="add"
+                        class="subscription-page__button"
+                        {% if main_product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+                            <span>
+                              {%- if main_product.selected_or_first_available_variant.available -%}
+                                  Go to checkout{%- else -%}Sold out{%- endif -%}
+                            </span>
+                    <div class="loading-overlay__spinner hidden">
+                        <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                        </svg>
+                    </div>
+                </button>
+            </modal-opener>
+            {% render 'modal-fields', product: main_product, button_title: 'Go to checkout'  %}
+
+        </div>
+        <div class="subscription-page__gallery subscription-page__desktop">
+            {% render 'pdp-slider', product: main_product, show_thumb: false, show_logos: false %}
+        </div>
+
+    </div>
+
+    {% if main_product.metafields.accentuate.more_products %}
+        <div id="want-section" class="subscription-page__included-section included-section">
+            <div class="included-section__title">Would you like to add more tests to your subscription?</div>
+            <div class="included-section__products">
+                <div class="included-section__wrapper">List</div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<script src="{{ 'subscription-form.aio.min.js' | asset_url }}" defer="defer"></script>
+
+<script>
+
+    const products = [];
+    let list = [];
+    let wantList = [];
+    let totalPrice = 0;
+
+    const listContainer = document.querySelector(".subscription-page__list");
+    const wantListContainer = document.querySelector(".included-section__wrapper");
+    const priceContainer = document.getElementById("price-container");
+    const wantSection = document.getElementById("want-section");
+    const variantIDs = document.getElementById("variants_ids");
+    const sellingPlanGroup = {{ selling_plan_group | json }};
+    const allPlans = {{ main_product.selling_plan_groups | json }};
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedPlanId = urlParams.get('selling-plan-id'); //success
+    const selectedPlan = allPlans.find(element => element?.selling_plans[0]?.id == selectedPlanId)?.selling_plans[0];
+    const productPrice = {{ main_product.selected_or_first_available_variant.price | money_without_currency }};
+    const selectedPlanDiscount = selectedPlan.price_adjustments[0].value_type !== 'percentage' ? selectedPlan.price_adjustments[0].value :
+        (selectedPlan.price_adjustments[0].value / 100) * productPrice;
+
+    const init = () => {
+      products.push({
+          id: "{{ main_product.id }}",
+          sellingPlanID: selectedPlanId || "{{ selling_plan_group.id }}",
+          handle: "{{ main_product.handle }}",
+          title: "{{ main_product.title }}",
+          description: `{{ main_product.description }}`,
+          imageUrl: "{{ main_product.media[0] | img_url: 'master' }}",
+          price: productPrice - selectedPlanDiscount,
+          variantId: "{{ main_product.selected_or_first_available_variant.id }}",
+      });
+
+        {% assign products_handle = main_product.metafields.accentuate.more_products | split: "|" %}
+        {%- for handle in products_handle -%}
+            {% assign product = all_products[handle] %}
+            {% assign selling_plan_group = product.selling_plan_groups | first %}
+            {% assign price = product.selected_or_first_available_variant.price | money %}
+            {% assign list_relevant = product.metafields.accentuate.relevant_subscription | split: '|' %}
+
+            {% assign selling_plans = selling_plan_group.selling_plans | first %}
+            {% assign price_adjustments = selling_plans.price_adjustments | first %}
+            {% assign value_type = price_adjustments.value_type %}
+            {% assign value = price_adjustments.value %}
+
+            {% assign tmp_value = value | times: 1.0 %}
+            {% assign value_percentage = tmp_value | divided_by: 100 %}
+            {% assign discount_price = product.selected_or_first_available_variant.price | money_without_currency | times: value_percentage %}
+
+            {% if product.handle != main_product.handle and selling_plans.id == selling_plan_main.id %}
+            products.push({
+                id: "{{ product.id }}",
+                sellingPlanID: "{{ selling_plan_group.id }}",
+                handle: "{{ product.handle }}",
+                title: "{{ product.title }}",
+                description: `{{ product.description }}`,
+                imageUrl: "{{ product.media[0] | img_url }}",
+                price: "{{ product.selected_or_first_available_variant.price | money_without_currency | minus: discount_price }}",
+                variantId: "{{ product.selected_or_first_available_variant.id }}",
+            });
+            {% endif %}
+        {% endfor %}
+
+        list.push(products[0]);
+        products.forEach((product, index) => {
+            index !== 0 && wantList.push(product);
+        });
+        rerenderLists()
+        setNewPrice()
+    }
+
+
+    const addWantListItemHTML = (title, price, handle, description) => {
+        const container = document.createElement('div');
+        container.className = "included-section__item";
+
+        const background = document.createElement('div');
+        background.className = "included-section__background";
+        const img = document.createElement('img');
+        img.src = "{{ section.settings.item_background | img_url }}";
+        background.appendChild(img);
+        container.appendChild(background);
+
+        const text = document.createElement('div');
+        text.className = "included-section__text";
+        text.innerHTML = title;
+
+        const tmpPrice = document.createElement('div');
+        tmpPrice.className = "included-section__price";
+        tmpPrice.innerHTML = `£ ${price}`;
+
+        const header = document.createElement('div');
+        header.className = "included-section__header";
+        header.appendChild(text);
+        header.appendChild(tmpPrice);
+
+        let trustIndex = document.createElement('script');
+        trustIndex.src = "https://cdn.trustindex.io/loader.js?0eee4e791b44172658568af82a";
+        trustIndex.async = true;
+        trustIndex.defer = true;
+
+        const review = document.createElement('div');
+        review.className = "included-section__review";
+        review.appendChild(trustIndex);
+
+        const tmpDescription = document.createElement('div');
+        tmpDescription.className = "included-section__description";
+        tmpDescription.innerHTML = description;
+
+        const relevant = document.createElement('div');
+        relevant.className = "included-section__relevant included-relevant";
+
+        const addButton = document.createElement('button');
+        addButton.className = "included-section__button";
+        addButton.innerText = "Add";
+        addButton.onclick = () => addToList(handle);
+
+        const content = document.createElement('div');
+        content.className = "included-section__content";
+        content.appendChild(header)
+        content.appendChild(review)
+        content.appendChild(tmpDescription)
+        content.appendChild(relevant)
+        content.appendChild(addButton)
+
+        container.appendChild(content);
+
+        return container;
+    }
+
+    const addToList = (handle) => {
+        list.push(products.find(product => product.handle === handle));
+        wantList = wantList.filter(item => item.handle !== handle);
+        rerenderLists();
+        setNewPrice();
+    }
+
+    const setNewPrice = () => {
+        totalPrice = 0;
+        list.forEach(item => {
+            totalPrice += parseFloat(item.price);
+        })
+        priceContainer.innerText = ` £ ${totalPrice.toFixed(2)}`;
+    }
+
+    const deleteFromList = (handle) => {
+        wantList.push(products.find(product => product.handle === handle));
+        list = list.filter(item => item.handle !== handle);
+        rerenderLists();
+        setNewPrice();
+    }
+
+    const addListItem = (handle, title, price, imageUrl, isDelete) => {
+        return `
+            <div class="subscription-page__item">
+                    <div class="subscription-page__img">
+                        <img loading="lazy"  src="${imageUrl}"   alt="${title}">
+                    </div>
+                    <div class="subscription-page__title-content">
+                        <div class="subscription-page__name">
+                            ${title}
+                        </div>
+                        ${ isDelete ?
+                            `<button onclick="deleteFromList('${handle}')" class="subscription-page__delete">
+                                {% render "icon-delete" %}<span>Delete</span>
+                            </button>` : ""
+                        }
+                    </div>
+                    <div class="subscription-page__cost">
+                        <span> £ ${(+price).toFixed(2)}</span>
+                    </div>
+                </div>
+                <hr>
+        `
+    }
+    const addList = () => {
+        listContainer.innerHTML = "";
+        const listHTML = list.map((item, i) => addListItem(item.handle, item.title, item.price, item.imageUrl, i != 0));
+        listContainer.innerHTML = listHTML.join("");
+    }
+    const addWantList = () => {
+        wantListContainer.innerHTML = "";
+        wantList.forEach(item => {
+            wantListContainer.appendChild(addWantListItemHTML(item.title, item.price, item.handle, item.description));
+        })
+    }
+    const rerenderLists = () => {
+        addList();
+        addWantList();
+        variantIDs.value = list.map(item => item.variantId + ",").join("").slice(0, -1);
+        wantList.length === 0 ? wantSection.style.display = "none" : wantSection.style.display = "block";
+    }
+
+    init();
+</script>
+
+{% schema %}
+{
+    "name": "Subscription page",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "item_background",
+            "label": "Section Item background"
+        },
+        {
+            "type": "header",
+            "content": "t:sections.all.padding.section_padding_heading"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "t:sections.all.padding.padding_top",
+            "default": 36
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "t:sections.all.padding.padding_bottom",
+            "default": 36
+        }
+    ]
+}
+{% endschema %}

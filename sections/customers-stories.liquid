@@ -1,0 +1,108 @@
+{{ 'section-customers-stories.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
+  <div class="customers-stories page-width section-{{ section.id }}-padding isolate">
+    <h2 class="page-title customers-stories__title">
+      {%- if section.settings.page.title != blank -%}
+        {{ section.settings.page.title | escape }}
+      {%- else -%}
+        {{ page.title }}
+      {%- endif -%}
+    </h2>
+    <div class="customers-stories__subtitle">
+      {{ section.settings.subtitle }}
+    </div>
+    <div class="rte customers-stories__list">
+      {%- for block in section.blocks -%}
+        {%- assign article = block.settings.article -%}
+        {%- if block.type == 'stories-block' -%}
+          <div class="customers-stories__stories-block">
+            <a href="{{ article.url }}" class="customers-stories__link">
+              <div class="customers-stories__image-wrapper">
+                <img loading="lazy" class="customers-stories__image"
+                 
+                  srcset="{%- if article.image.width >= 275 -%}{{ article.image | img_url: '275x' }} 275w,{%- endif -%}
+                          {%- if article.width >= 550 -%}{{ article.image | img_url: '550x' }} 550w,{%- endif -%}
+                          {%- if article.width >= 710 -%}{{ article.image | img_url: '710x' }} 710w,{%- endif -%}
+                          {%- if article.width >= 1420 -%}{{ article.image | img_url: '1420x' }} 1420w,{%- endif -%}
+                          {{ article.image | img_url: 'master' }} {{ article.image.width }}w"
+                  src="{{ article.image | img_url: '550x' }}"
+                  alt="{{ article.image.alt }}"
+                >
+              </div>
+              <div class="customers-stories__author"> {{ article.author }} </div>
+              <div class="customers-stories__caption"> {{ article.title }} </div>
+            </a>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.customers-stories.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "t:sections.customers-stories.settings.subtitle.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stories-block",
+      "name": "t:sections.customers-stories.blocks.stories-block.name",
+      "settings": [ 
+        {
+          "type": "article",
+          "id": "article",
+          "label": "t:sections.customers-stories.blocks.stories-block.settings.article.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.customers-stories.name"
+    }
+  ]
+}
+{% endschema %}

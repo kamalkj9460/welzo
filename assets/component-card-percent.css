@@ -1,0 +1,104 @@
+.card-percent__card {
+    position: relative;
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    padding: 5%;
+    z-index: 1;
+}
+.card-percent__background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.card-percent__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+.card-percent__percent {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 3%;
+}
+.card-percent__progress {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.card-percent__number {
+    position: relative;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 28px;
+    color: #253143;
+    z-index: 2;
+}
+.card-percent__title {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 26px;
+    letter-spacing: -0.355556px;
+    color: #12022F;
+    margin-bottom: 5%;
+}
+.card-percent__text {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: -0.4px;
+    color: #12022F;
+}
+.card-percent__progress svg {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    transform: rotate(-90deg);
+}
+.card-percent__progress svg circle {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: #E5007D;
+    stroke-width: 10;
+    stroke-linecap: round;
+    opacity: 0.5;
+}
+
+.card-percent__progress svg circle:last-of-type {
+    stroke-dasharray: 220px;
+    stroke-dashoffset: calc(220px - (220px * var(--percent)) / 100);
+    stroke: #E5007D;
+    opacity: 1;
+}
+
+@media screen and (max-width: 750px) {
+
+    .product1-cards__number {
+        font-size: 16px;
+        line-height: 28px;
+    }
+
+    .product1-cards__title {
+        font-size: 16px;
+        line-height: 26px;
+    }
+
+    .product1-cards__text {
+        font-size: 14px;
+        line-height: 24px;
+    }
+}

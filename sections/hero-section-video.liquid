@@ -1,0 +1,443 @@
+{{ 'collage.aio.min.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.aio.min.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.aio.min.css' | asset_url | stylesheet_tag }}
+{{ 'component-modal-video.aio.min.css' | asset_url | stylesheet_tag }}
+{{ 'section-hero.aio.min.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'component-deferred-media.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- style -%}
+  #Hero-{{ section.id }} {
+    background-image: url({{ section.settings.background_image | img_url: 'original'}});
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  #Hero-{{ section.id }} * {
+    color: {{ section.settings.body_text }};
+  }
+
+  @media screen and (max-width: 767px) {
+    #Hero-{{ section.id }} {
+      background-image: url({{ section.settings.background_image_mobile | img_url: 'original'}});
+    }
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: 24px;
+    padding-bottom: 50px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+{%- endstyle -%}
+
+<div id="Hero-{{ section.id }}" class="hero-section hero-section-video">
+  <div class="hero-section__content page-width section-{{ section.id }}-padding isolate">
+    <div class="hero-section__wrapper">
+      <div class="hero-section__box content-container content-container--full-width-mobile">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'heading' -%}
+              {% if block.settings.heading_tag == 'h1' %}
+                <h1 class="hero-section__heading {% if block.settings.heading_size == 'medium' %}h1{% else %}h0{% endif %} {% if block.settings.show_line == true %}hero-section__heading--line{% endif %}" {{ block.shopify_attributes }}>
+                  <span>{{ block.settings.heading | escape }}</span>
+                </h1>
+              {% else %}
+                <h2 class="hero-section__heading {% if block.settings.heading_size == 'medium' %}h1{% else %}h0{% endif %} {% if block.settings.show_line == true %}hero-section__heading--line{% endif %}" {{ block.shopify_attributes }}>
+                  <span>{{ block.settings.heading | escape }}</span>
+                </h2>
+              {% endif %}
+
+            {%- when 'text' -%}
+              <div class="hero-section__text {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.text | escape }}</span>
+              </div>
+            {%- when 'buttons' -%}
+              <div class="hero-section__buttons{% if block.settings.button_label_1 != blank and block.settings.button_label_2 != blank %} hero-section__buttons--multiple{% endif %}" {{ block.shopify_attributes }}>
+                {%- if block.settings.button_label_1 != blank -%}
+                  <a{% if block.settings.button_link_1 == blank %} role="link" aria-disabled="true"{% else %} href="{{ block.settings.button_link_1 }}"{% endif %} class="button{% if block.settings.button_style_secondary_1 %} button--secondary{% else %} button--primary{% endif %}">{{ block.settings.button_label_1 | escape }}</a>
+                {%- endif -%}
+                {%- if block.settings.button_label_2 != blank -%}
+                  <a{% if block.settings.button_link_2 == blank %} role="link" aria-disabled="true"{% else %} href="{{ block.settings.button_link_2 }}"{% endif %} class="button{% if block.settings.button_style_secondary_2 %} button--secondary{% else %} button--primary{% endif %}">{{ block.settings.button_label_2 | escape }}</a>
+                {%- endif -%}
+              </div>
+            {%- when 'advantage' -%}
+              <div class="hero-section__trustindex">
+                {%- render 'trustindex-small-black' %}
+              </div>
+              <div class="hero-section__advantage">
+                
+                <div class="hero-section__advantage-block">
+                  {%- render 'icon-stethoscope' %}
+                  <span class="hero-section__advantage-text">
+                    {{ block.settings.advantage_first }}
+                  </span>
+                </div>
+                <div class="hero-section__advantage-block">
+                  {%- render 'icon-check-circle' %}
+                  <span class="hero-section__advantage-text">
+                    {{ block.settings.advantage_second }}
+                  </span>
+                </div>
+              </div>
+              <h2 class="hero-section__heading {% if block.settings.heading_size == 'medium' %}h1{% else %}h0{% endif %}" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.heading | escape }}</span>
+              </h2>
+            {%- when 'richtext' -%}
+            {% if block.settings.contacts_html != blank %}
+              <div class="hero_contacts">
+                <div class="hero_contacts__inner">
+                  {{ block.settings.contacts_html }}
+                </div>
+              </div>
+            {% endif %}
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+      <div class="hero-section__box hero-section__box-image">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'video' -%}
+              <div class="video_wrap">
+                <div class="video_helper"></div>
+                <div class="video_inner">
+                  <noscript>
+                    <a href="{{ block.settings.video_url }}" class="collage-card__link{% if block.settings.image_padding %} collage-card-spacing{% endif %}">
+                      <div class="media media--transparent ratio"{% if block.settings.cover_image != blank %} style="--ratio-percent: {{ 1 | divided_by: block.settings.cover_image.aspect_ratio | times: 100 }}%"{% else %}
+                        style="--ratio-percent: 100%"{% endif %}>
+                        {%- if block.settings.cover_image != blank -%}
+                          <img loading="lazy"
+                                  srcset="{%- if block.settings.cover_image.width >= 550 -%}{{ block.settings.cover_image | img_url: '550x' }} 550w,{%- endif -%}
+                            {%- if block.settings.cover_image.width >= 720 -%}{{ block.settings.cover_image | img_url: '720x' }} 720w,{%- endif -%}
+                            {%- if block.settings.cover_image.width >= 990 -%}{{ block.settings.cover_image | img_url: '990x' }} 990w,{%- endif -%}
+                            {%- if block.settings.cover_image.width >= 1100 -%}{{ block.settings.cover_image | img_url: '1100x' }} 1100w,{%- endif -%}
+                            {%- if block.settings.cover_image.width >= 1500 -%}{{ block.settings.cover_image | img_url: '1500x' }} 1500w,{%- endif -%}
+                            {%- if block.settings.cover_image.width >= 2200 -%}{{ block.settings.cover_image | img_url: '2200x' }} 2200w,{%- endif -%}
+                            {%- if block.settings.cover_image.width >= 3000 -%}{{ block.settings.cover_image | img_url: '3000x' }} 3000w,{%- endif -%}
+                            {{ block.settings.cover_image | img_url: 'master' }} {{ block.settings.cover_image.width }}w"
+                                  src="{{ block.settings.cover_image | img_url: '1500x' }}"
+                                  sizes="(min-width: {{ settings.page_width }}px) {% if section.blocks.size == 1 %}calc({{ settings.page_width }}px - 100px){% else %}{{ settings.page_width | minus: 100 | times: 0.67 | round }}px{% endif %}, (min-width: 750px){% if section.blocks.size == 1 %} calc(100vw - 100px){% else %} 500px{% endif %}, calc(100vw - 30px)"
+                                  alt="{{ block.settings.description | escape }}"
+                                 
+                                  width="{{ block.settings.cover_image.width }}"
+                                  height="{{ block.settings.cover_image.height }}"
+                          >
+                        {%- endif -%}
+                      </div>
+                    </a>
+                  </noscript>
+                  <modal-opener class="no-js-hidden" data-modal="#PopupModal-{{ block.id }}">
+                    <div class="deferred-media">
+                      <button class="deferred-media__poster full-unstyled-link" type="button" aria-haspopup="dialog" data-media-id="{{ block.settings.video_url.id }}">
+                        <div class="media media--transparent ratio"{% if block.settings.cover_image != blank %} style="--ratio-percent: {{ 1 | divided_by: block.settings.cover_image.aspect_ratio | times: 100 }}%"{% else %} style="--ratio-percent: 100%"{% endif %}>
+                        <span class="deferred-media__poster-button motion-reduce">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="30" viewBox="0 0 26 30" fill="none">
+<path d="M25.5 14.134C26.1667 14.5189 26.1667 15.4811 25.5 15.866L1.5 29.7224C0.833329 30.1073 -1.42614e-06 29.6262 -1.39249e-06 28.8564L-1.81122e-07 1.14359C-1.47473e-07 0.373789 0.833334 -0.107333 1.5 0.277567L25.5 14.134Z" fill="white"/>
+</svg>
+                        </span>
+
+                          {%- if block.settings.cover_image != blank -%}
+                            <img loading="lazy"
+                                    srcset="{%- if block.settings.cover_image.width >= 550 -%}{{ block.settings.cover_image | img_url: '550x' }} 550w,{%- endif -%}
+                              {%- if block.settings.cover_image.width >= 720 -%}{{ block.settings.cover_image | img_url: '720x' }} 720w,{%- endif -%}
+                              {%- if block.settings.cover_image.width >= 990 -%}{{ block.settings.cover_image | img_url: '990x' }} 990w,{%- endif -%}
+                              {%- if block.settings.cover_image.width >= 1100 -%}{{ block.settings.cover_image | img_url: '1100x' }} 1100w,{%- endif -%}
+                              {%- if block.settings.cover_image.width >= 1500 -%}{{ block.settings.cover_image | img_url: '1500x' }} 1500w,{%- endif -%}
+                              {%- if block.settings.cover_image.width >= 2200 -%}{{ block.settings.cover_image | img_url: '2200x' }} 2200w,{%- endif -%}
+                              {%- if block.settings.cover_image.width >= 3000 -%}{{ block.settings.cover_image | img_url: '3000x' }} 3000w,{%- endif -%}
+                              {{ block.settings.cover_image | img_url: 'master' }} {{ block.settings.cover_image.width }}w"
+                                    src="{{ block.settings.cover_image | img_url: '1500x' }}"
+                                    sizes="(min-width: {{ settings.page_width }}px) {% if section.blocks.size == 1 %}calc({{ settings.page_width }}px - 100px){% else %}{{ settings.page_width | minus: 100 | times: 0.67 | round }}px{% endif %}, (min-width: 750px){% if section.blocks.size == 1 %} calc(100vw - 100px){% else %} 500px{% endif %}, calc(100vw - 30px)"
+                                    alt="{{ block.settings.description | escape }}"
+                                   
+                                    width="{{ block.settings.cover_image.width }}"
+                                    height="{{ block.settings.cover_image.height }}"
+                            >
+                          {%- endif -%}
+                        </div>
+                      </button>
+                    </div>
+                  </modal-opener>
+                  <modal-dialog id="PopupModal-{{ block.id }}" class="modal-video media-modal color-background-1">
+                    <div class="modal-video__content" role="dialog" aria-label="{{ block.settings.description | escape }}" aria-modal="true" tabindex="-1">
+                      <button id="ModalClose-{{ block.id }}" type="button" class="modal-video__toggle" aria-label="{{ 'accessibility.close' | t }}">
+                        {% comment %}{% render 'icon-close' %}{% endcomment %}
+                      </button>
+                      <div class="modal-video__content-info">
+                        <deferred-media class="modal-video__video template-popup">
+                          <template>
+                            {%- if block.settings.video_url.type == 'youtube' -%}
+                              <iframe src="https://www.youtube.com/embed/{{ block.settings.video_url.id }}?enablejsapi=1" class="js-youtube" allow="autoplay; encrypted-media" allowfullscreen title="{{ block.settings.description | escape }}" ></iframe>
+                            {%- else -%}
+                              <iframe src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}" class="js-vimeo" allow="autoplay; encrypted-media" allowfullscreen title="{{ block.settings.description | escape }}"></iframe>
+                            {%- endif -%}
+                          </template>
+                        </deferred-media>
+                      </div>
+                    </div>
+                  </modal-dialog>
+                </div>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero section video",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "t:sections.hero-section.settings.background_image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "t:sections.hero-section.settings.background_image_mobile.label"
+    },
+    {
+      "type": "color",
+      "id": "body_text",
+      "label": "Section text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 150
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.hero-section.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Image banner",
+          "label": "t:sections.hero-section.blocks.heading.settings.heading.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "options": [
+            {
+              "value": "h1",
+              "label": "t:sections.hero-section.blocks.heading.settings.heading_tag.options__1.label"
+            },
+            {
+              "value": "h2",
+              "label": "t:sections.hero-section.blocks.heading.settings.heading_tag.options__2.label"
+            }
+          ],
+          "default": "h1",
+          "label": "t:sections.hero-section.blocks.heading.settings.heading_tag.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "medium",
+              "label": "t:sections.hero-section.blocks.heading.settings.heading_size.options__1.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.hero-section.blocks.heading.settings.heading_size.options__2.label"
+            }
+          ],
+          "default": "medium",
+          "label": "t:sections.hero-section.blocks.heading.settings.heading_size.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_line",
+          "label": "t:sections.hero-section.blocks.heading.settings.show_line.label",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "name": "Hero Contacts",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "html",
+          "id": "contacts_html",
+          "label": "HTML data contacts"
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "t:sections.collage.blocks.video.name",
+      "limit": 1,
+      "settings": [
+          {
+            "type": "image_picker",
+            "id": "cover_image",
+            "label": "Cover Image Video"
+          },
+          {
+            "type": "video_url",
+            "id": "video_url",
+            "accept": [
+              "youtube",
+              "vimeo"
+            ],
+            "default": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc",
+            "label": "t:sections.collage.blocks.video.settings.video_url.label",
+            "placeholder": "t:sections.collage.blocks.video.settings.video_url.placeholder",
+            "info": "t:sections.collage.blocks.video.settings.video_url.info"
+          },
+          {
+            "type": "text",
+            "id": "description",
+            "default": "Describe the video",
+            "label": "t:sections.collage.blocks.video.settings.description.label",
+            "info": "t:sections.collage.blocks.video.settings.description.info"
+          }
+      ]
+    },
+    {
+      "type": "advantage",
+      "name": "t:sections.hero-section.blocks.advantage.name",
+      "limit": 1,
+      "settings": [
+      {
+        "type": "text",
+        "id": "advantage_first",
+        "label": "t:sections.hero-section.blocks.advantage.first.label",
+        "default": "Serviced by GMC registered NHS doctors and labs"
+      },
+      {
+        "type": "text",
+        "id": "advantage_second",
+        "label": "t:sections.hero-section.blocks.advantage.second.label",
+        "default": "97% satisfaction from over 500,000 patients nationwide"
+      }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.hero-section.blocks.text.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Give customers details about the banner image(s) or content on the template.",
+          "label": "t:sections.hero-section.blocks.text.settings.text.label"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "body",
+              "label": "t:sections.hero-section.blocks.text.settings.text_style.options__1.label"
+            },
+            {
+              "value": "subtitle",
+              "label": "t:sections.hero-section.blocks.text.settings.text_style.options__2.label"
+            },
+            {
+              "value": "caption-with-letter-spacing",
+              "label": "t:sections.hero-section.blocks.text.settings.text_style.options__3.label"
+            }
+          ],
+          "default": "body",
+          "label": "t:sections.hero-section.blocks.text.settings.text_style.label"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "t:sections.hero-section.blocks.buttons.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Button label",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_label_1.label",
+          "info": "t:sections.hero-section.blocks.buttons.settings.button_label_1.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_link_1.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_1",
+          "default": false,
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_style_secondary_1.label"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "default": "Button label",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_label_2.label",
+          "info": "t:sections.hero-section.blocks.buttons.settings.button_label_2.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_link_2.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_2",
+          "default": false,
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_style_secondary_2.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero section video",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

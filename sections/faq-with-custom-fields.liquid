@@ -1,0 +1,157 @@
+{{ 'faq.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="faq color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
+  <div class="page-width section-{{ section.id }}-padding isolate">
+    {% unless section.settings.title == blank %}
+      <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin{% if section.settings.title == blank %} title-wrapper-with-link--no-heading{% endif %}">
+        <div class="faq__info faq-info">
+          <div class="faq-info__button">
+            {% render 'icon-info' %}
+          </div>
+        </div>
+        <h3 class="faq__title">{{ section.settings.title | escape }}</h3>
+      </div>
+    {% endunless %}
+    <div class="faq__faq-accordion faq-accordion">
+      <div id="left-col-{{ section.id }}" class="faq__left-col">
+      </div>
+      <div id="right-col-{{ section.id }}" class="faq__right-col">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const list = [];
+  const leftContainer = document.getElementById('left-col-{{ section.id }}');
+  const rightContainer = document.getElementById('right-col-{{ section.id }}');
+  // const itemList = document.createElement(leftContainer.children);
+  leftContainer.innerHTML = '';
+  {% if product.metafields.accentuate.question_title %}
+    {%- for title in product.metafields.accentuate.question_title -%}
+      list.push({title: `{{ title }}`, text: `{{ product.metafields.accentuate.answer_to_the_question[forloop.index0] }}`, });
+    {% endfor %}
+  {% endif %}
+
+  {% if section.blocks %}
+    {%- for block in section.blocks -%}
+      list.push({title: `{{ block.settings.title }}`, text: `{{ block.settings.text }}`, });
+    {% endfor %}
+  {% endif %}
+
+  const addItem = (title, text) => {
+    return `
+      <div class="accordion1__item">
+        <div class="accordion1__title">
+            <div class="accordion1__arrow">
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.292893 0.292893C0.653377 -0.0675907 1.22061 -0.0953203 1.6129 0.209705L1.70711 0.292893L5 3.585L8.29289 0.292893C8.65338 -0.0675907 9.22061 -0.0953203 9.6129 0.209705L9.70711 0.292893C10.0676 0.653377 10.0953 1.22061 9.7903 1.6129L9.70711 1.70711L5.70711 5.70711C5.34662 6.06759 4.77939 6.09532 4.3871 5.7903L4.29289 5.70711L0.292893 1.70711C-0.0976311 1.31658 -0.0976311 0.683418 0.292893 0.292893Z" fill="#E5007D"/>
+                </svg>
+            </div>
+            <span class="accordion1__title-text accordion1__title-text" >${title}</span>
+        </div>
+        <div class="accordion1__content accordion1__content-text">
+            <div class="accordion1__wrapper">
+                <div class="accordion1__text" >${text}</div>
+            </div>
+        </div>
+    </div>
+    `
+  }
+
+  list.forEach(item => {
+
+  })
+  const listLeftHTML = list.map((item, i) => {
+    if (i % 2 === 0) return addItem(item.title, item.text)
+  });
+  const listRightHTML = list.map((item, i) => {
+    if (!(i % 2 === 0)) return addItem(item.title, item.text)
+  });
+  leftContainer.innerHTML = listLeftHTML.join("");
+  rightContainer.innerHTML = listRightHTML.join("");
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.faq.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Frequently Asked Questions",
+      "label": "Title"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "t:sections.faq.blocks.column.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "How does your subscription work?",
+          "label": "t:sections.faq.blocks.column.settings.title.label"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Free thyroxine also referred to as T4 . It works to speed up the metabolism and is one of the two hormones produced by the thyroid gland. This test will only look to identify free T4 which means the the thyroxine is unbound in the body. Only when excessive T4 is unbound does it symbolise an issue.</p>",
+          "label": "t:sections.faq.blocks.column.settings.text.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ with custom fields",
+      "blocks": [
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

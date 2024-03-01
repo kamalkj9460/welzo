@@ -1,0 +1,209 @@
+{{ 'health-hub-hero.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+
+  {%- assign height = section.settings.padding_top | plus: section.settings.padding_bottom -%}
+
+  {% if section.settings.background_image != blank and section.settings.show_background %}
+  #Health-hub-hero-{{ section.id }} {
+    background-image: url({{ section.settings.background_image | img_url: 'original'}});
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  #Health-hub-hero-{{ section.id }} * {
+    color: {{ section.settings.text_color }};
+  }
+
+  @media screen and (max-width: 767px) {
+    #Health-hub-hero-{{ section.id }} {
+      background-image: url({{ section.settings.background_image_mobile | img_url: 'original'}});
+    }
+  }
+  {% endif %}
+
+  {% if section.settings.show_background == false %}
+    #Health-hub-hero-{{ section.id }} {
+    background-color: #213b94;
+    }
+
+    #Health-hub-hero-{{ section.id }} * {
+    color: #FFFFFF;
+    }
+  {% endif %}
+
+  #Health-hub-hero-{{ section.id }} .hub-search__search * {
+  color: #12022F;
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+{%- endstyle -%}
+
+<div id="Health-hub-hero-{{ section.id }}">
+  <div class="health-hub-hero__content page-width section-{{ section.id }}-padding isolate">
+    <div class="health-hub-hero__wrapper">
+      <div class="health-hub-hero__block">
+        {%- for block in section.blocks -%}
+        {%- case block.type -%}
+        {%- when 'heading' -%}
+          <div class="health-hub-hero__heading">
+            <h1 class="hero-title"> {{ block.settings.heading }} </h1>
+          </div>
+        {%- when 'text' -%}
+          <div class="health-hub-hero__text" {{ block.shopify_attributes }}>
+            <span>{{ block.settings.text }}</span>
+          </div>
+        {%- endcase -%}
+        {%- endfor -%}
+      </div>
+      <div class="health-hub-hero__block">
+        {%- for block in section.blocks -%}
+        {%- case block.type -%}
+        {%- when 'search' -%}
+          <div class="health-hub-hero__search hub-search">
+            {%- if block.settings.title != blank -%}
+            <div class="hub-search__title">{{ block.settings.title }}</div>
+            {%- endif -%}
+            <div class="hub-search__search">
+                <form action="{{ routes.search_url }}" method="get" role="search" class="search">
+                  <div class="field hub-search__field">
+                    <input class="hub-search__input field__input" type="search" name="q" value="{{ search.terms | escape }}"
+                      placeholder="{{ block.settings.placeholder }}">
+  
+                    <input type="hidden" name="type" value="article" />
+                    <input type="hidden" name="options[prefix]" value="last" />
+                    <button type="submit" class="search__button field__button"
+                      aria-label="{{ 'general.search.search' | t }}">
+                    </button>
+  
+                    <div class="hub-search__icon-wrapper">
+                      <img loading="lazy" class="hub-search__icon" src="{{ block.settings.icon | img_url: 'master' }}"
+                        alt="">
+                    </div>
+                  </div>
+                </form>
+            </div>
+          </div>
+        {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.health-hub-hero.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "t:sections.health-hub-hero.settings.background_image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "t:sections.health-hub-hero.settings.background_image_mobile.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background",
+      "label": "Show background image",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.health-hub-hero.settings.text_color.label",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 200
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.health-hub-hero.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Health hub",
+          "label": "t:sections.health-hub-hero.blocks.heading.settings.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.health-hub-hero.blocks.text.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.health-hub-hero.blocks.text.settings.label"
+        }
+      ]
+    },
+    {
+      "type": "search",
+      "name": "t:sections.health-hub-hero.blocks.search.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.health-hub-hero.blocks.search.settings.title.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "t:sections.health-hub-hero.blocks.search.settings.icon.label"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "t:sections.health-hub-hero.blocks.search.settings.placeholder.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.health-hub-hero.name"
+    }
+  ]
+}
+{% endschema %}

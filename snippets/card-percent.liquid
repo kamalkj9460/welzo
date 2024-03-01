@@ -1,0 +1,39 @@
+{% comment %}
+    Renders product images
+
+    Accepts:
+    - percents: {Integer} percents
+    - image: {Image} Backgronud image
+    - title: {Text} title
+    - text: {Text} text
+
+    Usage:
+    {% render 'card-percent', image_url: image_url, percents: percents, title: title, text: text %}
+{% endcomment %}
+
+{{ 'component-card-percent.aio.min.css' | asset_url | stylesheet_tag }}
+
+<div class="card-percent__card">
+    <div class="card-percent__background">
+        {% comment %}{% assign img = product.metafields.accentuate.why_take_card2_background | first %}{% endcomment %}
+        <img loading="lazy" src="{{ image_url }}" />
+    </div>
+    <div class="card-percent__percent">
+        <div class="card-percent__progress">
+            <svg>
+                <circle cx="40" cy="40" r="35"></circle>
+                <circle cx="40" cy="40" r="35" style="--percent: {{ percents }}"></circle>
+            </svg>
+        </div>
+        <div class="card-percent__number">
+            {{ percents }}%
+        </div>
+
+    </div>
+    <div class="card-percent__title">
+        {{ title }}
+    </div>
+    <div class="card-percent__text">
+        {{ text }}
+    </div>
+</div>

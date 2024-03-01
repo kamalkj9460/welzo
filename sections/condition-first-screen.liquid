@@ -1,0 +1,169 @@
+{{ 'condition-first-screen.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="condition-first-screen color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
+  {% if section.settings.show_background %}
+    <div class="condition-first-screen__background-block">
+      <img loading="lazy"
+        class="condition-first-screen__image-background"
+       
+        srcset="{%- if section.settings.image_background.width >= 275 -%}{{ section.settings.image_background | img_url: '275x' }} 275w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 550 -%}{{ section.settings.image_background | img_url: '550x' }} 550w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 710 -%}{{ section.settings.image_background | img_url: '710x' }} 710w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 1420 -%}{{ section.settings.image_background | img_url: '1420x' }} 1420w,{%- endif -%}
+        {{ section.settings.image_background | img_url: 'master' }} {{ section.settings.image_background.width }}w"
+        src="{{ section.settings.image_background | img_url: '550x' }}"
+        alt="{{ section.settings.title }}"
+      >
+    </div>
+  {% endif %}
+  <div class="page-width section-{{ section.id }}-padding isolate">
+    <div class="condition-first-screen__wrapper{% unless section.settings.show_background %} without-background{% endunless %}">
+      <div class="condition-first-screen__content">
+        <h1 class="condition-first-screen__title">{{ section.settings.title | escape }}</h1>
+        <div class="condition-first-screen__subtitle">
+          {{ section.settings.subtitle }}
+        </div>
+        {% if section.settings.button_link %}
+            <a href="{{ section.settings.button_link }}" class="condition-first-screen__button">
+              <span>{{ section.settings.button_label }}</span>
+            </a>
+        {% endif %}
+        <div class="condition-first-screen__highlights condition-highlights">
+          <ul class="condition-highlights__items">
+            {%- for block in section.blocks -%}
+              {% if block.type == "highlight" %}
+                <li class="condition-highlights__item">
+                  <div class="condition-highlights__image">
+                    <img loading="lazy" src="{{ block.settings.image | img_url: 'master' }}"  alt="{{ block.settings.title }}">
+                  </div>
+                  <div class="condition-highlights__title">{{ block.settings.title }}</div>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="condition-first-screen__conditions condition-conditions">
+        {% render 'image-with-back', image: section.settings.image_photo %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Condition first screen",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_background",
+      "label": "Choose background image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background",
+      "label": "Show background image",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image_photo",
+      "label": "Choose main image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Hair loss",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Start online consultation",
+      "label": "Button lable"
+    },
+    {
+      "type": "text",
+      "id": "button_link",
+      "default": "https://consultation-page.com",
+      "label": "Button link"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "default": "<p>Men’s bodies go through major changes throughout their lives. Each stage requires new types of care and consideration.</p>",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "highlight",
+      "name": "Highlight",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Choose image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Results in 3-6 months",
+          "label": "Title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Condition first screen",
+      "blocks": [
+        {
+          "type": "highlight"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

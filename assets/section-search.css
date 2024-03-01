@@ -1,0 +1,143 @@
+.search-section {
+  position: relative;
+  top: -72px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.11);
+  border-radius: 16px;
+  z-index: 2 !important;  
+}
+
+.search-section__container {
+  width: 100%;
+  padding: 0 20px;
+}
+
+.search-section__search {
+  margin-top: 19px;
+}
+
+.search-section__title {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 26px;
+  color: #12022F;
+}
+
+.search-section__field {
+  position: relative;
+}
+
+.search-section__input {
+  box-shadow: unset;
+  font-size: 18px;
+}
+
+.search-section__icon-wrapper {
+  position: absolute;
+  left: 20px;
+  width: 24px;
+  height: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.search-section__icon {
+  width: 100%;
+  height: auto;
+}
+
+.search-section__input {
+  height: 56px;
+  width: 100%;
+  background: #E7E5EA4D;
+  border-radius: 28px;
+  border: none;
+  padding: 15px 10px 15px 65px;
+  transition: .4s all;
+}
+
+.search-section .search-section__input:focus {
+  padding: 15px 10px 15px 65px;
+  border: 2px solid #d32f7c;
+}
+
+.search-section__input::placeholder {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: -0.36px;
+  color: #12022F;
+  mix-blend-mode: normal;
+  opacity: 0.5;
+}
+
+.search-section__caption {
+  margin-top: 34px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #857D94;
+}
+
+.search-section__list {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.search-section__item {
+  padding: 5px 10px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 22px;
+  color: #12022F;
+  text-decoration: none;
+  background: #FEF2F8;
+  border-radius: 8px;
+  transition: .4s all;
+  letter-spacing: -0.3px;
+}
+
+@media (hover: hover) {
+
+  .search-section__item:hover {
+    background-color: #FFE3F1;
+    text-decoration: underline;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  
+  .search-section {
+    margin: 0 24px;
+  }
+}
+
+@media screen and (max-width: 990px) {
+  
+  .search-section {
+    position: unset;
+  }
+}
+
+@media screen and (max-width: 767px) {
+
+  .search-section__input {
+    font-size: 15px;
+  }
+
+  .search-section__title {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}
+
+@media screen and (max-width: 475px) {
+  .search-section__input::placeholder {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

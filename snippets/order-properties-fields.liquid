@@ -1,0 +1,209 @@
+<div class="field">
+  <div class="field__icon">
+    {% render "icon-user" %}
+  </div>
+  <input 
+    type="text" 
+    required 
+    class="customer__input" 
+    name="properties[First name]" 
+    id="Product-FirstName" 
+    {% comment %}value="Some"{% endcomment %} 
+    {% if customer %}value="{{ customer.first_name }}" {% endif %}
+    autocomplete="given-name" 
+    placeholder="{{ 'products.product.first_name' | t }}">
+  <label for="Product-FirstName">
+    {{ 'products.product.first_name' | t }}
+  </label>
+</div>
+
+<div class="field">
+  <div class="field__icon">
+    {% render "icon-user" %}
+  </div>
+  <input 
+    type="text" 
+    required class="customer__input" 
+    name="properties[Last name]" 
+    id="Product-LastName" 
+    {% comment %}value="Name"{% endcomment %} 
+    {% if customer %}value="{{ customer.last_name }}" {% endif %}
+    autocomplete="family-name" 
+    placeholder="{{ 'products.product.last_name' | t }}">
+  <label for="Product-LastName">
+    {{ 'products.product.last_name' | t }}
+  </label>
+</div>
+
+<div class="field">
+  <div class="field__icon">
+    {% render "icon-user" %}
+  </div>
+  <input 
+    type="text" 
+    required 
+    class="customer__input customer__input--birth" 
+    name="properties[Date of birth]" 
+    id="ProductDateBirth" 
+    autocomplete="off" 
+    placeholder="dd/mm/yyyy"
+    maxlength="10">
+  <label for="ProductDateBirth">
+    {{ 'products.product.date_birth' | t }}
+  </label>
+</div>
+
+<div class="customer-gender">
+  <div class="customer-gender__label">Gender</div>
+
+  <select id="Product-Gender" required class="customer-gender__select" name="properties[Gender]">
+    <option value="" selected disabled hidden>...</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+  </select>
+</div>
+
+<div class="error-message-fields">Fill in all the fields</div>
+<div class="error-message-fields error-message-date">You must be at least 18 years old</div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    const inputDate = document.querySelector('#ProductDateBirth');
+    const inputFirstName = document.querySelector('#Product-FirstName');
+    const inputLastName = document.querySelector('#Product-LastName');
+    const inputGender = document.querySelector('#Product-Gender');
+    const inputGenderLabel = document.querySelector('.customer-gender__label');
+    const buttonModalSend = document.querySelector('.modal-fields__button');
+    const modalFieldsContent = document.querySelector('.modal-fields__content');
+    const modalFieldsWrap = document.querySelector('.modal-fields__wrap');
+    const errorMessageDate = document.querySelector('.error-message-date');
+    const errorMessageFields = document.querySelector('.error-message-fields');
+
+    const date1 = new Date(inputDate.value).getFullYear();
+    const date2 = new Date().getFullYear();
+    const currentAge = date2 - date1;
+
+    let isInputFirstName = !!inputFirstName.value;
+    let isInputLastName = !!inputLastName.value;
+    let isInputDate = !!inputDate.value;
+    let isInputGender = !!inputGender.value;
+    let isClick = false;
+    let isDateValid = false;
+
+    const onButtonDisabled = () => {
+      if (isInputFirstName && isInputLastName && isInputGender && isDateValid) {
+        buttonModalSend.disabled = false;
+      } else {
+        buttonModalSend.disabled = true;
+      };
+    };
+
+    const onErrorBDay = () => {
+      if(isDateValid) {
+        inputDate.style.border = 'none';
+        //errorMessageDate.style.display = 'none';
+      } else {
+        inputDate.style.border = '2px solid #ff0000';
+        //errorMessageDate.style.display = 'block';
+      }
+    }
+
+    const onErrorMessage = () => {
+      if (isInputFirstName && isInputLastName && isInputDate && isInputGender) {
+        errorMessageFields.style.display = 'none';
+      } else {
+        errorMessageFields.style.display = 'block';
+      };
+
+      onErrorBDay();
+
+      if (!isInputFirstName || !isInputLastName || !isInputDate || !isInputGender) {
+        errorMessageDate.style.display = 'none';
+      };
+
+      if (!isInputFirstName) {
+        inputFirstName.style.border = '2px solid #ff0000';
+      } else {
+        inputFirstName.style.border = 'none';
+      }
+      
+      if (!isInputLastName) {
+        inputLastName.style.border = '2px solid #ff0000';
+      } else {
+        inputLastName.style.border = 'none';
+      }
+
+      if (!isInputGender) {
+        inputGenderLabel.style.color = '#ff0000';
+      } else {
+        inputGenderLabel.style.color = '#12022F';
+      }
+    };
+
+    buttonModalSend.addEventListener('click', () => {
+      if (!isInputFirstName || !isInputLastName || !isDateValid || !isInputGender) {
+        modalFields.setAttribute('open', 'open');
+      }
+      isClick = true;
+      onButtonDisabled();
+      onErrorMessage();
+    });
+
+    inputDate.addEventListener('input', (e) => {
+      if(e.target.value.length === 10) {
+        const [d, m, y] = e.target.value.split('/');
+        const age = (new Date()).getFullYear() - (new Date(`${m}/${d}/${y}`)).getFullYear();
+        isDateValid = e.target.value.length === 10;
+        //&& 18 <= age && age < 120;
+      } else {
+        isDateValid = false;
+      }
+
+      isInputDate = !!e.target.value;
+
+      if (isClick) {
+        onErrorMessage();
+      };
+      onErrorBDay();
+      onButtonDisabled();
+    });
+
+    inputDate.addEventListener('blur', (e) => {
+      if (isClick) {
+        onErrorMessage();
+      };
+      onErrorBDay();
+      onButtonDisabled();
+    });
+    
+    inputFirstName.addEventListener('input', (e) => {
+      isInputFirstName = !!e.target.value;
+
+      if (isClick) {
+        onButtonDisabled();
+        onErrorMessage();
+      };
+    });
+
+    inputLastName.addEventListener('input', (e) => {
+      isInputLastName = !!e.target.value;
+
+      if (isClick) {
+        onButtonDisabled();
+        onErrorMessage();
+      };
+    });
+
+    inputGender.addEventListener('input', (e) => {
+      isInputGender = !!e.target.value;
+      onButtonDisabled();
+      onErrorMessage();
+    });
+
+    new Cleave('#ProductDateBirth', {
+      date: true,
+      delimiter: '/',
+      datePattern: ['d', 'm', 'Y']
+    });
+  });
+</script>

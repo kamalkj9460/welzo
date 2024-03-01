@@ -1,0 +1,255 @@
+<link rel="stylesheet" href="{{ 'section-subscription-page.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+{{ 'customer.aio.min.css' | asset_url | stylesheet_tag }}
+{{ 'modal-pers.aio.min.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'subscription-form.aio.min.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+    .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+        padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+        .section-{{ section.id }}-padding {
+            padding-top: {{ section.settings.padding_top }}px;
+            padding-bottom: {{ section.settings.padding_bottom }}px;
+        }
+    }
+{%- endstyle -%}
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign pageUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |
+        replace:'\/','/' |
+        replace:'%20',' ' |
+        replace:'\u0026','&'
+-%}
+{%- assign split1 = pageUrl | split: "?" -%}
+{%- assign params = split1[1] | split: "&" -%}
+{% for param in params %}
+    {% assign splitted_param = param | split: "=" %}
+    {% if splitted_param[0] == "handles" %}
+        {% assign handles = splitted_param[1] | split: ","  %}
+        {% comment %}if you work local you need to uncoment this line{% endcomment %}
+        {% comment %}{% assign handles = splitted_param[1] | split: "%2C"  %}{% endcomment %}
+    {% endif %}
+{% endfor %}
+{% assign product = all_products[handles[0]] %}
+{% assign total_price = 0 %}
+{% assign variants_ids = "" %}
+{% for handle in handles %}
+    {% assign tmp_product = all_products[handle] %}
+    {% assign tmp_selling_plan_group = tmp_product.selling_plan_groups | first %}
+
+    {% if tmp_selling_plan_group %}
+
+        {% assign tmp_price = tmp_product.selected_or_first_available_variant.price | money_without_currency %}
+        {% assign total_price = total_price | plus: tmp_price %}
+
+        {% if forloop.last %}    {% assign vid = tmp_product.selected_or_first_available_variant.id | append: "" %}
+        {% else %}{% assign vid = tmp_product.selected_or_first_available_variant.id | append: "," %}{% endif %}
+        {% assign variants_ids = variants_ids | append: vid %}
+
+    {% endif %}
+
+{% endfor %}
+{% assign list_highlights = product.metafields.accentuate.highlights_subscription_list | split: '|' %}
+
+{% assign selling_plan_group = product.selling_plan_groups | first %}
+
+{% if selling_plan_group %}
+<div class="subscription-page page-width section-{{ section.id }}-padding">
+    <div class="subscription-page__wrapper">
+
+        <div class="subscription-page__content">
+            <div class="subscription-page__title">
+                Your personalised subscription
+            </div>
+            <div class="subscription-page__subtitle">
+                Based on your goals, lifestyle, diet and medical conditions - supported by clinical evidence.
+            </div>
+
+            <div class="subscription-page__highlights subscription-page__mobile">
+                {% if product.metafields.accentuate.highlights_subscription_list %}
+                    {% render 'highlights', list: list_highlights %}
+                {% endif %}
+            </div>
+
+            {% assign selling_plan_group = product.selling_plan_groups | first %}
+            {% assign selling_plans = selling_plan_group.selling_plans | first %}
+            {% assign price_adjustments = selling_plans.price_adjustments | first %}
+            {% assign value_type = price_adjustments.value_type %}
+            {% assign value = price_adjustments.value %}
+
+            {% assign tmp_value = value | times: 1.0 %}
+            {% assign value_percentage = tmp_value | divided_by: 100 %}
+            {% assign discount_price = total_price | times: value_percentage %}
+
+            <hr class="subscription-page__mobile">
+            <div class="subscription-page__summary">
+                <div class="subscription-page__total">
+                    <div class="subscription-page__total-title">Total:</div>
+                    <div class="subscription-page__cost">
+                        <span> £ {{ total_price | minus: discount_price }}</span>
+                    </div>
+                </div>
+                <div class="subscription-page__total">
+                    <div class="subscription-page__total-title">Delivery every</div>
+                    <div class="subscription-page__total-select">
+                        <select class="subscription-page__select-plan" id="selling_plan">
+                            {% for plan in selling_plan_group.selling_plans %}
+                                {% if forloop.first %}
+                                    <option value="{{ plan.id }}" selected>{{ plan.name | replace: "Delivery every ", "" }}</option>
+                                {% else %}
+                                    <option value="{{ plan.id }}">{{ plan.name | replace: "Delivery every ", "" }}</option>
+                                {% endif %}
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <div class="subscription-page__highlights subscription-page__desktop">
+                {% if product.metafields.accentuate.highlights_subscription_list %}
+                    {% render 'highlights', list: list_highlights %}
+                {% endif %}
+            </div>
+
+            <subscription-form id="button-add-to-cart" class="product-form">
+                <div class="product-form__error-message-wrapper" role="alert" hidden>
+                    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-error" viewBox="0 0 13 13">
+                        <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
+                        <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
+                        <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
+                        <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7"/>
+                    </svg>
+                    <span class="product-form__error-message"></span>
+                </div>
+                <div class="customer subscription-page__buttons">
+                    {%- form 'product', product, id: product_form_id, class: 'form', data-type: 'add-to-cart-form' -%}
+                        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled>
+                        <input id="variants_ids" type="hidden" name="variants_ids" value="{{ variants_ids }}" disabled>
+
+                        {% render 'order-properties-fields' %}
+
+                        <div class="product-form__buttons">
+                            <button
+                                    type="submit"
+                                    name="add"
+                                    class="subscription-page__button"
+                                    {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+                                <span>
+                                  {%- if product.selected_or_first_available_variant.available -%}
+                                      Go to checkout{%- else -%}Sold out{%- endif -%}
+                                </span>
+                                <div class="loading-overlay__spinner hidden">
+                                    <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                                        <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                                    </svg>
+                                </div>
+                            </button>
+                        </div>
+                    {% endform %}
+                </div>
+            </subscription-form>
+
+        </div>
+        <div class="subscription-page__gallery">
+            {% render 'pdp-slider', product: product, show_thumb: true, show_logos: false %}
+        </div>
+
+    </div>
+
+    <div class="subscription-page__included-section included-section">
+        <div class="included-section__title">Tests included in your subscription</div>
+        <div class="included-section__products">
+            <div class="included-section__wrapper">
+                {% for handle in handles %}
+                    {% assign product = all_products[handle] %}
+                    {% assign price = product.selected_or_first_available_variant.price | money %}
+                    {% assign list_relevant = product.metafields.accentuate.relevant_subscription | split: '|' %}
+                    {% assign selling_plan_group = product.selling_plan_groups | first %}
+
+                    {% if selling_plan_group %}
+                        <div class="included-section__item">
+                        <div class="included-section__background">
+                            <img loading="lazy" src="{{ section.settings.item_background | img_url }}" />
+                        </div>
+                        <div class="included-section__content">
+                            <div class="included-section__header">
+                                <div class="included-section__text">{{ product.title }}</div>
+                                <div class="included-section__price">{{ price }}</div>
+                            </div>
+                            <div class="included-section__review">
+                                {% render 'trustindex-small-black' %}
+                            </div>
+                            <div class="included-section__description">{{ product.description }}</div>
+                            <div class="included-section__relevant included-relevant">
+                                {% if product.metafields.accentuate.relevant_subscription %}
+                                    <div class="included-relevant__text">Why it’s relevant for you</div>
+                                    <div class="included-relevant__items">
+                                        {% for item in list_relevant %}
+                                            <div class="included-relevant__item">{{ item }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <modal-opener data-modal="#PopupModal-{{product.id}}" class="included-section__opener">
+                              <button class="included-section__button">Learn more</button>
+                            </modal-opener>
+                        </div>
+                        {% render 'modal-pers', product: product %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% else %}
+    You must add a subscription plan!
+{% endif %}
+
+<script>
+</script>
+
+{% schema %}
+{
+    "name": "Pers Subscription",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "item_background",
+            "label": "Section Item background"
+        },
+        {
+            "type": "header",
+            "content": "t:sections.all.padding.section_padding_heading"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "t:sections.all.padding.padding_top",
+            "default": 36
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "t:sections.all.padding.padding_bottom",
+            "default": 36
+        }
+    ]
+}
+{% endschema %}

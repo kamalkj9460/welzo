@@ -1,0 +1,100 @@
+{{ 'all-categories-list.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+{%- endstyle -%}
+
+<div id="All-categories-list-{{ section.id }}">
+  <div class="all-categories-list__content page-width section-{{ section.id }}-padding isolate">
+    <div class="all-categories-list__heading">
+      <h1 class="main-title"> {{ section.settings.caption }} </h1>
+    </div>
+    <div class="all-categories-list__list">
+      {%- for block in section.blocks -%}
+        {% render 'card-category', image: block.settings.image, link: block.settings.link, caption: block.settings.caption %}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.all-categories-list.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "caption",
+      "default": "All categories",
+      "label": "t:sections.all-categories-list.settings.caption.label"
+    },
+    {
+      "type": "collection_list",
+      "id": "all-categories",
+      "label": "t:sections.all-categories-list.settings.all-categories.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_block",
+      "name": "t:sections.all-categories-list.settings.blocks.label",
+      "settings": [ 
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "t:sections.all-categories-list.settings.blocks.settings.caption.label",
+          "default": "Men’s Health"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.all-categories-list.settings.blocks.settings.link.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.all-categories-list.settings.blocks.settings.image.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.all-categories-list.name"
+    }
+  ]
+}
+{% endschema %}

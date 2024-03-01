@@ -1,0 +1,12 @@
+.all-categories-hero__title,
+.all-categories-hero__text {
+  max-width: 440px;
+  width: 100%;
+}
+
+.all-categories-hero__text {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: -0.4px;
+}

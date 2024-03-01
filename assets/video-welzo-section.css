@@ -1,0 +1,76 @@
+.video-welzo {
+  max-width: 50%;
+  margin: 0 auto;
+}
+.video-welzo__title {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 46px;
+  text-align: center;
+  letter-spacing: -0.8px;
+  color: #12022F;
+}
+.video-welzo__text {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  text-align: center;
+  letter-spacing: -0.4px;
+  color: #12022F;
+  margin: 2% 0 8% 0;
+}
+
+.video-welzo__container {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.video-welzo__media {
+  position: relative;
+  padding-bottom: 56.25%;
+}
+
+.video-welzo__media.deferred-media {
+  box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius) rgba(var(--color-shadow), var(--media-shadow-opacity));
+}
+
+.video-welzo__media.deferred-media:after {
+  content: none;
+}
+
+.video-welzo__poster.deferred-media__poster:focus {
+  outline-offset: 0.3rem;
+}
+
+.video-welzo__media iframe {
+  background-color: rgba(var(--color-foreground), 0.03);
+  border: 0;
+}
+
+.video-welzo__poster,
+.video-welzo__media iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .video-welzo {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  .video-welzo__title {
+    font-size: 24px;
+    line-height: 34px;
+  }
+
+  .video-welzo__text {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}

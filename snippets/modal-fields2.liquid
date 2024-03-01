@@ -1,0 +1,124 @@
+{{ 'modal-fields2.aio.min.css' | asset_url | stylesheet_tag }}
+
+<script>
+  window.onload = function() {
+     var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1; //January is 0!
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+         dd = "0" + dd;
+      }
+      if (mm < 10) {
+         mm = "0" + mm;
+      }
+      today = yyyy + "-" + mm + "-" + dd;
+      $("#popup_question_field-13").attr("type", "date");
+      $("#popup_question_field-13").attr("min", "1899-01-01");
+      $("#popup_question_field-13").attr("max", today);
+      $("#popup_question_field-13").on('keydown', function(e) {
+        e.preventDefault();
+      });
+      $(".popup-question__item-input-date").attr("type", "date");
+      $(".popup-question__item-input-date").attr("min", "1899-01-01");
+      $(".popup-question__item-input-date").attr("max", today);
+      $(".popup-question__item-input-date").on('keydown', function(e) {
+        e.preventDefault();
+      });
+      
+    // document.getElementById(“datefield”).setAttribute(“max”, today);
+      $("#ProductDateBirth").attr("type", "date");
+      $("#ProductDateBirth").attr("min", "1899-01-01");
+      $("#ProductDateBirth").attr("max", today);
+      $("#ProductDateBirth").on('keydown', function(e) {
+        e.preventDefault();
+      });
+    
+  };
+</script>
+
+<modal-dialog id="PopupModal-{{product.id}}" class="modal-fields modal-fields2">
+    <div role="dialog" aria-label="{{ product.title }}" aria-modal="true" class="modal-fields__wrap" tabindex="-1">
+        <div type="button" class="modal-fields__close" aria-label="{{ 'accessibility.close' | t }}"></div>
+
+        <div class="modal-fields__content-widget modal-widget">
+            <div class="modal-fields__content">
+                <form class="modal-fields__form" action="#" onsubmit="formSubmit();return false">
+                    {% comment %}<h3 class="modal-fields__caption">{{ 'products.product.product_popup_title' | t }}</h3>{% endcomment %}
+                    <div>{% render 'order-properties-fields2' %}</div>
+                    <button id="ModalClose-{{ product.id }}" type="submit" class="modal-fields__button">
+                        <span>{{ 'products.product.product_popup_btn_text' | t }}</span>
+                    </button>
+                </form>              
+            </div>
+        </div>
+    </div>
+</modal-dialog>
+<script>
+    //form-add-to-cart-button-id
+    const formAddCartButton = document.getElementById("form-add-to-cart-button-id");
+
+    const modalFieldsClose = document.querySelector('.modal-fields__close');
+    const modalFields = document.querySelector('.modal-fields');
+
+    const formSubmit = (event) => {
+        // event.preventDefault();
+        {% if product.metafields.accentuate.popup_question_field %}
+          {%- for popup_question_field in product.metafields.accentuate.popup_question_field -%}
+            {% assign inputParamCount = popup_question_field | split: "-----field-----" %}
+            {% assign inputParam = inputParamCount[0] | split: "|" %}
+            {% case inputParam[0] %}
+              {% when "checkbox" %}
+                {% assign forLoopIndex = forloop.index0 %}
+                {% assign inputParamItems = inputParam[1] | split: ":" %}
+                let checkboxValues{{forLoopIndex}} = '';
+                {% for inputParamItem in inputParamItems %}
+                    if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked) {
+                      if ( checkboxValues{{forLoopIndex}} !='') {
+                        checkboxValues{{forLoopIndex}} = checkboxValues{{forLoopIndex}} +', '+ document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+                      } else {
+                        checkboxValues{{forLoopIndex}} = document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+                      }
+                    }
+                {% endfor %}
+                
+                if (checkboxValues{{forLoopIndex}} && document.getElementById("popup_question_field-{{ forloop.index0 }}-h")) document.getElementById("popup_question_field-{{ forloop.index0 }}-h").value = checkboxValues{{forLoopIndex}};
+                                    
+              {% when "date" %}
+                if (document.getElementById("popup_question_field-{{ forloop.index0 }}") && document.getElementById("popup_question_field-{{ forloop.index0 }}-h")) document.getElementById("popup_question_field-{{ forloop.index0 }}-h").value = document.getElementById("popup_question_field-{{ forloop.index0 }}").value;
+                
+              {% when "radio" %}
+                {% assign forLoopIndex = forloop.index0 %}
+                {% assign inputParamItems = inputParam[1] | split: ":" %}
+                let radioValues{{forLoopIndex}} = '';
+                {% for inputParamItem in inputParamItems %}
+                    if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked) {
+                      if ( radioValues{{forLoopIndex}} !='') {
+                        radioValues{{forLoopIndex}} = radioValues{{forLoopIndex}} +', '+ document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+                      } else {
+                        radioValues{{forLoopIndex}} = document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+                      }
+                    }
+                {% endfor %}
+                
+                {% if inputParamCount[1] and inputParamCount[1] != '' %}
+                   radioValues{{forLoopIndex}} = document.getElementById("popup_question_field-{{ forloop.index0 }}-second").value+' '+radioValues{{forLoopIndex}};
+                {% endif %}
+              
+                if (radioValues{{forLoopIndex}} && document.getElementById("popup_question_field-{{ forloop.index0 }}-h")) document.getElementById("popup_question_field-{{ forloop.index0 }}-h").value = radioValues{{forLoopIndex}};
+              
+              {% else %}
+                if (document.getElementById("popup_question_field-{{ forloop.index0 }}") && document.getElementById("popup_question_field-{{ forloop.index0 }}-h")) document.getElementById("popup_question_field-{{ forloop.index0 }}-h").value = document.getElementById("popup_question_field-{{ forloop.index0 }}").value;
+      
+            {% endcase %}
+          {% endfor %}
+        {% endif %}
+        
+        if (formAddCartButton) formAddCartButton.click();
+    }
+
+    modalFieldsClose.addEventListener('click', () => {
+        modalFields.removeAttribute('open');
+        document.body.classList.remove('overflow-hidden');
+    });
+</script>

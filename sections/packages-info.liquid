@@ -1,0 +1,104 @@
+{{ 'packages-info.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="packages-info color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
+  <div class="packages-info__background-block">
+    <img loading="lazy"
+      class="packages-info__image-background"
+     
+      srcset="{%- if section.settings.image_background.width >= 275 -%}{{ section.settings.image_background | img_url: '275x' }} 275w,{%- endif -%}
+      {%- if section.settings.image_background.width >= 550 -%}{{ section.settings.image_background | img_url: '550x' }} 550w,{%- endif -%}
+      {%- if section.settings.image_background.width >= 710 -%}{{ section.settings.image_background | img_url: '710x' }} 710w,{%- endif -%}
+      {%- if section.settings.image_background.width >= 1420 -%}{{ section.settings.image_background | img_url: '1420x' }} 1420w,{%- endif -%}
+      {{ section.settings.image_background | img_url: 'master' }} {{ section.settings.image_background.width }}w"
+      src="{{ section.settings.image_background | img_url: '550x' }}"
+      alt="{{ section.settings.title }}"
+    >
+  </div>
+  <div class="page-width section-{{ section.id }}-padding isolate">
+
+    <div class="packages-info__wrapper">
+      <div class="packages-info__title">{{ section.settings.title }}</div>
+      <div class="packages-info__content">
+        <div class="packages-info__text">{{ section.settings.text1 }}</div>
+        <div class="packages-info__text">{{ section.settings.text2 }}</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.packages_info.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_background",
+      "label": "t:sections.packages_info.settings.image_background.label"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "default": "<p>What Is A Pre Employment</p><p> Health Checkup?</p>",
+      "label": "t:sections.packages_info.settings.title.label"
+    },
+    {
+      "type": "richtext",
+      "id": "text1",
+      "default": "<p>Male pattern baldness occurs when longer, darker hairs that once grew on the scalp are replaced by thinner, shorter, less pigmented hairs. This is due to dihydrotestosterone (DHT), a hormone derived from testosterone.</p>",
+      "label": "t:sections.packages_info.settings.text1.label"
+    },
+    {
+      "type": "richtext",
+      "id": "text2",
+      "default": "<p>Male pattern baldness occurs when longer, darker hairs that once grew on the scalp are replaced by thinner, shorter, less pigmented hairs. This is due to dihydrotestosterone (DHT), a hormone derived from testosterone.</p>",
+      "label": "t:sections.packages_info.settings.text2.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.packages_info.presets.name"
+    }
+  ]
+}
+{% endschema %}

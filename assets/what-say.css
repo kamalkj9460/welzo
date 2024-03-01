@@ -1,0 +1,118 @@
+.what-say__content {
+  overflow: hidden;
+}
+
+.what-say__testimonials {
+  position: relative;
+}
+
+.what-say__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.what-say .slider-navigation__button svg path {
+  fill: #ffffff;
+}
+
+.what-say .slider-navigation__button:hover svg path {
+  fill: #E5007D;
+}
+
+.what-say__header h2 {
+  color: #FFFFFF;
+}
+
+.what-say__header--why {
+  margin-top: 80px;
+}
+
+.what-say__slide {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.what-say__text {
+  margin-top: 7px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: -0.4px;
+  color: #FFFFFF;
+}
+
+.what-say__image-wrapper {
+  margin-top: 32px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.what-say__image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.what-say__name {
+  margin-top: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.355556px;
+  color: #FFFFFF;
+}
+
+.what-say__profession {
+  margin-top: 4px;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: -0.3px;
+  color: #8893BE;
+}
+
+.what-say__slider .swiper-pagination {
+  bottom: -68px;
+}
+
+.what-say__slider .swiper-pagination-bullet {
+  width: 16px;
+  height: 2px;
+  background: #FFFFFF;
+  opacity: 0.5;
+  border-radius: 3px;
+}
+
+.what-say__slider .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #E5007D
+}
+
+div.what-say__divider {
+  margin-top: 150px;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #ffffff66;
+}
+
+.what-say .why__items {
+  margin: 6% 0 3% 0
+}
+
+.what-say .swiper-button-next, .what-say .swiper-button-prev {
+  display: block !important;
+  opacity: 1;
+}
+
+@media screen and (max-width: 767px) {
+  
+  .what-say__slider .swiper-pagination {
+    text-align: left;
+  }
+}

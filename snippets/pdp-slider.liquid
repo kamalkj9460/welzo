@@ -1,0 +1,141 @@
+{% comment %}
+    Renders product images
+
+    Accepts:
+    - product: {Object} Product Liquid object (optional)
+    - show_thumb: {Boolean} Show thumbneal slider
+    - show_logos: {Boolean} Show logos under slider
+    - mobile_slider: {Boolean} Show mobile slider
+
+    Usage:
+    {% render 'pdp-slider', product: product, show_thumb: tru, show_logos: true %}
+{% endcomment %}
+
+{{ 'component-pdp-slider.aio.min.css' | asset_url | stylesheet_tag }}
+
+<div class="pdp-slider {% if mobile_slider %}mobile{% endif %}">
+    <div class="pdp-slider__wrapper">
+        <div class="pdp-slider__container-main">
+            <div class="pdp-slider__wrapper-main">
+                <div class="pdp-slider__pdp-main-slider swiper pdp-main-slider {% if mobile_slider %}mobile{% endif %}">
+                    <div class="swiper-wrapper">
+                        {%- for media in product.media -%}
+                            <div class="swiper-slide">
+                                <img loading="lazy"  srcset="{% if media.preview_image.width >= 54 %}{{ media.preview_image | img_url: '54x' }} 54w,{% endif %}
+                              {% if media.preview_image.width >= 74 %}{{ media.preview_image | img_url: '74x' }} 74w,{% endif %}
+                              {% if media.preview_image.width >= 104 %}{{ media.preview_image | img_url: '104x' }} 104w,{% endif %}
+                              {% if media.preview_image.width >= 162 %}{{ media.preview_image | img_url: '162x' }} 162w,{% endif %}
+                              {% if media.preview_image.width >= 208 %}{{ media.preview_image | img_url: '208x' }} 208w,{% endif %}
+                              {% if media.preview_image.width >= 324 %}{{ media.preview_image | img_url: '324x' }} 324w,{% endif %}
+                              {% if media.preview_image.width >= 416 %}{{ media.preview_image | img_url: '416x' }} 416w,{% endif %},
+                              {% if media.preview_image.width >= 1024 %}{{ media.preview_image | img_url: '1024x' }} 416w,{% endif %},
+                              {{ media.preview_image | img_url: 'master' }} {{ media.preview_image.width }}w"
+                                     src="{{ media | img_url }}"
+                                     alt="{{ featured_media.alt | escape }}"
+
+                                >
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+
+        {% if show_thumb %}
+            <div class="pdp-slider__container-thumbs">
+                <div class="pdp-slider__wrapper-thumbs">
+                    <div class="swiper pdp-thumbs-slider {% if mobile_slider %}mobile{% endif %}">
+                        <div class="swiper-wrapper">
+                            {%- for media in product.media -%}
+                                <div class="swiper-slide">
+                                    <img srcset="{% if media.preview_image.width >= 118 %}{{ media.preview_image | img_url: '118x' }} 118w,{% endif %}
+                                    {% if media.preview_image.width >= 168 %}{{ media.preview_image | img_url: '168x' }} 168w,{% endif %}
+                                    {% if media.preview_image.width >= 130 %}{{ media.preview_image | img_url: '130x' }} 130w,{% endif %}
+                                    {% if media.preview_image.width >= 260 %}{{ media.preview_image | img_url: '260x' }} 260w{% endif %}
+                                        {% if media.preview_image.width >= 416 %}{{ media.preview_image | img_url: '416x' }} 4160w{% endif %}"
+                                         src="{{ media | img_url }}"
+                                         alt="{{ media.alt | escape }}"
+                                         loading="lazy"
+                                    >
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if show_logos %}
+            <div class="pdp-slider__logos">
+                <div class="pdp-slider__logos-holder">
+                    {% if logotitle %}
+                        <h6 class="pdp-slider__logos-title">{{ logotitle }}</h6>
+                    {%- endif -%}
+                    <div class="pdp-slider__logos-list">
+                        {% if logoimg1 %}
+                            <div class="pdp-slider__logos-item">
+                                <img loading="lazy" class="pdp-slider__logos__image"
+
+                                     srcset="{%- if logoimg1.width >= 47 -%}{{ logoimg1 | img_url: '47x' }} 47w,{%- endif -%}
+                                {%- if logoimg1.width >= 275 -%}{{ logoimg1 | img_url: '275x' }} 275w,{%- endif -%}
+                                {%- if logoimg1.width >= 550 -%}{{ logoimg1 | img_url: '550x' }} 550w,{%- endif -%}
+                                {%- if logoimg1.width >= 710 -%}{{ logoimg1 | img_url: '710x' }} 710w,{%- endif -%}
+                                {%- if logoimg1.width >= 1420 -%}{{ logoimg1 | img_url: '1420x' }} 1420w,{%- endif -%}
+                                {{ logoimg1 | img_url: 'master' }} {{ logoimg1.width }}w"
+                                     src="{{ logoimg1 | img_url: '47x' }}"
+                                     alt="{{ logoimg1.alt }}">
+                            </div>
+                        {%- endif -%}
+                        {% if logoimg2 %}
+                            <div class="pdp-slider__logos-item">
+                                <img loading="lazy" class="pdp-slider__logos__image"
+
+                                     srcset="{%- if logoimg2.width >= 47 -%}{{ logoimg2 | img_url: '47x' }} 47w,{%- endif -%}
+                                {%- if logoimg2.width >= 275 -%}{{ logoimg2 | img_url: '275x' }} 275w,{%- endif -%}
+                                {%- if logoimg2.width >= 550 -%}{{ logoimg2 | img_url: '550x' }} 550w,{%- endif -%}
+                                {%- if logoimg2.width >= 710 -%}{{ logoimg2 | img_url: '710x' }} 710w,{%- endif -%}
+                                {%- if logoimg2.width >= 1420 -%}{{ logoimg2 | img_url: '1420x' }} 1420w,{%- endif -%}
+                                {{ logoimg2 | img_url: 'master' }} {{ logoimg2.width }}w"
+                                     src="{{ logoimg2 | img_url: '47x' }}"
+                                     alt="{{ logoimg2.alt }}">
+                            </div>
+                        {%- endif -%}
+                        {% if logoimg3 %}
+                            <div class="pdp-slider__logos-item">
+                                <img loading="lazy" class="pdp-slider__logos__image"
+
+                                     srcset="{%- if logoimg3.width >= 47 -%}{{ logoimg3 | img_url: '47x' }} 47w,{%- endif -%}
+                                {%- if logoimg3.width >= 275 -%}{{ logoimg3 | img_url: '275x' }} 275w,{%- endif -%}
+                                {%- if logoimg3.width >= 550 -%}{{ logoimg3 | img_url: '550x' }} 550w,{%- endif -%}
+                                {%- if logoimg3.width >= 710 -%}{{ logoimg3 | img_url: '710x' }} 710w,{%- endif -%}
+                                {%- if logoimg3.width >= 1420 -%}{{ logoimg3 | img_url: '1420x' }} 1420w,{%- endif -%}
+                                {{ logoimg3 | img_url: 'master' }} {{ logoimg3.width }}w"
+                                     src="{{ logoimg3 | img_url: '47x' }}"
+                                     alt="{{ logoimg3.alt }}">
+                            </div>
+                        {%- endif -%}
+                        {% if logoimg4 %}
+                            <div class="pdp-slider__logos-item">
+                                <img loading="lazy" class="pdp-slider__logos__image"
+
+                                     srcset="{%- if logoimg4.width >= 47 -%}{{ logoimg4 | img_url: '47x' }} 47w,{%- endif -%}
+                                {%- if logoimg4.width >= 275 -%}{{ logoimg4 | img_url: '275x' }} 275w,{%- endif -%}
+                                {%- if logoimg4.width >= 550 -%}{{ logoimg4 | img_url: '550x' }} 550w,{%- endif -%}
+                                {%- if logoimg4.width >= 710 -%}{{ logoimg4 | img_url: '710x' }} 710w,{%- endif -%}
+                                {%- if logoimg4.width >= 1420 -%}{{ logoimg4 | img_url: '1420x' }} 1420w,{%- endif -%}
+                                {{ logoimg4 | img_url: 'master' }} {{ logoimg4.width }}w"
+                                     src="{{ logoimg4 | img_url: '47x' }}"
+                                     alt="{{ logoimg4.alt }}">
+                            </div>
+                        {%- endif -%}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+
+
+

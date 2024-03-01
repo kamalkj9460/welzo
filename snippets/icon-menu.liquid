@@ -1,0 +1,72 @@
+{% liquid
+  assign str = title | escape | split: ' ' | first | downcase | replace: "’", '' | replace: "'", ''
+  case str
+    when "womens"
+      render 'icon-woman'
+    when "mens"
+      render 'icon-man'
+    when "women&#39;s"
+      render 'icon-woman'
+    when "men&#39;s"
+      render 'icon-man'
+    when "nutrition"
+      render 'icon-nutrition'
+    when "sexual"
+      render 'icon-sexual'
+    when "general"
+      render 'icon-general'
+    when "weight"
+      render 'icon-weight'
+    when "erectile"
+      render 'icon-erectile'
+    when "acne"
+      render 'icon-acne'
+    when "sports"
+      render 'icon-sport'
+    when "well"
+      render 'icon-being'
+    when "travel"
+      render 'icon-travel'
+    when "asthma"
+      render 'icon-asthma'
+    when "mental"
+      render 'icon-mental'
+    when "fertility"
+      render 'icon-fertility'
+    when "chronic"
+      render 'icon-chronic'
+    when "baby"
+      render 'icon-man'
+    when "female"
+      render 'icon-woman'
+    when "first"
+      render 'icon-first'
+    when "hair"
+      render 'icon-hair'
+    when "health"
+      render 'icon-health'
+    when "male"
+      render 'icon-male'
+    when "medication"
+      render 'icon-medication'
+    when "pain"
+      render 'icon-pain'
+    when "pregnancy"
+      render 'icon-pregnancy'
+    when "skincare"
+      render 'icon-skincare'
+    when "smoking"
+      render 'icon-smoking'
+    when "sun,"
+      render 'icon-sun'
+    when "sun"
+      render 'icon-sun'    
+    when "blood"
+      render 'icon-blood'
+    when "instant"
+      render 'icon-instant'
+    else
+      render 'icon-ogpa'
+      
+  endcase
+%}

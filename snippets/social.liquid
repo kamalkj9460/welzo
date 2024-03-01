@@ -1,0 +1,25 @@
+
+{{ 'component-social.aio.min.css' | asset_url | stylesheet_tag }}
+
+<div class="social-block">
+        {% if linkedin != "" %}
+                <a href="{{ linkedin }}" class="social-block__item">
+                    {% render 'icon-linkedin' %}
+                </a>
+        {% endif %}
+        {% if twitter != "" %}
+                <a href="{{ twitter }}" class="social-block__item">
+                    {% render 'icon-twitter' %}
+                </a>
+            {% endif %}
+        {% if instagram != "" %}
+                <a href="{{ instagram }}" class="social-block__item">
+                    {% render 'icon-instagram-png' %}
+                </a>
+        {% endif %}
+        {% if meta != "" %}
+                <a href="{{ meta }}" class="social-block__item">
+                    {% render 'icon-facebook' %}
+                </a>
+        {% endif %}
+</div>

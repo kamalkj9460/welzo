@@ -1,0 +1,309 @@
+{{ 'section-contact-form.aio.min.css' | asset_url | stylesheet_tag }}
+{{ 'customer.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="contact page-width section-{{ section.id }}-padding">
+    <div class="contact__wrapper">
+      <div class="contact__content">
+        <h2 class="contact__title">{{ section.settings.title | escape }}</h2>
+        <div class="contact__text">{{ section.settings.text }}</div>
+        {%- form 'contact', id: 'ContactForm', class: 'isolate' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="form-status form-status-list form__message" tabindex="-1" autofocus>{% render 'icon-success' %} {{ 'templates.contact.form.post_success' | t }}</div>
+          {%- elsif form.errors -%}
+            <div class="form__message">
+              <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>{% render 'icon-error' %} {{ 'templates.contact.form.error_heading' | t }}</h2>
+            </div>
+            <ul class="form-status-list caption-large" role="list">
+              <li>
+                <a href="#ContactForm-email" class="link">
+                  {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+                </a>
+              </li>
+            </ul>
+          {%- endif -%}
+          {% comment %}<div class="contact__fields">{% endcomment %}
+            <div class="field">
+              <div class="field__icon">
+                {% render "icon-user" %}
+              </div>
+              <input required class="field__input customer__input" autocomplete="name" type="text" id="ContactForm-name" name="contact[{{ 'templates.contact.form.name' | t }}]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ 'templates.contact.form.name' | t }}">
+              <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
+            </div>
+            <div class="field field--with-error">
+              <div class="field__icon">
+                {% render "icon-text" %}
+              </div>
+              <input
+                autocomplete="email"
+                type="email"
+                required
+                class="field__input customer__input"
+                id="ContactForm-email"
+                {% comment %}class="field__input"{% endcomment %}
+                name="contact[email]"
+                spellcheck="false"
+                autocapitalize="off"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                aria-required="true"
+                {% if form.errors contains 'email' %}
+                  aria-invalid="true"
+                  aria-describedby="ContactForm-email-error"
+                {% endif %}
+                placeholder="{{ 'templates.contact.form.email' | t }}"
+              >
+              <label class="field__label" for="ContactForm-email">{{ 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span></label>
+              {%- if form.errors contains 'email' -%}
+                <small class="contact__field-error" id="ContactForm-email-error">
+                  <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+                  <span class="form__message">{% render 'icon-error' %}{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</span>
+                </small>
+              {%- endif -%}
+            </div>
+          {% comment %}</div>{% endcomment %}
+
+          <div class="field">
+            <textarea
+                    required
+              rows="10"
+              id="ContactForm-body"
+              class="text-area field__input customer__input"
+              name="contact[{{ 'templates.contact.form.comment' | t }}]"
+              placeholder="{{ 'templates.contact.form.comment' | t }}"
+            >
+              {{- form.body -}}
+            </textarea>
+            <label class="form__label field__label" for="ContactForm-body">{{ 'templates.contact.form.comment' | t }}</label>
+          </div>
+          <div class="contact__button">
+            <button type="submit" class="button">
+              {{ 'templates.contact.form.send' | t }}
+            </button>
+          </div>
+        {%- endform -%}
+      </div>
+      {% assign conut_blocks = section.blocks | size %}
+      {% if conut_blocks > 0 %}
+        <div class = "contact__vertical contact__desktop"></div>
+
+        <hr class = "contact__mobile contact__hr">
+
+        <div class="contact__info">
+          <iframe
+  width="330"
+  height="250"
+  frameborder="0" style="border:0"
+  referrerpolicy="no-referrer-when-downgrade"
+  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCJhy3B2YlNm2VXrh1aBCX0UGKiTujubps&q=19 - 21 Crawford Street, London, United Kingdom&maptype=roadmap"
+  allowfullscreen>
+</iframe>
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+            {%- when 'email' -%}
+              <div class="contact-block">
+                <div class="contact-block__title">{{ block.settings.title | escape }}</div>
+                <a href="mailto:{{ block.settings.text}}" class="contact-block__text">{{ block.settings.text | escape }}</a>
+              </div>
+            {%- when 'address' -%}
+              <div class="contact-block">
+                <div class="contact-block__title">{{ block.settings.title | escape }}</div>
+                <div class="contact-block__text">{{ block.settings.text | escape }}</div>
+              </div>
+              
+            {%- when 'social' -%}
+              <div class="contact-block">
+                <div class="contact-block__title">{{ block.settings.title | escape }}</div>
+                <div class="contact-block__social">
+                  {% render 'social',
+                          linkedin: block.settings.linkedin,
+                          twitter: block.settings.twitter,
+                          instagram: block.settings.instagram,
+                          meta: block.settings.meta
+                  %}
+                </div>
+              </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.contact-form.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Contact us",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "default": "<p>Let's get in touch. Drop us a message and we'll get back to you as soon as possible.</p>",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "t:sections.all.colors.accent_1.label"
+        },
+        {
+          "value": "accent-2",
+          "label": "t:sections.all.colors.accent_2.label"
+        },
+        {
+          "value": "background-1",
+          "label": "t:sections.all.colors.background_1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.all.colors.background_2.label"
+        },
+        {
+          "value": "inverse",
+          "label": "t:sections.all.colors.inverse.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.all.colors.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "email",
+      "name": "Email",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Email",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "default": "hello.carrotlabs@gmail.com",
+          "label": "Enter email"
+        }
+      ]
+    },
+    {
+      "type": "address",
+      "name": "Address",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Offices",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "default": "2400 6th St NW, Washington, DC 20059",
+          "label": "Enter address"
+        }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Social",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Social",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "linkedin",
+          "default": "http://",
+          "label": "Enter LinkedIn URL"
+        },
+        {
+          "type": "text",
+          "id": "twitter",
+          "default": "http://",
+          "label": "Enter Twitter URL"
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "default": "http://",
+          "label": "Enter Meta URL"
+        },
+        {
+          "type": "text",
+          "id": "instagram",
+          "default": "http://",
+          "label": "Enter Instagram URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact-form.presets.name",
+      "blocks": [
+        {
+          "type": "email"
+        },
+        {
+          "type": "address"
+        },
+        {
+          "type": "social"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

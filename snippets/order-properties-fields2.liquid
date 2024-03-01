@@ -1,0 +1,701 @@
+{% if product.metafields.accentuate.popup_question_field %}
+  {%- for popup_question_field in product.metafields.accentuate.popup_question_field -%}
+      <div class="popup-question__item">
+        {% if product.metafields.accentuate.popup_question_title[forloop.index0] and product.metafields.accentuate.popup_question_title[forloop.index0] != blank %}<span class="popup-question__item-title">{{product.metafields.accentuate.popup_question_title[forloop.index0] }}</span>{% endif %}
+        {% if product.metafields.accentuate.popup_question_text[forloop.index0] and product.metafields.accentuate.popup_question_text[forloop.index0] != blank %}
+          <div class="popup-question__item-text">{{product.metafields.accentuate.popup_question_text[forloop.index0]}}</div>
+        {% endif %}
+
+        {% if popup_question_field %}
+          <div class="popup-question__item-input-holder">
+            {% assign inputParamCount = popup_question_field | split: "-----field-----" %}
+          
+            {% assign inputParam = inputParamCount[0] | split: "|" %}
+            {% case inputParam[0] %}
+              {% when "checkbox" %}
+                <div class="popup-question__item-input-box ">
+                  {% assign forLoopIndex = forloop.index0 %}
+                  {% assign inputParamItems = inputParam[1] | split: ":" %}
+                  <div class="popup-question__item-input popup-question__item-input-checkbox">
+                    {% for inputParamItem in inputParamItems %}
+                      <div class="popup-question__item-input-item">
+                          <input 
+                            type="checkbox" 
+                            name="properties[popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}]" 
+                            id="popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}" 
+                            value="{{ inputParamItem }}"
+                            autocomplete="off">
+                          <label for="popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}">
+                            {{ inputParamItem }}
+                          </label>                          
+                      </div>
+                    {% endfor %}
+                  </div>
+
+                  {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] != blank %}
+                    <div id="popup-question__item-error-{{ forloop.index0 }}" class="popup-question__item-error">{{product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] }}</div>
+                  {% endif %}
+                </div>  
+              
+              {% when "date" %}
+                <div class="popup-question__item-input-box">
+                  <div class="popup-question__item-input-item popup-question__item-input-date-box">
+                    <input 
+                      type="text" 
+                      required 
+                      class="popup-question__item-input-date" 
+                      name="properties[popup_question_field-{{ forloop.index0 }}]" 
+                      id="popup_question_field-{{ forloop.index0 }}" 
+                      autocomplete="off" 
+                      placeholder="dd/mm/yyyy"
+                      maxlength="10">
+                  </div>  
+                  {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] != blank %}
+                    <div id="popup-question__item-error-{{ forloop.index0 }}" class="popup-question__item-error">{{product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] }}</div>
+                  {% endif %}
+                </div> 
+              
+              {% when "radio" %} 
+                <div class="{% if inputParamCount[1] and inputParamCount[1] != '' %}popup-question__item-input-box popup-question__item-input-box-double-field{% else %}popup-question__item-input-box{% endif %}">
+                  {% assign forLoopIndex = forloop.index0 %}
+                  {% assign inputParamItems = inputParam[1] | split: ":" %}
+                  <div class="popup-question__item-input popup-question__item-input-radio-box">
+                    {% for inputParamItem in inputParamItems %}
+                      <div class="popup-question__item-input-item">                        
+                        <input 
+                          type="radio" 
+                          class="popup-question__item-input popup-question__item-input-radio"
+                          name="properties[popup_question_field-{{ forLoopIndex }}]" 
+                          id="popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}" 
+                          value="{{ inputParamItem }}"
+                          autocomplete="off">
+                        <label for="popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}">
+                          {{ inputParamItem }}
+                        </label>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  {% if inputParamCount[1] and inputParamCount[1] != '' %}
+                    <div class="popup-question__item-input-secondtextfield">
+                      <input 
+                        type="text" 
+                        name="properties[popup_question_field-{{ forloop.index0 }}-second]" 
+                        id="popup_question_field-{{ forloop.index0 }}-second" 
+                        autocomplete="off" 
+                        placeholder="{{ inputParamCount[1] }}">
+                      <div id="popup-question__item-input-secondtextfield-info-{{ forloop.index0 }}" class="popup-question__item-input-secondtextfield-info"></div>
+                    </div> 
+                  {% endif %}
+              
+                  {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] != blank %}
+                    <div id="popup-question__item-error-{{ forloop.index0 }}" class="popup-question__item-error">{{product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] }}</div>
+                  {% endif %}
+                </div>                 
+              
+              {% else %}
+                <div class="popup-question__item-input-box">
+                  <div class="popup-question__item-input-item popup-question__item-input-text-box">
+                    <input 
+                      type="text" 
+                      class="popup-question__item-input popup-question__item-input-text"
+                      name="properties[popup_question_field-{{ forloop.index0 }}]" 
+                      id="popup_question_field-{{ forloop.index0 }}" 
+                      autocomplete="off" 
+                      placeholder="{{ inputParam[0] }}">
+                  </div>  
+                  {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] != blank %}
+                    <div id="popup-question__item-error-{{ forloop.index0 }}" class="popup-question__item-error">{{product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] }}</div>
+                  {% endif %}
+                </div>
+                
+            
+            {% endcase %}   
+          </div>
+        {% endif %}
+                      
+      </div>
+  {% endfor %}
+{% endif %}
+
+<div class="error-message-fields popup-question__item-error-all">{{ 'products.product.product_popup_error' | t }}</div>
+
+
+<script>
+  window.addEventListener('DOMContentLoaded', function() { 
+
+    {% if product.metafields.accentuate.popup_question_field %}
+      {%- for popup_question_field in product.metafields.accentuate.popup_question_field -%}    
+            {% if popup_question_field %}     
+                {% assign inputParamCount = popup_question_field | split: "-----field-----" %}              
+                {% assign inputParam = inputParamCount[0] | split: "|" %}
+                {% case inputParam[0] %}
+                  {% when "checkbox" %}
+                    {% assign forLoopIndex = forloop.index0 %}
+                    {% assign inputParamItems = inputParam[1] | split: ":" %}
+                    {% for inputParamItem in inputParamItems %}
+                      var cookieIntArrayEl{{ forLoopIndex }} = document.cookie.match(new RegExp('(^| ){{ product.id }}_popupField{{ forLoopIndex }}{{ forloop.index0 }}=([^;]+)'));
+                      if (cookieIntArrayEl{{ forLoopIndex }}) {
+                        let cookieIntArray{{ forLoopIndex }} ='';
+                        cookieIntArray{{ forLoopIndex }} = cookieIntArrayEl{{ forLoopIndex }}[2].split("---popInptVal---");
+                        //console.log(cookieIntArray{{ forLoopIndex }}[0]);
+                        //console.log(cookieIntArray{{ forLoopIndex }}[1]);
+                        
+                        if (cookieIntArray{{ forLoopIndex }} && cookieIntArray{{ forLoopIndex }}[1] != 'nochecked' && cookieIntArray{{ forLoopIndex }}[1] != '') {
+                          document.getElementById(cookieIntArray{{ forLoopIndex }}[0]).checked = true;
+                        } else {
+                          document.getElementById(cookieIntArray{{ forLoopIndex }}[0]).checked = false;
+                        }
+                      }
+                    {% endfor %}
+
+                  {% when "date" %}
+                    var cookieIntArrayEl{{ forLoopIndex }} = document.cookie.match(new RegExp('(^| ){{ product.id }}_popupField{{ forloop.index0 }}=([^;]+)'));
+                    if (cookieIntArrayEl{{ forLoopIndex }}) {
+                      let cookieIntArray{{ forLoopIndex }} ='';
+                      cookieIntArray{{ forLoopIndex }} = cookieIntArrayEl{{ forLoopIndex }}[2].split("---popInptVal---");
+                      //console.log(cookieIntArray{{ forLoopIndex }}[0]);
+                      //console.log(cookieIntArray{{ forLoopIndex }}[1]);
+                      
+                      if (cookieIntArray{{ forLoopIndex }} && cookieIntArray{{ forLoopIndex }}[1] != '' && cookieIntArray{{ forLoopIndex }}[1] != 'empty') {
+                        document.getElementById(cookieIntArray{{ forLoopIndex }}[0]).value = cookieIntArray{{ forLoopIndex }}[1];
+                      } else {
+                        document.getElementById(cookieIntArray{{ forLoopIndex }}[0]).value = '';
+                      }
+                    }
+
+                  {% when "radio" %}
+                    {% assign forLoopIndex = forloop.index0 %}                      
+                        
+                      var cookieIntArrayEl{{ forLoopIndex }} = document.cookie.match(new RegExp('(^| ){{ product.id }}_popupField{{ forLoopIndex }}=([^;]+)'));                      
+                      if (cookieIntArrayEl{{ forLoopIndex }}) {
+                        let cookieIntArray{{ forLoopIndex }} ='';
+                        cookieIntArray{{ forLoopIndex }} = cookieIntArrayEl{{ forLoopIndex }}[2].split("---popInptVal---");
+                        //console.log(cookieIntArray{{ forLoopIndex }}[0]);
+                        //console.log(cookieIntArray{{ forLoopIndex }}[1]);
+                        
+                        if (cookieIntArray{{ forLoopIndex }} && cookieIntArray{{ forLoopIndex }}[1] != 'nochecked' && cookieIntArray{{ forLoopIndex }}[1] != '') {
+                          document.getElementById(cookieIntArray{{ forLoopIndex }}[0]).checked = true;
+                        } else {
+                          document.getElementById(cookieIntArray{{ forLoopIndex }}[0]).checked = false;
+                        }                        
+                      }
+                      
+                      var cookieIntArrayEl2{{ forLoopIndex }} = document.cookie.match(new RegExp('(^| ){{ product.id }}_popupField{{ forLoopIndex }}-second=([^;]+)'));
+                      if (cookieIntArrayEl2{{ forLoopIndex }}) {
+                        let cookieIntArray2{{ forLoopIndex }} ='';
+                        cookieIntArray2{{ forLoopIndex }} = cookieIntArrayEl2{{ forLoopIndex }}[2].split("---popInptVal---");
+                        //console.log(cookieIntArray2{{ forLoopIndex }}[0]);
+                        //console.log(cookieIntArray2{{ forLoopIndex }}[1]);
+                        
+                        if (cookieIntArray2{{ forLoopIndex }} && cookieIntArray2{{ forLoopIndex }}[1] != '' && cookieIntArray2{{ forLoopIndex }}[1] != 'empty') {
+                          document.getElementById(cookieIntArray2{{ forLoopIndex }}[0]).value = cookieIntArray2{{ forLoopIndex }}[1];
+                        } else {
+                          document.getElementById(cookieIntArray2{{ forLoopIndex }}[0]).value = '';
+                        }
+                      }                                  
+                  
+                  {% else %} 
+                    var cookieIntArrayEl{{ forLoopIndex }} = document.cookie.match(new RegExp('(^| ){{ product.id }}_popupField{{ forloop.index0 }}=([^;]+)'));
+                    if (cookieIntArrayEl{{ forLoopIndex }}) {
+                      let cookieIntArray{{ forLoopIndex }} ='';
+                      cookieIntArray{{ forLoopIndex }} = cookieIntArrayEl{{ forLoopIndex }}[2].split("---popInptVal---");
+                      //console.log(cookieIntArray{{ forLoopIndex }}[0]);
+                      //console.log(cookieIntArray{{ forLoopIndex }}[1]);
+                      
+                      if (cookieIntArray{{ forLoopIndex }} && cookieIntArray{{ forLoopIndex }}[1] != '' && cookieIntArray{{ forLoopIndex }}[1] != 'empty') {
+                        document.getElementById(cookieIntArray{{ forLoopIndex }}[0]).value = cookieIntArray{{ forLoopIndex }}[1];
+                      } else {
+                        document.getElementById(cookieIntArray{{ forLoopIndex }}[0]).value = '';
+                      }
+                    }                  
+                
+                {% endcase %}   
+    
+            {% endif %} 
+    
+      {% endfor %}
+    {% endif %}
+
+    
+    {% if product.metafields.accentuate.popup_question_text_for_wrong_answer %}
+      {% assign conditionAND = '' %}
+      {% assign conditionNotOR = '' %}
+      {% assign errorIdList = '' %}
+      {%- for popup_question_text_for_wrong_answer in product.metafields.accentuate.popup_question_text_for_wrong_answer -%}
+        {% if popup_question_text_for_wrong_answer != blank %}
+          {% assign inputParamCount = product.metafields.accentuate.popup_question_field[forloop.index0] | split: "-----field-----" %}          
+          {% assign inputParam = inputParamCount[0] | split: "|" %}
+          {% case inputParam[0] %}
+            {% when "checkbox" %}              
+              {% assign forLoopIndex = forloop.index0 %}
+              {% assign inputParamItems = inputParam[1] | split: ":" %}
+              let checkboxGetValue{{forLoopIndex}} = '';
+              let checkboxGetValueErrorMsg{{forLoopIndex}} = "{{ popup_question_text_for_wrong_answer }}";
+              {% for inputParamItem in inputParamItems %}
+                if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked) {
+                  if (checkboxGetValue{{forLoopIndex}} != '') {
+                    checkboxGetValue{{forLoopIndex}} = checkboxGetValue{{forLoopIndex}}+', '+document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value;
+                  } else {
+                    checkboxGetValue{{forLoopIndex}} = document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value;
+                  }
+                }
+              {% endfor %}
+              let isCheckboxGetValue{{forLoopIndex}} = !!checkboxGetValue{{forLoopIndex}};
+  
+              {% if conditionAND != '' %}
+                {% capture conditionAND %}{{ conditionAND }} && isCheckboxGetValue{{forLoopIndex}}{% endcapture %}
+              {% else %}
+                {% capture conditionAND %}isCheckboxGetValue{{forLoopIndex}}{% endcapture %}
+              {% endif %}
+  
+              {% if conditionNotOR != '' %}
+                {% capture conditionNotOR %}{{ conditionNotOR }} || !isCheckboxGetValue{{forLoopIndex}}{% endcapture %}
+              {% else %}
+                {% capture conditionNotOR %}!isCheckboxGetValue{{forLoopIndex}}{% endcapture %}
+              {% endif %}
+
+              {% if errorIdList != '' %}
+                {% capture errorIdList %}{{ errorIdList }},popup-question__item-error-{{ forLoopIndex }}{% endcapture %}
+              {% else %}
+                {% capture errorIdList %}popup-question__item-error-{{ forLoopIndex }}{% endcapture %}
+              {% endif %}
+            
+            {% when "date" %}
+              let dateGetValueErrorMsg{{ forloop.index0 }} = "{{ popup_question_text_for_wrong_answer }}";
+              let dateGetValue{{ forloop.index0 }} = document.querySelector('#popup_question_field-{{ forloop.index0 }}');
+              let isDateGetValue{{ forloop.index0 }} = !!dateGetValue{{ forloop.index0 }}.value;
+  
+              {% if conditionAND != '' %}
+                {% capture conditionAND %}{{ conditionAND }} && isDateGetValue{{ forloop.index0 }}{% endcapture %}
+              {% else %}
+                {% capture conditionAND %}isDateGetValue{{ forloop.index0 }}{% endcapture %}
+              {% endif %}
+  
+              {% if conditionNotOR != '' %}
+                {% capture conditionNotOR %}{{ conditionNotOR }} || !isDateGetValue{{ forloop.index0 }}{% endcapture %}
+              {% else %}
+                {% capture conditionNotOR %}!isDateGetValue{{ forloop.index0 }}{% endcapture %}
+              {% endif %}
+
+              {% if errorIdList != '' %}
+                {% capture errorIdList %}{{ errorIdList }},popup-question__item-error-{{ forloop.index0 }}{% endcapture %}
+              {% else %}
+                {% capture errorIdList %}popup-question__item-error-{{ forloop.index0 }}{% endcapture %}
+              {% endif %}
+            
+            {% when "radio" %} 
+              {% assign forLoopIndex = forloop.index0 %}
+              {% assign inputParamItems = inputParam[1] | split: ":" %}
+              let radioGetValue{{forLoopIndex}} = '';
+              let radioGetValueErrorMsg{{ forloop.index0 }} = "{{ popup_question_text_for_wrong_answer }}";              
+             
+              {% if inputParamCount[1] and inputParamCount[1] != '' %}
+                let popup_question_field{{ forloop.index0 }}second = document.querySelector('#popup_question_field-{{ forloop.index0 }}-second');
+                let isRadioGetTextValue{{forLoopIndex}} = !!popup_question_field{{ forloop.index0 }}second.value;
+                if(isRadioGetTextValue{{forLoopIndex}}) {
+                  //radioGetValue{{forLoopIndex}} = radioGetValue{{forLoopIndex}}+', '+popup_question_field{{ forloop.index0 }}second.value;
+
+                  {% for inputParamItem in inputParamItems %}
+                    if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked) {
+                      {% if inputParam[2] and inputParam[2] != '' %}
+                        if (document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value == "{{ inputParam[2] }}") {
+                          if (radioGetValue{{forLoopIndex}} != '') {
+                            radioGetValue{{forLoopIndex}} = radioGetValue{{forLoopIndex}}+', '+document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value;
+                          } else {
+                            radioGetValue{{forLoopIndex}} = document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value;
+                          }
+                        }
+                      {% else %}
+                        if (radioGetValue{{forLoopIndex}} != '') {
+                          radioGetValue{{forLoopIndex}} = radioGetValue{{forLoopIndex}}+', '+document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value;
+                        } else {
+                          radioGetValue{{forLoopIndex}} = document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value;
+                        }
+                      {% endif %}  
+                    }
+                  {% endfor %}
+                }
+              {% else %}
+                {% for inputParamItem in inputParamItems %}
+                  if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked) {
+                    {% if inputParam[2] and inputParam[2] != '' %}
+                      if (document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value == "{{ inputParam[2] }}") {
+                        if (radioGetValue{{forLoopIndex}} != '') {
+                          radioGetValue{{forLoopIndex}} = radioGetValue{{forLoopIndex}}+', '+document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value;
+                        } else {
+                          radioGetValue{{forLoopIndex}} = document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value;
+                        }
+                      }
+                    {% else %}
+                      if (radioGetValue{{forLoopIndex}} != '') {
+                        radioGetValue{{forLoopIndex}} = radioGetValue{{forLoopIndex}}+', '+document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value;
+                      } else {
+                        radioGetValue{{forLoopIndex}} = document.querySelector('#popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}').value;
+                      }
+                    {% endif %}  
+                  }
+                {% endfor %}
+              {% endif %}
+          
+              let isRadioGetValue{{forLoopIndex}} = !!radioGetValue{{forLoopIndex}};
+  
+              {% if conditionAND != '' %}
+                {% capture conditionAND %}{{ conditionAND }} && isRadioGetValue{{forLoopIndex}}{% endcapture %}
+              {% else %}
+                {% capture conditionAND %}isRadioGetValue{{forLoopIndex}}{% endcapture %}
+              {% endif %}
+  
+              {% if conditionNotOR != '' %}
+                {% capture conditionNotOR %}{{ conditionNotOR }} || !isRadioGetValue{{forLoopIndex}}{% endcapture %}
+              {% else %}
+                {% capture conditionNotOR %}!isRadioGetValue{{forLoopIndex}}{% endcapture %}
+              {% endif %}
+
+              {% if errorIdList != '' %}
+                {% capture errorIdList %}{{ errorIdList }},popup-question__item-error-{{ forLoopIndex }}{% endcapture %}
+              {% else %}
+                {% capture errorIdList %}popup-question__item-error-{{ forLoopIndex }}{% endcapture %}
+              {% endif %}
+            
+            {% else %}
+              let textGetValueErrorMsg{{ forloop.index0 }} = "{{ popup_question_text_for_wrong_answer }}";
+              let textGetValue{{ forloop.index0 }} = document.querySelector('#popup_question_field-{{ forloop.index0 }}');
+              let isTextGetValue{{ forloop.index0 }} = !!textGetValue{{ forloop.index0 }}.value;
+  
+              {% if conditionAND != '' %}
+                {% capture conditionAND %}{{ conditionAND }} && isTextGetValue{{ forloop.index0 }}{% endcapture %}
+              {% else %}
+                {% capture conditionAND %}isTextGetValue{{ forloop.index0 }}{% endcapture %}
+              {% endif %}
+  
+              {% if conditionNotOR != '' %}
+                {% capture conditionNotOR %}{{ conditionNotOR }} || !isTextGetValue{{ forloop.index0 }}{% endcapture %}
+              {% else %}
+                {% capture conditionNotOR %}!isTextGetValue{{ forloop.index0 }}{% endcapture %}
+              {% endif %}
+
+              {% if errorIdList != '' %}
+                {% capture errorIdList %}{{ errorIdList }},popup-question__item-error-{{ forloop.index0 }}{% endcapture %}
+              {% else %}
+                {% capture errorIdList %}popup-question__item-error-{{ forloop.index0 }}{% endcapture %}
+              {% endif %}
+          
+          {% endcase %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    
+    const buttonModalSend = document.querySelector('.modal-fields__button');
+    const modalFieldsContent = document.querySelector('.modal-fields__content');
+    const modalFieldsWrap = document.querySelector('.modal-fields__wrap');
+    const errorMessageFields = document.querySelector('.error-message-fields');
+    const errorMessageFieldsAll = document.querySelector('.popup-question__item-error-all');
+    let isClick = false;
+
+    const onButtonDisabled = () => {
+    {% assign conditionANDItemssda = conditionAND | split: " && " %}
+    {% for conditionANDItemssdagg in conditionANDItemssda %}
+      //console.log('{{ conditionANDItemssdagg }} - '+{{ conditionANDItemssdagg }});
+    {% endfor %}
+      if ({{ conditionAND }}) {
+        buttonModalSend.disabled = false;
+      } else {
+        buttonModalSend.disabled = true;
+      };
+    };
+
+    const onErrorMessage = () => {
+      
+      if ({{ conditionAND }}) {
+        errorMessageFields.style.display = 'none';
+      } else {
+        errorMessageFields.style.display = 'block';
+      };
+      
+      {% if product.metafields.accentuate.popup_question_text_for_wrong_answer %}
+        {% if conditionNotOR and conditionNotOR != '' %}
+          {% if errorIdList and errorIdList != '' %}
+            {% assign conditionNotORItems = conditionNotOR | split: " || " %}
+            {% assign errorIdListItem = errorIdList | split: "," %}
+            {% for conditionNotORItem in conditionNotORItems %}
+              if ({{conditionNotORItem}}) {
+                //console.log('error - {{conditionNotORItem}}');
+                document.querySelector('#{{ errorIdListItem[forloop.index0] }}').style.display = 'block';
+              } else {
+                //console.log('No error - {{conditionNotORItem}}');
+                document.querySelector('#{{ errorIdListItem[forloop.index0] }}').style.display = 'none';
+              }
+            {% endfor %}
+          {% endif %}
+        {% endif %}    
+      {% endif %}
+    };
+
+    buttonModalSend.addEventListener('click', () => {
+      if ({{ conditionNotOR }}) {
+        modalFields.setAttribute('open', 'open');
+      }
+      isClick = true;
+      onButtonDisabled();
+      onErrorMessage();
+    });
+
+    {% if product.metafields.accentuate.popup_question_field %}
+      {%- for popup_question_field in product.metafields.accentuate.popup_question_field -%}        
+        {% assign inputParamCount = popup_question_field | split: "-----field-----" %}          
+        {% assign inputParam = inputParamCount[0] | split: "|" %}
+        {% case inputParam[0] %}
+          {% when "checkbox" %}
+            {% assign forLoopIndex = forloop.index0 %}
+            {% assign inputParamItems = inputParam[1] | split: ":" %}
+            {% assign inputIdItems = '' %}
+            {% for inputParamItem in inputParamItems %}
+              {% if inputIdItems != '' %}
+                {% capture inputIdItems %}{{ inputIdItems }} || document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked{% endcapture %}
+              {% else %}
+                {% capture inputIdItems %}document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked{% endcapture %}
+              {% endif %}
+            {% endfor %}
+            
+            {% for inputParamItem in inputParamItems %}
+              document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").addEventListener('input', (e) => {
+                {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forLoopIndex] != blank %}
+                  if ({{inputIdItems}}) {
+                    isCheckboxGetValue{{forLoopIndex}} = true;
+                  } else {
+                    isCheckboxGetValue{{forLoopIndex}} = false;
+                  }
+                  
+                  if (isClick) {
+                    onButtonDisabled();
+                    onErrorMessage();
+                  } else {
+                    if (!isCheckboxGetValue{{forLoopIndex}}) {
+                      console.log('error - !isCheckboxGetValue{{forLoopIndex}}');
+                      document.querySelector('#popup-question__item-error-{{forLoopIndex}}').style.display = 'block';
+                    } else {
+                      console.log('No error - !isCheckboxGetValue{{forLoopIndex}}');
+                      document.querySelector('#popup-question__item-error-{{forLoopIndex}}').style.display = 'none';
+                    }
+                  }
+                {% endif %}
+
+                if(document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked){
+                  document.cookie = "{{ product.id }}_popupField{{ forLoopIndex }}{{ forloop.index0 }}=popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}---popInptVal---checked; max-age=86400";
+                } else {
+                  document.cookie = "{{ product.id }}_popupField{{ forLoopIndex }}{{ forloop.index0 }}=popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}---popInptVal---nochecked; max-age=86400";
+                }
+              });
+            {% endfor %}
+          
+          {% when "date" %}
+            document.querySelector('#popup_question_field-{{ forloop.index0 }}').addEventListener('input', (e) => {
+              {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] != blank %}
+                isDateGetValue{{ forloop.index0 }} = !!e.target.value;
+
+                if (isClick) {
+                  onButtonDisabled();
+                  onErrorMessage();
+                } else {
+                  if (!isDateGetValue{{forloop.index0}}) {
+                    console.log('error - !isDateGetValue{{forloop.index0}}');
+                    document.querySelector('#popup-question__item-error-{{forloop.index0}}').style.display = 'block';
+                  } else {
+                    console.log('No error - !isDateGetValue{{forloop.index0}}');
+                    document.querySelector('#popup-question__item-error-{{forloop.index0}}').style.display = 'none';
+                  }
+                }
+              {% endif %}  
+
+              if(document.querySelector('#popup_question_field-{{ forloop.index0 }}') && document.querySelector('#popup_question_field-{{ forloop.index0 }}').value != '' ){
+                document.cookie = "{{ product.id }}_popupField{{ forloop.index0 }}=popup_question_field-{{ forloop.index0 }}---popInptVal---"+document.querySelector('#popup_question_field-{{ forloop.index0 }}').value+"; max-age=86400";
+              } else {
+                document.cookie = "{{ product.id }}_popupField{{ forloop.index0 }}=popup_question_field-{{ forloop.index0 }}---popInptVal---empty; max-age=86400";
+              }
+            }); 
+          
+          {% when "radio" %}
+            {% assign forLoopIndex = forloop.index0 %}
+            {% assign inputParamItems = inputParam[1] | split: ":" %}
+            
+            {% assign inputIdItems = '' %}
+            {% for inputParamItem in inputParamItems %}
+              {% if inputIdItems != '' %}
+                {% capture inputIdItems %}{{ inputIdItems }} || document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked{% endcapture %}
+              {% else %}
+                {% capture inputIdItems %}document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked{% endcapture %}
+              {% endif %}
+            {% endfor %}
+
+            {% if inputParamCount[1] and inputParamCount[1] != '' %}
+              {% for inputParamItem in inputParamItems %}
+                document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").addEventListener('input', (e) => {
+                  document.querySelector('#popup-question__item-input-secondtextfield-info-{{ forLoopIndex }}').innerHTML = e.target.value;
+                
+                  {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forLoopIndex] != blank %}                    
+                    if ({{inputIdItems}}) {
+                      if(document.querySelector('#popup_question_field-{{ forLoopIndex }}-second').value) {
+                        {% if inputParam[2] and inputParam[2] != '' %}
+                          if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value == '{{inputParam[2]}}') { 
+                            isRadioGetValue{{forLoopIndex}} = true;
+                          } else {
+                            isRadioGetValue{{forLoopIndex}} = false;
+                          }
+                        {% else %}
+                          isRadioGetValue{{forLoopIndex}} = true;
+                        {% endif %}
+
+                      } else {
+                        isRadioGetValue{{forLoopIndex}} = false;
+                      }
+                    } else {
+                      isRadioGetValue{{forLoopIndex}} = false;
+                    }      
+                
+                    if (isClick) {
+                      onButtonDisabled();
+                      onErrorMessage();
+                    } else {
+                      if (!isRadioGetValue{{forLoopIndex}}) {
+                        console.log('error - !isRadioGetValue{{forLoopIndex}}');
+                        document.querySelector('#popup-question__item-error-{{forLoopIndex}}').style.display = 'block';
+                      } else {
+                        console.log('No error - !isRadioGetValue{{forLoopIndex}}');
+                        document.querySelector('#popup-question__item-error-{{forLoopIndex}}').style.display = 'none';
+                      }
+                    }
+                  {% endif %}  
+
+                  if(document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked){
+                    document.cookie = "{{ product.id }}_popupField{{ forLoopIndex }}=popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}---popInptVal---checked; max-age=86400";
+                  }
+                });
+              {% endfor %}
+
+              document.getElementById("popup_question_field-{{ forLoopIndex }}-second").addEventListener('input', (e) => {
+                
+                {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forLoopIndex] != blank %}
+                  if ({{inputIdItems}}) {
+                    if(document.querySelector('#popup_question_field-{{ forLoopIndex }}-second').value) {
+
+                      {% if inputParam[2] and inputParam[2] != '' %}
+                        {% for inputParamItem in inputParamItems %}
+                          if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value == '{{inputParam[2]}}') { 
+                            isRadioGetValue{{forLoopIndex}} = true;
+                          } else {
+                            isRadioGetValue{{forLoopIndex}} = false;
+                          }
+                        {% endfor %}  
+                      {% else %}
+                        isRadioGetValue{{forLoopIndex}} = true;
+                      {% endif %}
+
+                    } else {
+                      isRadioGetValue{{forLoopIndex}} = false;
+                    }
+                  } else {
+                    isRadioGetValue{{forLoopIndex}} = false;
+                  }
+                  
+                  if (isClick) {
+                    onButtonDisabled();
+                    onErrorMessage();
+                  } else {
+                    if (!isRadioGetValue{{forLoopIndex}}) {
+                      console.log('error - !isRadioGetValue{{forLoopIndex}}');
+                      document.querySelector('#popup-question__item-error-{{forLoopIndex}}').style.display = 'block';
+                    } else {
+                      console.log('No error - !isRadioGetValue{{forLoopIndex}}');
+                      document.querySelector('#popup-question__item-error-{{forLoopIndex}}').style.display = 'none';
+                    }
+                  }
+                {% endif %}
+              
+                if(document.getElementById("popup_question_field-{{ forLoopIndex }}-second") && document.getElementById("popup_question_field-{{ forLoopIndex }}-second").value != '' ){
+                  document.cookie = "{{ product.id }}_popupField{{ forLoopIndex }}-second=popup_question_field-{{ forLoopIndex }}-second---popInptVal---"+document.querySelector('#popup_question_field-{{ forLoopIndex }}-second').value+"; max-age=86400";
+                } else {
+                  document.cookie = "{{ product.id }}_popupField{{ forLoopIndex }}-second=popup_question_field-{{ forLoopIndex }}-second---popInptVal---empty; max-age=86400";
+                }
+              });
+              
+            {% else %}
+              {% for inputParamItem in inputParamItems %}
+                document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").addEventListener('input', (e) => {
+                  
+                  {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forLoopIndex] != blank %}
+                    if ({{inputIdItems}}) {
+                      {% if inputParam[2] and inputParam[2] != '' %}
+                        
+                        if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value == '{{inputParam[2]}}') { 
+                          isRadioGetValue{{forLoopIndex}} = true;
+                        } else {
+                          isRadioGetValue{{forLoopIndex}} = false;
+                        }
+                      {% else %}
+                        isRadioGetValue{{forLoopIndex}} = true;
+                      {% endif %}
+                    } else {
+                      isRadioGetValue{{forLoopIndex}} = false;
+                    }
+                  
+                    if (isClick) {
+                      onButtonDisabled();
+                      onErrorMessage();
+                    } else {
+                      if (!isRadioGetValue{{forLoopIndex}}) {
+                        console.log('error - !isRadioGetValue{{forLoopIndex}}');
+                        document.querySelector('#popup-question__item-error-{{forLoopIndex}}').style.display = 'block';
+                      } else {
+                        console.log('No error - !isRadioGetValue{{forLoopIndex}}');
+                        document.querySelector('#popup-question__item-error-{{forLoopIndex}}').style.display = 'none';
+                      }
+                    }
+                  {% endif %}
+
+                  if(document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked){
+                    document.cookie = "{{ product.id }}_popupField{{ forLoopIndex }}=popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}---popInptVal---checked; max-age=86400";
+                  }
+                });
+              {% endfor %}                
+            {% endif %}
+          
+          {% else %}
+            document.querySelector('#popup_question_field-{{ forloop.index0 }}').addEventListener('input', (e) => {
+
+              {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] != blank %}
+                isTextGetValue{{ forloop.index0 }} = !!e.target.value;
+
+                if (isClick) {
+                  onButtonDisabled();
+                  onErrorMessage();
+                } else {
+                  if (!isTextGetValue{{forloop.index0}}) {
+                    console.log('error - !isTextGetValue{{forloop.index0}}');
+                    document.querySelector('#popup-question__item-error-{{forloop.index0}}').style.display = 'block';
+                  } else {
+                    console.log('No error - !isTextGetValue{{forloop.index0}}');
+                    document.querySelector('#popup-question__item-error-{{forloop.index0}}').style.display = 'none';
+                  }
+                }
+              {% endif %}  
+          
+              if(document.querySelector('#popup_question_field-{{ forloop.index0 }}') && document.querySelector('#popup_question_field-{{ forloop.index0 }}').value != '' ){
+                document.cookie = "{{ product.id }}_popupField{{ forloop.index0 }}=popup_question_field-{{ forloop.index0 }}---popInptVal---"+document.querySelector('#popup_question_field-{{ forloop.index0 }}').value+"; max-age=86400";
+              } else {
+                document.cookie = "{{ product.id }}_popupField{{ forloop.index0 }}=popup_question_field-{{ forloop.index0 }}---popInptVal---empty; max-age=86400";
+              }
+            }); 
+        
+        {% endcase %}        
+      {% endfor %}
+    {% endif %}  
+    
+    if( document.querySelector(".popup-question__item-input-date")){
+      new Cleave('.popup-question__item-input-date', {
+        date: true,
+        delimiter: '/',
+        datePattern: ['d', 'm', 'Y']
+      });
+    }
+  });
+</script>

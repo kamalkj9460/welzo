@@ -1,0 +1,5 @@
+/*
+Generated time: April 20, 2023 07:24
+This file was created by the app developer. Feel free to contact the original developer with any questions. It was minified (compressed) by AVADA. AVADA do NOT own this script.
+*/
+.highlights-product{width:100%}.highlights-product__items{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:25px}.highlights-product__item{display:flex}.highlights-product__icon{display:flex;align-items:flex-start;margin-right:10px}.highlights-product__title{font-family:Poppins;font-style:normal;font-weight:500;font-size:16px;line-height:24px;letter-spacing:-.3px;color:#12022f}@media screen and (max-width:768px){.highlights-product__title{font-size:14px;line-height:24px}.subscription-page__highlights{padding-top:25px}.highlights-product{margin-bottom:25px}}

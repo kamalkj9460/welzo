@@ -1,0 +1,112 @@
+{{ 'section-learn-more.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
+  <div class="learn-more page-width section-{{ section.id }}-padding isolate">
+    <h2 class="page-title learn-more__title">
+        {{ section.settings.title | escape }}
+    </h2>
+
+    <div class="learn-more__list">
+      {% for block in section.blocks %}
+        <div class="learn-more__block" style="background-image: url({{ block.settings.background | img_url: 'original'}}); background-repeat: no-repeat; background-size: cover;">
+          {%- if block.settings.icon -%}
+            <div class="learn-more__icon-wrapper">
+              <img loading="lazy" class="learn-more__icon" src="{{ block.settings.icon | img_url: 'master' }}" alt="{{ icon.alt }}">
+            </div>
+          {%- endif -%}
+          <h3 class="learn-more__caption">{{ block.settings.caption }}</h3>
+          <div class="learn-more__text"> {{ block.settings.text }} </div>
+
+          <a class="link--text learn-more__link" href="{{ block.settings.link }}">See more {% render 'icon-arrow' %}</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.learn-more.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.learn-more.settings.title.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "learn-more-block",
+      "name": "t:sections.learn-more.blocks.learn-more-block.name",
+      "settings": [ 
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "t:sections.learn-more.blocks.learn-more-block.settings.icon.label"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "t:sections.learn-more.blocks.learn-more-block.settings.caption.label"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.learn-more.blocks.learn-more-block.settings.text.label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.learn-more.blocks.learn-more-block.settings.link.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "background",
+          "label": "t:sections.learn-more.blocks.learn-more-block.settings.background.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.learn-more.name"
+    }
+  ]
+}
+{% endschema %}

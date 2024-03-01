@@ -1,0 +1,135 @@
+{{ 'packages.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div id="packages_section_id" class="packages color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
+
+  <div class="page-width section-{{ section.id }}-padding isolate">
+
+    <div class="packages__title">{{ section.settings.title | escape }}</div>
+    <div class="packages__subtitle">{{ section.settings.subtitle }}</div>
+
+    <div class="packages__items">
+      {%- for block in section.blocks -%}
+        <div class="packages__item">
+          <div class="packages-item__image">
+            <img loading="lazy" src="{{ block.settings.image | img_url: 'master' }}"  alt="{{ block.settings.title }}">
+          </div>
+          <div class="packages-item__content">
+            {%- if block.settings.title != blank -%}
+              <div class="packages-item__title">{{ block.settings.title | escape }}</div>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="packages-item__text">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </div>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}" class="packages-item__link">
+              <span>View package</span>
+            </a>
+          {%- endif -%}
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.packages.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Choose the right package for you",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "default": "Choose the suitable package according to your needs",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "t:sections.packages.blocks.column.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.packages.blocks.column.settings.image.label"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Corporate Basic Screening",
+          "label": "t:sections.packages.blocks.column.settings.title.label"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Depending on the company, a user experience designer Depending on the company, a user experience designer</p>",
+          "label": "t:sections.packages.blocks.column.settings.text.label"
+        },
+        {
+          "type": "page",
+          "id": "link",
+          "label": "t:sections.packages.blocks.column.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.packages.presets.name",
+      "blocks": [
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

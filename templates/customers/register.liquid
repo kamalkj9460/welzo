@@ -1,0 +1,566 @@
+{{ 'customer.aio.min.css' | asset_url | stylesheet_tag }}
+
+{% comment %} Temporarily commented by client request{% endcomment %}
+{% comment %}<div class="customer activate" style="display:none;">{% endcomment %}
+{% comment %}{% render 'icon-logo-white' %}{% endcomment %}
+{% comment %}<p class="customer__subtitle">Please check your inbox and activate your profile</p>{% endcomment %}
+{% comment %}</div>{% endcomment %}
+
+<div class="customer register">
+  {% comment %} Temporarily commented by client request{% endcomment %}
+  {% comment %}<div class="activate-modal">{% endcomment %}
+  {% comment %}<div class="activate-modal__content">{% endcomment %}
+  {% comment %}<div class="activate-modal__icon">{% endcomment %}
+  {% comment %}<svg id="modal-close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">{% endcomment %}
+  {% comment %}<path fill-rule="evenodd" clip-rule="evenodd" d="M7.6129 6.2097C7.22061 5.90468 6.65338 5.93241 6.29289 6.29289C5.90237 6.68342 5.90237 7.31658 6.29289 7.70711L10.5858 12L6.29289 16.2929L6.2097 16.3871C5.90468 16.7794 5.93241 17.3466 6.29289 17.7071C6.68342 18.0976 7.31658 18.0976 7.70711 17.7071L12 13.4142L16.2929 17.7071L16.3871 17.7903C16.7794 18.0953 17.3466 18.0676 17.7071 17.7071C18.0976 17.3166 18.0976 16.6834 17.7071 16.2929L13.4142 12L17.7071 7.70711L17.7903 7.6129C18.0953 7.22061 18.0676 6.65338 17.7071 6.29289C17.3166 5.90237 16.6834 5.90237 16.2929 6.29289L12 10.5858L7.70711 6.29289L7.6129 6.2097Z" fill="#0A0569"/>{% endcomment %}
+  {% comment %}</svg>{% endcomment %}
+  {% comment %}</div>{% endcomment %}
+  {% comment %}{% render 'icon-logo-white' %}{% endcomment %}
+  {% comment %}<p class="customer__subtitle">Please check your inbox and activate your profile</p>{% endcomment %}
+  {% comment %}</div>{% endcomment %}
+  {% comment %}</div>{% endcomment %}
+  <svg style="display: none">
+    <symbol id="icon-error" viewBox="0 0 13 13">
+      <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
+      <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
+      <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
+      <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
+    </symbol>
+  </svg>
+  <h1 class="customer__title">
+    {{ 'customer.register.title' | t }}
+  </h1>
+
+  <div class="manager_block" style="display:none">
+    <div class="manager__text">
+      Based on your answers, you are eligible for treatment. Only one step left.<br>
+      Sign up and use our secure express checkout to receive your order the next working day!
+    </div>
+  </div>
+
+  {%- form 'create_customer' -%}
+  {%- if form.errors -%}
+    <script>
+      // Temporarily commented by client request
+      // localStorage.removeItem('showActivateMessage');
+      localStorage.setItem('registerError', 'true');
+      const redirectToForUpLink = localStorage.getItem('redirect_to');
+      if (redirectToForUpLink) {
+          window.addEventListener('DOMContentLoaded', function() {
+              if (redirectToForUpLink) {
+                  //getting url in error message and assigning new href
+                  let errorLink = document.querySelector('#error-message-url');
+                  errorLink.setAttribute('href', '/account/login/' + redirectToForUpLink);
+              }
+        })
+      }
+    </script>
+    <h2 class="form__message" tabindex="-1" autofocus>
+      <svg aria-hidden="true" focusable="false" role="presentation">
+        <use href="#icon-error"/>
+      </svg>
+      {{ 'templates.contact.form.error_heading' | t }}
+    </h2>
+    <ul>
+
+      {%- for field in form.errors -%}
+        <li>
+          {%- if field == 'form' -%}
+            {{ form.errors.messages[field] }}
+          {%- else -%}
+            <a href="#RegisterForm-{{ field }}">
+              {{ form.errors.translated_fields[field] | capitalize }}
+              {{ form.errors.messages[field] }}
+            </a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+    {%- else -%}
+      <script>
+          if (localStorage.getItem('registerError')) {
+              localStorage.removeItem('registerError');
+          } else {
+              localStorage.removeItem('redirect_to');
+          }
+      </script>
+  {%- endif -%}
+    <div class="field">
+      <div class="field__icon">
+        {% render "icon-user" %}
+      </div>
+      <input
+              -        type="text"
+              -        required
+              -        class="customer__input"
+              -        name="customer[first_name]"
+              -        id="RegisterForm-FirstName"
+              -        {% if form.first_name %}value="{{ form.first_name }}"{% endif %}
+              -        autocomplete="given-name"
+              -        placeholder="{{ 'customer.register.first_name' | t }}"
+              -      >
+      <label for="RegisterForm-FirstName">
+        {{ 'customer.register.first_name' | t }}
+      </label>
+    </div>
+    <div class="field">
+      <div class="field__icon">
+        {% render "icon-user" %}
+      </div>
+      <input
+              -        type="text"
+              -        required
+              -        class="customer__input"
+              -        name="customer[last_name]"
+              -        id="RegisterForm-LastName"
+              -        {% if form.last_name %}value="{{ form.last_name }}"{% endif %}
+              -        autocomplete="family-name"
+              -        placeholder="{{ 'customer.register.last_name' | t }}"
+              -      >
+      <label for="RegisterForm-LastName">
+        {{ 'customer.register.last_name' | t }}
+      </label>
+    </div>
+    <div class="field">
+      <div class="field__icon">
+        {% render "icon-user" %}
+      </div>
+      <input
+              type="text"
+              required
+              class="customer__input customer__input--birth"
+              name="customer[note][bday]"
+              id="ProductDateBirth"
+              autocomplete="off"
+              placeholder="dd/mm/yyyy"
+            maxlength="10">
+      <label for="ProductDateBirth">
+        {{ 'products.product.date_birth' | t }}
+      </label>
+    </div>
+    <div class="field">
+      <div class="field__icon">
+        {% render "icon-text" %}
+      </div>
+      <input
+              -        type="email"
+              -        required
+              -        class="customer__input"
+              -        name="customer[email]"
+              -        id="RegisterForm-email"
+              -        {% if form.email %} value="{{ form.email }}"{% endif %}
+              -        spellcheck="false"
+              -        autocapitalize="off"
+              -        autocomplete="email"
+              -        aria-required="true"
+              -        {% if form.errors contains 'email' %}
+        -          aria-invalid="true"
+        -          aria-describedby="RegisterForm-email-error"
+        -        {% endif %}
+              -        placeholder="{{ 'customer.register.email' | t }}"
+              -      >
+      <label for="RegisterForm-email">
+        {{ 'customer.register.email' | t }}
+      </label>
+    </div>
+  {%- if form.errors contains 'email' -%}
+    <span id="RegisterForm-email-error" class="form__message">
+        <svg aria-hidden="true" focusable="false" role="presentation">
+          <use href="#icon-error"/>
+        </svg>
+        {{ form.errors.translated_fields['email'] | capitalize }}
+      {{ form.errors.messages['email'] }}
+        .
+      </span>
+  {%- endif -%}
+    <div class="field">
+      <div class="field__icon">
+        {% render "icon-lock" %}
+      </div>
+      <input
+              -        type="password"
+              -        required
+              -        class="customer__input"
+              -        name="customer[password]"
+              -        id="RegisterForm-password"
+              -        aria-required="true"
+              -        {% if form.errors contains 'password' %}
+        -          aria-invalid="true"
+        -          aria-describedby="RegisterForm-password-error"
+        -        {% endif %}
+              -        placeholder="{{ 'customer.register.password' | t }}"
+              -      >
+      <label for="RegisterForm-password">
+        {{ 'customer.register.password' | t }}
+      </label>
+    </div>
+  {%- if form.errors contains 'password' -%}
+    <span id="RegisterForm-password-error" class="form__message">
+        <svg aria-hidden="true" focusable="false" role="presentation">
+          <use href="#icon-error"/>
+        </svg>
+        {{ form.errors.translated_fields['password'] | capitalize }}
+      {{ form.errors.messages['password'] }}
+        .
+      </span>
+  {%- endif -%}
+
+    <div class="customer-gender">
+      <div class="customer-gender__label">Gender</div>
+
+      <select id="Product-Gender" required class="customer-gender__select" name="customer[note][gender]">
+        <option value="" selected disabled hidden>...</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+
+    <div class="error-message">Fill in all the fields</div>
+    <div class="error-message error-message-email">Please enter a valid email address</div>
+    <div class="error-message-fields error-message-date">You must be at least 18 years old</div>
+
+    <label class="customer__remember customer__agree customer__reset">
+      <input required type="checkbox" checked>
+      <span class="customer__checkbox"></span>
+      <span class="customer__remember-text">
+        {% comment %}{{ 'customer.register.agree' | t }}{% endcomment %}
+        I agree to Welzo’s 
+        <a class="register__agree-link" href="https://welzo.com/policies/terms-of-service" target="_blank">Conditions of Use</a>
+        and 
+        <a class="register__agree-link" href="https://welzo.com/policies/privacy-policy" target="_blank">Privacy Notice</a>
+      </span>
+    </label>
+
+    <input type="hidden" name="return_to" value="">
+    <input type="hidden" id="customerPassword" name="customer[note][password]" value="">
+
+    <button id="button-form-send" class="customer__reset">
+      {{ 'customer.register.submit' | t }}
+    </button>
+
+  {%- endform -%}
+  <p id="login" class="customer__subtitle" tabindex="-1">
+    Already have an account?
+    <a class="customer__link" id="login_link" href="{{ routes.account_login_url }}" style="font-size: 16px;">
+      Login here.</a>
+  </p>
+</div>
+
+<script>
+
+  const redirectTo = localStorage.getItem('redirect_to');
+  console.log('redirectTo -> ', redirectTo);
+  const hasRegisterError = JSON.parse(localStorage.getItem('registerError'));
+  if (redirectTo && !hasRegisterError) {
+    console.log('window.location -> ', window.location.href)
+      window.location.href = '/pages/consultation' + redirectTo
+    console.log('window.location -> ', window.location.href)
+  }
+
+  const getQueryParams = (query) => {
+    let params = {};
+    new URLSearchParams(query).forEach((value, key) => {
+      let decodedKey = decodeURIComponent(key);
+      let decodedValue = decodeURIComponent(value);
+
+// This key is part of an array
+      if (decodedKey.endsWith("[]")) {
+        decodedKey = decodedKey.replace("[]", "");
+        params[decodedKey] || (params[decodedKey] =[]);
+        params[decodedKey].push(decodedValue);
+
+// Just a regular parameter
+      } else {
+        params[decodedKey] = decodedValue;
+      }
+    });
+
+    return params;
+  };
+
+  let obj = getQueryParams(window.location.search);
+  let newObj = {};
+
+  for (const i in obj) {
+    let a = i.match(/([^\[\]]+)(\[[^\[\]]+[^\]])*?/g),
+            p = obj[i];
+    j = a.length;
+
+    while (j --) {
+      q = {};
+      q[a[j]] = p;
+      p = q;
+    }
+
+// merge object
+    let k = Object.keys(p)[0],
+            o = newObj;
+
+    while (k in o) {
+      p = p[k];
+      o = o[k];
+      k = Object.keys(p)[0];
+    }
+
+    o[k] = p[k];
+  }
+
+  if (newObj.continueStatId) {
+    document.getElementsByClassName('manager_block')[0].setAttribute('style', '');
+
+    let continueStatId = newObj.continueStatId;
+    let quizId = newObj.quizId || newObj.id;
+  
+    let loginLink = document.getElementById('login_link');
+    let url = '?continueStatId=' + continueStatId + '&id=' + quizId;
+    localStorage.setItem('redirect_to', url);
+
+    loginLink.setAttribute('href', '{{ routes.account_login_url }}/?continueStatId=' + continueStatId + '&quizId=' + quizId);
+  
+  }
+
+  
+
+  // Temporarily commented by client request
+  // showing activate message after submitting form
+  // const showMessage = JSON.parse(localStorage.getItem('showActivateMessage'));
+  //
+  // const message = document.querySelector('.activate');
+  // const register = document.querySelector('.register');
+  //
+  // if (showMessage) {
+  //     register.style.display = 'none';
+  //     message.style.display = 'block';
+  //     localStorage.removeItem('showActivateMessage');
+  // }
+
+
+  // Adding url to return_to input and localstorage
+  // return_to input stores url for redirect after shopify form submission
+  function addUrlToInput (redirectUrl, inputUrl) {
+      let checkoutUrl = document.getElementsByName('return_to')[0];
+      checkoutUrl.setAttribute('value', 'account/register/' + inputUrl);
+      localStorage.setItem('redirect_to', redirectUrl);
+      localStorage.setItem('registerError', 'false');
+  }
+  
+  window.addEventListener('DOMContentLoaded', function() {
+    const inputFirstName = document.querySelector('#RegisterForm-FirstName');
+    const inputLastName = document.querySelector('#RegisterForm-LastName');
+    const inputEmail = document.querySelector('#RegisterForm-email');
+    const inputPassword = document.querySelector('#RegisterForm-password');
+    const buttonFormSend = document.querySelector('#button-form-send');
+    // const createCustomerForm = document.querySelector('#create_customer');
+    // const modalCloseIcon = document.querySelector('#modal-close-icon');
+    const errorMessage = document.querySelector('.error-message');
+    const errorMessageDate = document.querySelector('.error-message-date');
+    const errorMessageEmail = document.querySelector('.error-message-email');
+    // const activateModal = document.querySelector('.activate-modal');
+    const inputBDay = document.querySelector('#ProductDateBirth');
+    const inputGender = document.querySelector('#Product-Gender');
+    const customerPassword = document.querySelector('#customerPassword');
+
+    const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+
+    let isInputFirstName = !!inputFirstName.value;
+    let isInputLastName = !!inputLastName.value;
+    let isInputEmail = !!inputEmail.value;
+    let isInputEmailValid = !!EMAIL_REGEXP.test(inputEmail.value);
+    let isInputPassword = !!inputPassword.value;
+    let isInputBDay = !!inputBDay.value;
+    let isInputGender = !!inputGender.value;
+    let isDateValid = false;
+    let isClick = false;
+
+    const onButtonDisabled = () => {
+      if (isInputFirstName && isInputLastName && isInputEmail && isInputPassword && isInputEmailValid && isDateValid) {
+        buttonFormSend.removeAttribute('disabled');
+      } else {
+        buttonFormSend.setAttribute('disabled', 'true');
+      };
+    };
+
+    const getPassword = () => {
+      if(isInputPassword){
+        let password = inputPassword.value;
+        customerPassword.setAttribute('value', password);
+
+        let checkoutUrl = document.getElementsByName('return_to')[0];
+        if (newObj.continueStatId) {
+
+          let properties = '&password=' + password;
+
+          if(isInputFirstName) properties+="&firstname="+inputFirstName.value;
+          if(isInputLastName) properties+="&lastname="+inputLastName.value;
+          if(isInputEmail) properties+="&email="+inputEmail.value;
+          if(inputBDay.value) properties+="&bday="+inputBDay.value;
+          if(inputGender.value) properties+="&gender="+inputGender.value;
+
+          document.getElementsByClassName('manager_block')[0].setAttribute('style', '');
+
+          let continueStatId = newObj.continueStatId;
+          let quizId = newObj.quizId;
+
+          // id is used on pages with quiz
+          // quizId is used on pages /register and /login
+          let redirectUrl = '?continueStatId=' + continueStatId + '&id=' + quizId+properties;
+          let inputUrl = '?continueStatId=' + continueStatId + '&quizId=' + quizId+properties;
+          addUrlToInput(redirectUrl, inputUrl);
+          
+        } else {
+          // Temporarily commented by client request
+          // refreshing page to show activate message
+          // localStorage.setItem('showActivateMessage', 'true');
+          // checkoutUrl.setAttribute('value', '/account/register');
+        }
+
+        buttonFormSend.removeAttribute('disabled');
+      }
+    }
+
+    const onErrorBDay = () => {
+      if(isDateValid) {
+        inputBDay.style.border = 'none';
+        errorMessageDate.style.display = 'none';
+      } else {
+        inputBDay.style.border = '2px solid #ff0000';
+        errorMessageDate.style.display = 'block';
+      }
+    }
+
+    const onErrorMessage = () => {
+      if (isInputFirstName && isInputLastName && isInputEmail && isInputPassword) {
+        errorMessage.style.display = 'none';
+      } else {
+        errorMessage.style.display = 'block';
+      };
+
+      onErrorBDay();
+
+      if (!isInputFirstName || !isInputLastName || !isInputEmail || !isInputPassword) {
+        errorMessageEmail.style.display = 'none';
+      } else if (!isInputEmailValid) {
+        errorMessageEmail.style.display = 'block';
+      } else if (isInputEmailValid) {
+        errorMessageEmail.style.display = 'none';
+      };
+
+      if (!isInputEmail || !isInputEmailValid) {
+        inputEmail.style.border = '2px solid #ff0000';
+      } else {
+        inputEmail.style.border = 'none';
+      };
+
+      if (!isInputFirstName) {
+        inputFirstName.style.border = '2px solid #ff0000';
+      } else {
+        inputFirstName.style.border = 'none';
+      };
+
+      if (!isInputLastName) {
+        inputLastName.style.border = '2px solid #ff0000';
+      } else {
+        inputLastName.style.border = 'none';
+      };
+
+      if (!isInputPassword) {
+        inputPassword.style.border = '2px solid #ff0000';
+      } else {
+        inputPassword.style.border = 'none';
+      };
+    };
+
+    // Temporarily commented by client request
+    // if (newObj.continueStatId) {
+    //     createCustomerForm.addEventListener('submit', (e) => {
+    //         activateModal.style.display = 'flex';
+    //     });
+    //     document.addEventListener('click', (event) => {
+    //         const activateModalContent = document.querySelector('.activate-modal__content');
+    //         const isClickInside = activateModalContent.contains(event.target);
+    //         if (!isClickInside) {
+    //             activateModal.style.display = 'none';
+    //         }
+    //     });
+    // }
+    //
+    // modalCloseIcon.addEventListener('click', () => {
+    //     activateModal.style.display = 'none';
+    // });
+
+    buttonFormSend.addEventListener('click', () => {
+      isClick = true;
+      onButtonDisabled();
+      onErrorMessage();
+      getPassword();
+    });
+
+    inputEmail.addEventListener('input', (e) => {
+      isInputEmailValid = !!EMAIL_REGEXP.test(e.target.value);
+      isInputEmail = !!e.target.value;
+
+      if (isClick) {
+        onErrorMessage();
+      };
+      onButtonDisabled();
+    });
+
+    inputBDay.addEventListener('input', (e) => {
+      if(e.target.value.length === 10) {
+        const [d, m, y] = e.target.value.split('/');
+        const age = (new Date()).getFullYear() - (new Date(`${m}/${d}/${y}`)).getFullYear();
+        isDateValid = e.target.value.length === 10 && 
+                      18 <= age && age < 120;
+      }
+      
+      isInputBDay = !!e.target.value;
+
+      if (isClick) {
+        onErrorMessage();
+      };
+      onErrorBDay();
+      onButtonDisabled();
+    });
+
+    inputBDay.addEventListener('blur', (e) => {
+      if (isClick) {
+        onErrorMessage();
+      };
+      onErrorBDay();
+      onButtonDisabled();
+    });
+
+    inputFirstName.addEventListener('input', (e) => {
+      isInputFirstName = !!e.target.value;
+
+      if (isClick) {
+        onErrorMessage();
+      };
+      onButtonDisabled();
+    });
+
+    inputLastName.addEventListener('input', (e) => {
+      isInputLastName = !!e.target.value;
+
+      if (isClick) {
+        onErrorMessage();
+      };
+      onButtonDisabled();
+    });
+
+    inputPassword.addEventListener('input', (e) => {
+      isInputPassword = !!e.target.value;
+
+      if (isClick) {
+        onErrorMessage();
+      };
+      onButtonDisabled();
+    });
+
+    new Cleave('#ProductDateBirth', {
+      date: true,
+      delimiter: '/',
+      datePattern: ['d', 'm', 'Y']
+    });
+  });
+</script>

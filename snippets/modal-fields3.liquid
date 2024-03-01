@@ -1,0 +1,186 @@
+{{ 'modal-fields2.aio.min.css' | asset_url | stylesheet_tag }}
+
+<style>
+    .modal-fields__button.dissable {
+        filter: grayscale(1);
+        pointer-events: none;
+    }
+</style>
+
+<script>
+
+    window.onload = function() {
+        var today = new Date();
+        let options = [{day: 'numeric'}, {month: 'short'}, {year: 'numeric'}];
+        let min = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = "0" + dd;
+        }
+        if (mm < 10) {
+            mm = "0" + mm;
+        }
+        old = yyyy - 100;
+        today = yyyy + "-" + mm + "-" + dd;
+        min = old + "-" + mm + "-" + dd;
+        // document.getElementById(“datefield”).setAttribute(“max”, today);
+        //$("#popup_question_field-13").attr("type", "date");
+        //$("#popup_question_field-13").attr("min", "1930-01-01");
+        //$("#popup_question_field-13").attr("max", today);
+        //$("#popup_question_field-13").val( today);
+        //$("#popup_question_field-13").on('keyup', function(e) {
+
+        //if($("#popup_question_field-13").val() > today || $("#popup_question_field-13").val() < min) {
+        //$('.modal-fields__button').addClass('dissable')
+        //} else {
+        //$('.modal-fields__button').removeClass('dissable')
+        //}
+        //});
+        // $(".popup-question__item-input-date").attr("type", "date");
+        // $(".popup-question__item-input-date").attr("min", "1899-01-01");
+        // $(".popup-question__item-input-date").attr("max", today);
+        // $(".popup-question__item-input-date").on('keydown', function(e) {
+        //     e.preventDefault();
+        // });
+
+        // $("#popup_question_field-13").on('change', function(e) {
+
+        // if($("#popup_question_field-13").val() > today || $("#popup_question_field-13").val() < min) {
+        //   $('.modal-fields__button').addClass('dissable')
+        // } else {
+        //   $('.modal-fields__button').removeClass('dissable')
+        // }
+        // });
+
+        // $("#popup_question_field-17").attr("type", "date");
+        // $("#popup_question_field-17").attr("min", "1930-01-01");
+        // $("#popup_question_field-17").attr("max", today);
+        // $("#popup_question_field-17").val( today);
+        // $("#popup_question_field-17").on('keyup', function(e) {
+
+        //   if($("#popup_question_field-17").val() > today || $("#popup_question_field-17").val() < min) {
+        //     $('.modal-fields__button').addClass('dissable')
+        //   } else {
+        //     $('.modal-fields__button').removeClass('dissable')
+        //   }
+        // });
+
+        // $("#popup_question_field-17").on('change', function(e) {
+
+        // if($("#popup_question_field-17").val() > today || $("#popup_question_field-17").val() < min) {
+        //   $('.modal-fields__button').addClass('dissable')
+        // } else {
+        //   $('.modal-fields__button').removeClass('dissable')
+        // }
+        // });
+    };
+</script>
+<modal-dialog id="PopupModal-{{product.id}}" class="modal-fields">
+    <div role="dialog" aria-label="{{ product.title }}" aria-modal="true" class="modal-fields__wrap modal-fields__wrap2" tabindex="-1">
+        <div type="button" class="modal-fields__close" aria-label="{{ 'accessibility.close' | t }}"></div>
+
+        <div class="modal-fields__content-widget modal-widget">
+            <div class="modal-fields__content">
+                <div class="modal-fields__content-socials">
+                    {%- render 'icon-raitingstars2' %}
+                    {%- render 'icon-trustindex' %}
+                    <script defer async src='https://cdn.trustindex.io/loader.js?48b79d412a616064bd66254fd18'></script>
+                </div>
+                <ul class="modal-fields__content-steps">
+                    <li class="modal-fields__content-steps-item active">{{ 'products.product.product_popup_step1' | t }}</li>
+                    <li class="modal-fields__content-steps-item">{{ 'products.product.product_popup_step2' | t }}</li>
+                    <li class="modal-fields__content-steps-item">{{ 'products.product.product_popup_step3' | t }}</li>
+                </ul>
+                <form class="modal-fields__form" action="#" onsubmit="formSubmit();return false">
+                    <div class="modal-fields__caption-holder">
+                        <p class="modal-fields__caption">{{ 'products.product.product_popup_title' | t }}</p>
+                        <div class="modal-fields__caption-text">{{ 'products.product.product_popup_text' | t }}</div>
+                    </div>
+                    <div>{% render 'order-properties-fields3' %}</div>
+                    <button id="ModalClose-{{ product.id }}" type="submit" class="modal-fields__button">
+                        <span>{{ 'products.product.product_popup_btn_text2' | t }}</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</modal-dialog>
+<script>
+    //form-add-to-cart-button-id
+    const formAddCartButton = document.getElementById("form-add-to-cart-button-id");
+
+    const modalFieldsClose = document.querySelector('.modal-fields__close');
+    const modalFields = document.querySelector('.modal-fields');
+    const bodyQ = document.body;
+
+    const formSubmit = (event) => {
+        // event.preventDefault();
+        {% if product.metafields.accentuate.popup_question_field %}
+        {%- for popup_question_field in product.metafields.accentuate.popup_question_field -%}
+        {% assign inputParamCount = popup_question_field | split: "-----field-----" %}
+        {% assign inputParam = inputParamCount[0] | split: "|" %}
+        {% case inputParam[0] %}
+        {% when "checkbox" %}
+        {% assign forLoopIndex = forloop.index0 %}
+        {% assign inputParamItems = inputParam[1] | split: ":" %}
+        let checkboxValues{{forLoopIndex}} = '';
+        {% for inputParamItem in inputParamItems %}
+        if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked) {
+            if ( checkboxValues{{forLoopIndex}} !='') {
+                checkboxValues{{forLoopIndex}} = checkboxValues{{forLoopIndex}} +', '+ document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+            } else {
+                checkboxValues{{forLoopIndex}} = document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+            }
+        }
+        {% endfor %}
+
+        if (checkboxValues{{forLoopIndex}} && document.getElementById("popup_question_field-{{ forloop.index0 }}-h")) document.getElementById("popup_question_field-{{ forloop.index0 }}-h").value = checkboxValues{{forLoopIndex}};
+
+        {% when "date" %}
+        if (document.getElementById("popup_question_field-{{ forloop.index0 }}") && document.getElementById("popup_question_field-{{ forloop.index0 }}-h")) document.getElementById("popup_question_field-{{ forloop.index0 }}-h").value = document.getElementById("popup_question_field-{{ forloop.index0 }}").value;
+
+        {% when "radio" %}
+        {% assign forLoopIndex = forloop.index0 %}
+        {% assign inputParamItems = inputParam[1] | split: ":" %}
+        let radioValues{{forLoopIndex}} = '';
+        {% for inputParamItem in inputParamItems %}
+        if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked) {
+            if ( radioValues{{forLoopIndex}} !='') {
+                radioValues{{forLoopIndex}} = radioValues{{forLoopIndex}} +', '+ document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+            } else {
+                radioValues{{forLoopIndex}} = document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+            }
+        }
+        {% endfor %}
+
+        {% if inputParamCount[1] and inputParamCount[1] != '' %}
+        radioValues{{forLoopIndex}} = document.getElementById("popup_question_field-{{ forloop.index0 }}-second").value+' '+radioValues{{forLoopIndex}};
+        {% endif %}
+
+        if (radioValues{{forLoopIndex}} && document.getElementById("popup_question_field-{{ forloop.index0 }}-h")) document.getElementById("popup_question_field-{{ forloop.index0 }}-h").value = radioValues{{forLoopIndex}};
+
+        if (document.getElementById("popup_question_field-radAddField-{{ forloop.index0 }}") && document.getElementById("popup_question_field-{{ forloop.index0 }}-radAddField-h")) document.getElementById("popup_question_field-{{ forloop.index0 }}-radAddField-h").value = document.getElementById("popup_question_field-radAddField-{{ forloop.index0 }}").value;
+
+        {% else %}
+        if (document.getElementById("popup_question_field-{{ forloop.index0 }}") && document.getElementById("popup_question_field-{{ forloop.index0 }}-h")) document.getElementById("popup_question_field-{{ forloop.index0 }}-h").value = document.getElementById("popup_question_field-{{ forloop.index0 }}").value;
+
+        {% endcase %}
+        {% endfor %}
+        {% endif %}
+
+        //if (formAddCartButton) formAddCartButton.click();
+
+        document.body.classList.add('treatment-options-enable');
+        document.getElementById("product2-treatment").scrollIntoView({behavior: 'smooth'}, true);
+    }
+
+    modalFieldsClose.addEventListener('click', () => {
+        modalFields.removeAttribute('open');
+        document.body.classList.remove('overflow-hidden');
+    });
+
+    {% assign product_cart_quantity = cart | line_items_for: product | sum: 'quantity' %}
+
+</script>

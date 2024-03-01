@@ -1,0 +1,411 @@
+{{ 'section-hero.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  {% if section.settings.background_image != blank and section.settings.show_background %}
+  #Hero-{{ section.id }} {
+    background-image: url({{ section.settings.background_image | img_url: 'original'}});
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  #Hero-{{ section.id }} * {
+    color: {{ section.settings.body_text }};
+  }
+
+  @media screen and (max-width: 767px) {
+    #Hero-{{ section.id }} {
+      background-image: url({{ section.settings.background_image_mobile | img_url: 'original'}});
+    }
+  }
+  {%- endif -%}
+
+  {% if section.settings.show_background == false %}
+    #Hero-{{ section.id }} {
+    background-color: #213b94;
+    color: #FFFFFF;
+    }
+  {% endif %}
+
+  .section-{{ section.id }}-padding {
+    padding-top: 24px;
+    padding-bottom: 50px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+{%- endstyle -%}
+
+<div id="Hero-{{ section.id }}" class="hero-section">
+  <div class="hero-section__content page-width section-{{ section.id }}-padding isolate">
+    <div class="hero-section__wrapper">
+      <div class="hero-section__box content-container content-container--full-width-mobile">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'heading' -%}
+              <h1 class="hero-section__heading {% if block.settings.heading_size == 'medium' %}h1{% else %}h0{% endif %} {% if block.settings.show_line == true %}hero-section__heading--line{% endif %}" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.heading | escape }}</span>
+              </h1>
+            {%- when 'text' -%}
+              <div class="hero-section__text {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.text | escape }}</span>
+              </div>
+            {%- when 'buttons' -%}
+              <div class="hero-section__buttons{% if block.settings.button_label_1 != blank and block.settings.button_label_2 != blank %} hero-section__buttons--multiple{% endif %}" {{ block.shopify_attributes }}>
+                {%- if block.settings.button_label_1 != blank -%}
+                  <a{% if block.settings.button_link_1 == blank %} role="link" aria-disabled="true"{% else %} href="{{ block.settings.button_link_1 }}"{% endif %} class="button{% if block.settings.button_style_secondary_1 %} button--secondary{% else %} button--primary{% endif %}">{{ block.settings.button_label_1 | escape }}</a>
+                {%- endif -%}
+                {%- if block.settings.button_label_2 != blank -%}
+                  <a{% if block.settings.button_link_2 == blank %} role="link" aria-disabled="true"{% else %} href="{{ block.settings.button_link_2 }}"{% endif %} class="button{% if block.settings.button_style_secondary_2 %} button--secondary{% else %} button--primary{% endif %}">{{ block.settings.button_label_2 | escape }}</a>
+                {%- endif -%}
+              </div>
+            {%- when 'advantage' -%}
+              <div class="hero-section__trustindex">
+                {%- render 'trustindex-small-black' %}
+              </div>
+              <div class="hero-section__advantage">
+                
+                <div class="hero-section__advantage-block">
+                  {%- render 'icon-stethoscope' %}
+                  <span class="hero-section__advantage-text">
+                    {{ block.settings.advantage_first }}
+                  </span>
+                </div>
+                <div class="hero-section__advantage-block">
+                  {%- render 'icon-check-circle' %}
+                  <span class="hero-section__advantage-text">
+                    {{ block.settings.advantage_second }}
+                  </span>
+                </div>
+              </div>
+              <h2 class="hero-section__heading {% if block.settings.heading_size == 'medium' %}h1{% else %}h0{% endif %}" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.heading | escape }}</span>
+              </h2>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+      <div class="hero-section__box hero-section__box-image">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'image' -%}
+              {% render 'image-with-back', image: block.settings.image %}
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {% if section.settings.show_logos %}
+      <div class="hero-section__logos-holder">
+        {% if section.settings.title_news != blank %}
+          <h6 class="hero-section__logos-title">{{ section.settings.title_news }}</h6>
+        {%- endif -%}
+        <div class="hero-section__logos-list">
+          {% if section.settings.image_news1 %}
+            <div class="hero-section__logos-item">
+              <img loading="lazy" class="hero-section__logos__image"
+               
+                srcset="{%- if section.settings.image_news1.width >= 275 -%}{{ section.settings.image_news1 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news1.width >= 550 -%}{{ section.settings.image_news1 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news1.width >= 710 -%}{{ section.settings.image_news1 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news1.width >= 1420 -%}{{ section.settings.image_news1 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news1 | img_url: 'master' }} {{ section.settings.image_news1.width }}w"
+                src="{{ section.settings.image_news1 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news1.alt }}">
+            </div>  
+          {%- endif -%}
+          {% if section.settings.image_news2 %}
+            <div class="hero-section__logos-item">
+              <img loading="lazy" class="hero-section__logos__image"
+               
+                srcset="{%- if section.settings.image_news2.width >= 275 -%}{{ section.settings.image_news2 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news2.width >= 550 -%}{{ section.settings.image_news2 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news2.width >= 710 -%}{{ section.settings.image_news2 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news2.width >= 1420 -%}{{ section.settings.image_news2 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news2 | img_url: 'master' }} {{ section.settings.image_news2.width }}w"
+                src="{{ section.settings.image_news2 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news2.alt }}">
+            </div>  
+          {%- endif -%}
+          {% if section.settings.image_news3 %}
+            <div class="hero-section__logos-item">
+              <img loading="lazy" class="hero-section__logos__image"
+               
+                srcset="{%- if section.settings.image_news3.width >= 275 -%}{{ section.settings.image_news3 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news3.width >= 550 -%}{{ section.settings.image_news3 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news3.width >= 710 -%}{{ section.settings.image_news3 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news3.width >= 1420 -%}{{ section.settings.image_news3 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news3 | img_url: 'master' }} {{ section.settings.image_news3.width }}w"
+                src="{{ section.settings.image_news3 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news3.alt }}">
+            </div>  
+          {%- endif -%}
+          {% if section.settings.image_news4 %}
+            <div class="hero-section__logos-item">
+              <img loading="lazy" class="hero-section__logos__image"
+               
+                srcset="{%- if section.settings.image_news4.width >= 275 -%}{{ section.settings.image_news4 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news4.width >= 550 -%}{{ section.settings.image_news4 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news4.width >= 710 -%}{{ section.settings.image_news4 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news4.width >= 1420 -%}{{ section.settings.image_news4 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news4 | img_url: 'master' }} {{ section.settings.image_news4.width }}w"
+                src="{{ section.settings.image_news4 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news4.alt }}">
+            </div>  
+          {%- endif -%}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.hero-section.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "t:sections.hero-section.settings.background_image.label"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "t:sections.hero-section.settings.background_image_mobile.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background",
+      "label": "Show background image",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "body_text",
+      "label": "Section text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logos",
+      "label": "Show logos",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title_news",
+      "label": "Title logos",
+      "default": "AS SEEN IN"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news1",
+      "label": "Icon logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news2",
+      "label": "Icon logo 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news3",
+      "label": "Icon logo 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news4",
+      "label": "Icon logo 4"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 150
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.hero-section.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Image banner",
+          "label": "t:sections.hero-section.blocks.heading.settings.heading.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "medium",
+              "label": "t:sections.hero-section.blocks.heading.settings.heading_size.options__1.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.hero-section.blocks.heading.settings.heading_size.options__2.label"
+            }
+          ],
+          "default": "medium",
+          "label": "t:sections.hero-section.blocks.heading.settings.heading_size.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_line",
+          "label": "t:sections.hero-section.blocks.heading.settings.show_line.label",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "t:sections.hero-section.blocks.image.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.hero-section.blocks.image.settings.image.label"
+        }
+      ]
+    },
+    {
+      "type": "advantage",
+      "name": "t:sections.hero-section.blocks.advantage.name",
+      "limit": 1,
+      "settings": [
+      {
+        "type": "text",
+        "id": "advantage_first",
+        "label": "t:sections.hero-section.blocks.advantage.first.label",
+        "default": "Serviced by GMC registered NHS doctors and labs"
+      },
+      {
+        "type": "text",
+        "id": "advantage_second",
+        "label": "t:sections.hero-section.blocks.advantage.second.label",
+        "default": "97% satisfaction from over 500,000 patients nationwide"
+      }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.hero-section.blocks.text.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Give customers details about the banner image(s) or content on the template.",
+          "label": "t:sections.hero-section.blocks.text.settings.text.label"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "body",
+              "label": "t:sections.hero-section.blocks.text.settings.text_style.options__1.label"
+            },
+            {
+              "value": "subtitle",
+              "label": "t:sections.hero-section.blocks.text.settings.text_style.options__2.label"
+            },
+            {
+              "value": "caption-with-letter-spacing",
+              "label": "t:sections.hero-section.blocks.text.settings.text_style.options__3.label"
+            }
+          ],
+          "default": "body",
+          "label": "t:sections.hero-section.blocks.text.settings.text_style.label"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "t:sections.hero-section.blocks.buttons.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Button label",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_label_1.label",
+          "info": "t:sections.hero-section.blocks.buttons.settings.button_label_1.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_link_1.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_1",
+          "default": false,
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_style_secondary_1.label"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "default": "Button label",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_label_2.label",
+          "info": "t:sections.hero-section.blocks.buttons.settings.button_label_2.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_link_2.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_2",
+          "default": false,
+          "label": "t:sections.hero-section.blocks.buttons.settings.button_style_secondary_2.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.hero-section.presets.name",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "buttons"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

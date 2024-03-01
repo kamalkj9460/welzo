@@ -1,0 +1,205 @@
+{{ 'category-first-screen.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="category-first-screen color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
+  {% if section.settings.show_background %}
+    <div class="category-first-screen__background-block">
+      <img loading="lazy"
+        class="category-first-screen__image-background"
+
+        srcset="{%- if section.settings.image_background.width >= 275 -%}{{ section.settings.image_background | img_url: '275x' }} 275w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 550 -%}{{ section.settings.image_background | img_url: '550x' }} 550w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 710 -%}{{ section.settings.image_background | img_url: '710x' }} 710w,{%- endif -%}
+        {%- if section.settings.image_background.width >= 1420 -%}{{ section.settings.image_background | img_url: '1420x' }} 1420w,{%- endif -%}
+        {{ section.settings.image_background | img_url: 'master' }} {{ section.settings.image_background.width }}w"
+        src="{{ section.settings.image_background | img_url: '550x' }}"
+        alt="{{ section.settings.title }}"
+      >
+    </div>
+  {% endif %}
+  <div class="page-width section-{{ section.id }}-padding isolate">
+    <div class="category-first-screen__wrapper{% unless section.settings.show_background %} without-background{% endunless %}">
+      <div class="category-first-screen__content">
+        <h1 class="category-first-screen__title">
+          {{ section.settings.title | escape }}
+          <div class="category-first-screen__title category-first-screen__subtitle">
+            {{ section.settings.subtitle | escape }}
+          </div>
+        </h1>
+        <div class="category-first-screen__text">
+          {{ section.settings.text }}
+        </div>
+      </div>
+      <div class="category-first-screen__conditions category-conditions">
+        <div class="category-conditions__items">
+          {%- for block in section.blocks -%}
+            {% if block.type == "column" %}
+              <div class="category-conditions__item">
+                <div class="category-conditions__image">
+                  <img loading="lazy" src="{{ block.settings.image | img_url: 'master' }}"  alt="{{ block.settings.title }}">
+                </div>
+                <div class="category-conditions__title">{{ block.settings.title }}</div>
+                {% if block.settings.link != "" or block.settings.link_product != "" and block.settings.link_product != null %}
+                  <a href="{% if block.settings.link != ""%}/pages/{{ block.settings.link }}{% else %}/products/{{ block.settings.link_product }}{% endif %}" class="category-conditions__link">
+                    <span class="category-conditions__text">Learn more</span>
+                    {% render "icon-right" %}
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="category-first-screen__highlights category-highlights">
+        <ul class="category-highlights__items">
+          {%- for block in section.blocks -%}
+            {% if block.type == "highlight" %}
+              <li class="category-highlights__item">
+                <div class="category-highlights__image">
+                  <img src="{{ block.settings.image | img_url: 'master' }}"  alt="{{ block.settings.title }}">
+                </div>
+                <div class="category-highlights__title">{{ block.settings.title }}</div>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.category-first-screen.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_background",
+      "label": "t:sections.category-first-screen.settings.image_background.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background",
+      "label": "Show background image",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Men’s healthcare",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "default": "without the waiting rooms",
+      "label": "Subtitle"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "default": "<p>Men’s bodies go through major changes throughout their lives. Each stage requires new types of care and consideration.</p>",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "t:sections.category-first-screen.blocks.column.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.category-first-screen.blocks.column.settings.image.label"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Erectile dysfunction",
+          "label": "t:sections.category-first-screen.blocks.column.settings.title.label"
+        },
+        {
+          "type": "page",
+          "id": "link",
+          "label": "t:sections.category-first-screen.blocks.column.settings.link.label"
+        },
+        {
+          "type": "product",
+          "id": "link_product",
+          "label": "t:sections.category-first-screen.blocks.column.settings.link.label"
+        }
+      ]
+    },
+    {
+      "type": "highlight",
+      "name": "t:sections.category-first-screen.blocks.highlight.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.category-first-screen.blocks.highlight.settings.image.label"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Discreet and free delivery",
+          "label": "t:sections.category-first-screen.blocks.highlight.settings.title.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.category-first-screen.presets.name",
+      "blocks": [
+        {
+          "type": "column"
+        },
+        {
+          "type": "highlight"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

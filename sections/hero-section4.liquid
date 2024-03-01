@@ -1,0 +1,495 @@
+{{ 'section-hero4.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  @media only screen and (max-width: 790px) {
+    .hero-section4__blocks {
+      flex-wrap: nowrap;
+      overflow-x: scroll;
+      justify-content: flex-start;
+    }
+    .hero-section4__blocks-item {
+      flex-shrink: 0;
+      margin: 5px 10px 30px 10px !important;
+    }
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.25 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.2 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  
+  {% if section.settings.image_bg != blank %}
+     @media only screen and (min-width: 767px) {
+       #Hero-{{ section.id }} {          
+          background: {{ section.settings.image_bg}};
+          background: -moz-radial-gradient({{ section.settings.image_bg}});
+          background: -webkit-radial-gradient({{ section.settings.image_bg}});
+          background: radial-gradient({{ section.settings.image_bg}});       
+        }
+      }
+  {%- endif -%}
+{%- endstyle -%}
+
+<div id="Hero-{{ section.id }}" class="hero-section4">
+  <div class="page-width section-{{ section.id }}-padding isolate">
+    <div class="hero-section4__content">
+      {% if section.settings.title != blank %}
+        <h2 class="hero-section4__title"><span>{{ section.settings.title }}</span></h2>
+      {%- endif -%}
+      
+      {% if section.settings.image != blank %}
+        <div class="hero-section4__img-holder">
+          <div class="hero-section4__img-box">
+            
+            <div class="hero-section4__img-bg1" >
+              <svg width="958" height="954" viewBox="0 0 958 954" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M36.8622 275.92C108.3 202.789 190.687 141.267 281.052 93.5707L303.251 82.4518C387.637 40.5655 478.428 13.1301 571.86 1.28396C591.5 -1.50079 611.515 0.258133 630.371 6.4258C649.226 12.5935 666.421 23.0059 680.635 36.8644C753.927 108.02 815.714 190.172 863.778 280.368L875.987 304.829L879.317 309.277L880.427 311.501C915.946 389.333 941.475 471.613 953.684 555.004L955.904 570.571C958.907 589.99 957.361 609.842 951.39 628.56C945.418 647.278 935.184 664.349 921.495 678.424L892.637 706.221L850.458 745.137C797.311 789.831 739.212 828.257 677.305 859.662L651.777 871.892L647.337 874.116L645.117 875.228C562.946 913.904 475.359 939.776 385.388 951.948C365.832 954.962 345.846 953.42 326.981 947.442C308.116 941.464 290.881 931.211 276.612 917.48C246.643 888.571 218.895 857.438 192.256 825.193L183.376 812.962L180.046 809.627L178.936 806.291C146.748 765.151 117.889 719.564 94.5798 672.864L79.0405 643.955C40.1943 561.648 13.9991 473.929 1.34371 383.773C-1.51686 364.267 0.204185 344.362 6.37006 325.639C12.5359 306.916 22.9766 289.892 36.8622 275.92Z" fill="url(#paint0_linear_134_279)"/>
+                <defs>
+                <linearGradient id="paint0_linear_134_279" x1="947.912" y1="566.679" x2="226.922" y2="149.698" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#AAAEFF"/>
+                <stop offset="0.2" stop-color="#D2D4FF"/>
+                <stop offset="0.6" stop-color="#F7F7FF"/>
+                <stop offset="1" stop-color="#EBECFF"/>
+                </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            
+            {% if section.settings.image_background != blank %}<div class="hero-section4__img-bg" style="background-color:{{ section.settings.image_background }}"></div>{%- endif -%}        
+            <img class="hero-section4__img"
+              srcset="{%- if section.settings.image.width >= 275 -%}{{ section.settings.image | img_url: '275x' }} 275w,{%- endif -%}
+                      {%- if section.settings.image.width >= 550 -%}{{ section.settings.image | img_url: '550x' }} 550w,{%- endif -%}
+                      {%- if section.settings.image.width >= 710 -%}{{ section.settings.image | img_url: '710x' }} 710w,{%- endif -%}
+                      {%- if section.settings.image.width >= 1420 -%}{{ section.settings.image | img_url: '1420x' }} 1420w,{%- endif -%}
+                      {{ section.settings.image | img_url: 'master' }} {{ section.settings.image.width }}w"
+              src="{{ section.settings.image | img_url: 'master' }}"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+              alt="{{ section.settings.image.alt }}">{% comment %}{% endcomment %}
+          </div>
+        </div>
+      {%- endif -%}
+     
+      {% if section.settings.show_review %}
+        <div class="hero-section4__review">
+          {% if section.settings.reviews_count != blank and section.settings.reviews_text != blank %}
+            <div class="hero-section4__review-left">
+              <div class="hero-section4__review-left-count">
+                {% render 'icon-woman' %}
+                {{ section.settings.reviews_count }}
+              </div>
+              <div class="hero-section4__review-left-text">{{ section.settings.reviews_text }}</div>
+            </div>
+          {%- endif -%}
+          {% if section.settings.reviews_text2 != blank and section.settings.reviews_url != blank %}
+            <div class="hero-section4__review-right">
+              <div class="hero-section4__review-right-text">{{ section.settings.reviews_text2 }}</div>
+              <a class="hero-section4__review-right-link" href="{{ section.settings.reviews_url }}" target="_blank">
+                {% render 'icon-trust-index-pilot' %}              
+              </a>
+            </div>
+          {%- endif -%}
+              <div class="hero-section4__review-right-text hero-section4__review-right--subtitle" style="margin-top: 10px; color: rgb(18, 2, 47); width: 100%;">
+                {{ section.settings.reviews_subtitle }}
+              </div>
+        </div>
+      {%- endif -%}
+
+      {% if section.settings.show_blocks %}
+        <div class="hero-section4__blocks">
+          {% if section.settings.block_title1 != blank %}
+            <div class="hero-section4__blocks-item">
+              {% if section.settings.block_icon1 != blank %}
+                <div class="hero-section4__blocks-item-icon">
+                  {% if section.settings.block_icon1 == "icon-heart" %}
+                    {% render 'icon-heart' %}
+                  {% elsif section.settings.block_icon1 == "icon-ogpa" %}
+                    {% render 'icon-ogpa' %}
+                  {% else %}
+                    {% render 'icon-pils' %}
+                  {% endif %}
+                </div>
+              {% endif %}
+              <h4 class="hero-section4__blocks-item-title">{{ section.settings.block_title1 }}</h4>
+              {% if section.settings.block_btn_text1 != blank and section.settings.block_btn_url1 != blank %}
+                <div class="hero-section4__blocks-item-link">
+                  <a href="{{ section.settings.block_btn_url1 }}">{{ section.settings.block_btn_text1 }}</a>
+                </div>
+              {% endif %}
+            </div>
+          {%- endif -%}
+          {% if section.settings.block_title2 != blank %}
+            <div class="hero-section4__blocks-item">
+              {% if section.settings.block_icon2 != blank %}
+                <div class="hero-section4__blocks-item-icon">
+                  {% if section.settings.block_icon2 == "icon-heart" %}
+                    {% render 'icon-heart' %}
+                  {% elsif section.settings.block_icon2 == "icon-ogpa" %}
+                    {% render 'icon-ogpa' %}
+                  {% else %}
+                    {% render 'icon-pils' %}
+                  {% endif %}
+                </div>
+              {% endif %}
+              <h4 class="hero-section4__blocks-item-title">{{ section.settings.block_title2 }}</h4>
+              {% if section.settings.block_btn_text2 != blank and section.settings.block_btn_url2 != blank %}
+                <div class="hero-section4__blocks-item-link">
+                  <a href="{{ section.settings.block_btn_url2 }}">{{ section.settings.block_btn_text2 }}</a>
+                </div>
+              {% endif %}
+            </div>
+          {%- endif -%}
+          {% if section.settings.block_title3 != blank %}
+            <div class="hero-section4__blocks-item">
+              {% if section.settings.block_icon3 != blank %}
+                <div class="hero-section4__blocks-item-icon">
+                  {% if section.settings.block_icon3 == "icon-heart" %}
+                    {% render 'icon-heart' %}
+                  {% elsif section.settings.block_icon3 == "icon-ogpa" %}
+                    {% render 'icon-ogpa' %}
+                  {% else %}
+                    {% render 'icon-pils' %}
+                  {% endif %}
+                </div>
+              {% endif %}
+              <h4 class="hero-section4__blocks-item-title">{{ section.settings.block_title3 }}</h4>
+              {% if section.settings.block_btn_text3 != blank and section.settings.block_btn_url3 != blank %}
+                <div class="hero-section4__blocks-item-link">
+                  <a href="{{ section.settings.block_btn_url3 }}">{{ section.settings.block_btn_text3 }}</a>
+                </div>
+              {% endif %}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {% if section.settings.show_logos %}
+        <div class="hero-section__logos-holder">
+          {% if section.settings.title_news != blank %}
+            <h6 class="hero-section__logos-title">{{ section.settings.title_news }}</h6>
+          {%- endif -%}
+          <div class="hero-section__logos-list">
+            {% if section.settings.image_news1 %}
+            <div class="hero-section__logos-item">
+              <img class="hero-section__logos__image"
+                loading="lazy"
+                srcset="{%- if section.settings.image_news1.width >= 275 -%}{{ section.settings.image_news1 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news1.width >= 550 -%}{{ section.settings.image_news1 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news1.width >= 710 -%}{{ section.settings.image_news1 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news1.width >= 1420 -%}{{ section.settings.image_news1 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news1 | img_url: 'master' }} {{ section.settings.image_news1.width }}w"
+                src="{{ section.settings.image_news1 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news1.alt }}">
+            </div>  
+          {%- endif -%}
+          {% if section.settings.image_news2 %}
+            <div class="hero-section__logos-item">
+              <img class="hero-section__logos__image"
+                loading="lazy"
+                srcset="{%- if section.settings.image_news2.width >= 275 -%}{{ section.settings.image_news2 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news2.width >= 550 -%}{{ section.settings.image_news2 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news2.width >= 710 -%}{{ section.settings.image_news2 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news2.width >= 1420 -%}{{ section.settings.image_news2 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news2 | img_url: 'master' }} {{ section.settings.image_news2.width }}w"
+                src="{{ section.settings.image_news2 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news2.alt }}">
+            </div>  
+          {%- endif -%}
+          {% if section.settings.image_news3 %}
+            <div class="hero-section__logos-item">
+              <img class="hero-section__logos__image"
+                loading="lazy"
+                srcset="{%- if section.settings.image_news3.width >= 275 -%}{{ section.settings.image_news3 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news3.width >= 550 -%}{{ section.settings.image_news3 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news3.width >= 710 -%}{{ section.settings.image_news3 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news3.width >= 1420 -%}{{ section.settings.image_news3 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news3 | img_url: 'master' }} {{ section.settings.image_news3.width }}w"
+                src="{{ section.settings.image_news3 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news3.alt }}">
+            </div>  
+          {%- endif -%}
+          {% if section.settings.image_news4 %}
+            <div class="hero-section__logos-item">
+              <img class="hero-section__logos__image"
+                loading="lazy"
+                srcset="{%- if section.settings.image_news4.width >= 275 -%}{{ section.settings.image_news4 | img_url: '275x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news4.width >= 550 -%}{{ section.settings.image_news4 | img_url: '550x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news4.width >= 710 -%}{{ section.settings.image_news4 | img_url: '710x' }} master,{%- endif -%}
+                        {%- if section.settings.image_news4.width >= 1420 -%}{{ section.settings.image_news4 | img_url: '1420x' }} master,{%- endif -%}
+                        {{ section.settings.image_news4 | img_url: 'master' }} {{ section.settings.image_news4.width }}w"
+                src="{{ section.settings.image_news4 | img_url: '64x' }}"
+                alt="{{ section.settings.image_news4.alt }}">
+            </div>  
+          {%- endif -%}
+          </div>
+        </div>
+      {% endif %}
+    </div><!----end hero-section4__content---->    
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.hero-section.name4",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Convenient healthcare from home"
+    },
+    {
+      "type": "color_background",
+      "id": "image_bg",
+      "label": "Section background"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "color",
+      "id": "image_background",
+      "label": "Image Background",
+      "default": "#172C85"
+    },
+    {
+      "type": "header",
+      "content": "Reviews"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_review",
+      "label": "Show reviews",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "reviews_count",
+      "label": "Count reviews",
+      "default": "475.4k"
+    },
+    {
+      "type": "text",
+      "id": "reviews_text",
+      "label": "Reviews text",
+      "default": "Happy customers"
+    },
+    {
+      "type": "text",
+      "id": "reviews_text2",
+      "label": "Reviews text 2",
+      "default": "<strong>“Excellent”</strong> based on over 24,000 reviews"
+    },
+    {
+      "type": "text",
+      "id": "reviews_subtitle",
+      "label": "Reviews subtitle",
+      "default": "Text"
+    },
+    {
+      "type": "url",
+      "id": "reviews_url",
+      "label": "Reviews url"
+    },
+    {
+      "type": "header",
+      "content": "Blocks"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_blocks",
+      "label": "Show blocks",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "block_title1",
+      "label": "Title block 1",
+      "default": "Online pharmacy"
+    },
+    {
+      "type": "select",
+      "id": "block_icon1",
+      "options": [
+        {
+          "value": "icon-pils",
+          "label": "Pills"
+        },
+        {
+          "value": "icon-ogpa",
+          "label": "OGPA"
+        },
+        {
+          "value": "icon-heart",
+          "label": "Heart"
+        }
+      ],
+      "default": "icon-pils",
+      "label": "Block 1 icon"
+    },
+    {
+      "type": "text",
+      "id": "block_btn_text1",
+      "label": "Block 1 button text",
+      "default": "Buy online"
+    },
+    {
+      "type": "url",
+      "id": "block_btn_url1",
+      "label": "Block 1 button url",
+      "default": "/"
+    },
+    {
+      "type": "text",
+      "id": "block_title2",
+      "label": "Title block 2",
+      "default": "Home health tests"
+    },
+    {
+      "type": "select",
+      "id": "block_icon2",
+      "options": [
+        {
+          "value": "icon-pils",
+          "label": "Pills"
+        },
+        {
+          "value": "icon-ogpa",
+          "label": "OGPA"
+        },
+        {
+          "value": "icon-heart",
+          "label": "Heart"
+        }
+      ],
+      "default": "icon-pils",
+      "label": "Block 2 icon"
+    },
+    {
+      "type": "text",
+      "id": "block_btn_text2",
+      "label": "Block 2 button text",
+      "default": "Get tested"
+    },
+    {
+      "type": "url",
+      "id": "block_btn_url2",
+      "label": "Block 2 button url",
+      "default": "/"
+    },
+    {
+      "type": "text",
+      "id": "block_title3",
+      "label": "Title block 3",
+      "default": "Home health tests"
+    },
+    {
+      "type": "select",
+      "id": "block_icon3",
+      "options": [
+        {
+          "value": "icon-pils",
+          "label": "Pills"
+        },
+        {
+          "value": "icon-ogpa",
+          "label": "OGPA"
+        },
+        {
+          "value": "icon-heart",
+          "label": "Heart"
+        }
+      ],
+      "default": "icon-pils",
+      "label": "Block 3 icon"
+    },
+    {
+      "type": "text",
+      "id": "block_btn_text3",
+      "label": "Block 3 button text",
+      "default": "Get tested"
+    },
+    {
+      "type": "url",
+      "id": "block_btn_url3",
+      "label": "Block 3 button url",
+      "default": "/"
+    },
+    {
+      "type": "header",
+      "content": "logos"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logos",
+      "label": "Show logos",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title_news",
+      "label": "Title logos",
+      "default": "AS SEEN IN"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news1",
+      "label": "Icon logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news2",
+      "label": "Icon logo 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news3",
+      "label": "Icon logo 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_news4",
+      "label": "Icon logo 4"
+    },
+    {
+      "type": "header",
+      "content": "Section settings"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 150
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.hero-section.presets.name4"
+    }
+  ]
+}
+{% endschema %}

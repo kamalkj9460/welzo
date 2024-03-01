@@ -1,0 +1,23 @@
+
+{{ 'highlights.aio.min.css' | asset_url | stylesheet_tag }}
+
+<div class="highlights-product">
+    <div class="highlights-product__items">
+        {% for item in list %}
+            <div class="highlights-product__item">
+                <div class="highlights-product__icon">
+                    {% if item == "Free next-day delivery" %}
+                        {%- render 'icon-truck' -%}
+                    {% else %}
+                        {% if item == "Results within 2 days" %}
+                            {%- render 'icon-results' -%}
+                        {% else %}
+                            {%- render 'icon-list-item' -%}
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="highlights-product__title">{{ item }}</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

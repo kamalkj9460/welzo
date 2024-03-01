@@ -1,0 +1,53 @@
+<div class="images_list__wrap">
+    <div class="container">
+        <div class="row">
+            <div class="inner">
+                <h2>
+                    Are You a Business
+                </h2>
+                <p>
+                    We are a trusted global suplier for covid testing:
+                </p>
+                <div class="images_list">
+                    {%- for block in section.blocks -%}
+                        <div class="item">
+                            <img loading="lazy" src="{{ block.settings.image | img_url: 'master' }}" alt="" />
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% schema %}
+    {
+        "name": "Images List",
+        "tag": "section",
+        "settings": [
+            {
+                "type": "color",
+                "id": "color_text",
+                "default": "#ffffff",
+                "label": "Color text slider"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "item",
+                "name": "Item image",
+                "settings": [
+                    {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Images List"
+            }
+        ]
+    }
+{% endschema %}

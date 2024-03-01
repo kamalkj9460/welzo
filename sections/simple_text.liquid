@@ -1,0 +1,122 @@
+<link rel="stylesheet" href="{{ 'component-rte.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'section-rich-text.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'section-rich-text.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- style -%}
+    .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+        padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 768px) {
+        .section-{{ section.id }}-padding {
+            padding-top: {{ section.settings.padding_top }}px;
+            padding-bottom: {{ section.settings.padding_bottom }}px;
+        }
+    }
+  
+  
+.rich-text__text .metafield-rich_text_field h2 strong {
+    font-size: 24px !important;
+    line-height: 34px !important;
+}
+.rich-text__text .metafield-rich_text_field h3 strong  {
+    font-size: 22px !important;
+    line-height: 32px !important;
+}
+.rich-text__text .metafield-rich_text_field h4 strong {
+    font-size: 20px !important;
+    line-height: 28px !important;
+}
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding simple_text isolate{% unless section.settings.full_width %} {% endunless %}">
+    <div class="container rich-text content-container color-{{ section.settings.color_scheme }}
+    gradient{% if section.settings.full_width %} rich-text--full-width content-container--full-width{% endif %} section-{{ section.id }}-padding">
+        <div class="row rich-text__blocks">
+            {%- for block in section.blocks -%}
+                {%- case block.type -%}
+                    {%- when 'heading' -%}
+                        {% if block.settings.heading != blank %}
+                            <h2 class="{{ block.settings.heading_size }}" {{ block.shopify_attributes }}>{{ block.settings.heading | escape }}</h2>
+                        {% endif %}
+                    {%- when 'text' -%}
+                        <div class="rich-text__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+                {%- endcase -%}
+            {%- endfor -%}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+    {
+        "name": "Simple Text",
+        "tag": "section",
+        "class": "section",
+        "settings": [
+            {
+                "type": "range",
+                "id": "padding_top",
+                "min": 0,
+                "max": 100,
+                "step": 4,
+                "unit": "px",
+                "label": "t:sections.all.padding.padding_top",
+                "default": 40
+            },
+            {
+                "type": "range",
+                "id": "padding_bottom",
+                "min": 0,
+                "max": 100,
+                "step": 4,
+                "unit": "px",
+                "label": "t:sections.all.padding.padding_bottom",
+                "default": 52
+            }
+        ],
+        "blocks": [
+            {
+                "type": "heading",
+                "name": "Heading",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "heading",
+                        "default": "Talk about your brand",
+                        "label": "Heading title"
+                    }
+                ]
+            },
+{
+"type": "text",
+"name": "description",
+"limit": 1,
+"settings": [
+{
+"type": "richtext",
+"id": "text",
+"default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+"label": "Description text"
+}
+]
+}
+        ],
+        "presets": [
+            {
+                "name": "Simple Text",
+                "blocks": [
+                    {
+                        "type": "heading"
+                    },
+                    {
+                        "type": "text"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}

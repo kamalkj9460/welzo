@@ -1,0 +1,119 @@
+{{ 'section-article-labs.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+{%- endstyle -%}
+
+<div class="article-labs">
+  <div class="article-labs__section-wrapper">
+    <div class="article-labs__content page-width section-{{ section.id }}-padding isolate">
+      <div class="article-labs__wrapper">
+        <div class="article-labs__block">
+          {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'title' -%}
+              <div class="article-labs__title">
+                <h1> {{ section.settings.article.title }} </h1>
+              </div>
+
+              {%- when 'excerpt' -%}
+              <div class="article-labs__excerpt">
+                {%- if section.settings.article.excerpt != blank -%}
+                  {{ section.settings.article.excerpt }}
+                {%- else -%}
+                  {{ block.settings.text }}
+                {%- endif -%}
+              </div>
+
+          {%- endcase -%}
+          {%- endfor -%}
+        </div>
+        <div class="article-labs__block">
+            {% render 'image-with-back', image: section.settings.article.image %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-labs__article-content article-content page-width">
+    <div class="article-content__wrapper article-content" >
+      {{ section.settings.article.content }}
+    </div>
+  </div>
+  
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.article-labs-section.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "article",
+      "id": "article",
+      "label": "t:sections.article-labs-section.settings.article.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "t:sections.article-labs-section.blocks.title.name",
+      "limit": 1
+    },
+    {
+      "type": "excerpt",
+      "name": "t:sections.article-labs-section.blocks.excerpt.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.article-labs-section.blocks.excerpt.settings.label"
+        }
+      ]
+    },
+    {
+      "type": "content",
+      "name": "t:sections.article-labs-section.blocks.content.name",
+      "limit": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.article-labs-section.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,228 @@
+
+@media screen and (max-width: 749px) {
+  .collection .grid__item:only-child {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .collection .title-wrapper-with-link--no-heading {
+    margin-top: calc(6rem + var(--page-width-margin));
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .collection .slider.slider--tablet {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.collection .loading-overlay {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+  width: 100%;
+  padding: 0 1.5rem;
+  opacity: 0.7;
+}
+
+@media screen and (min-width: 750px) {
+  .collection .loading-overlay {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+.collection.loading .loading-overlay {
+  display: block;
+}
+
+.collection--empty .title-wrapper {
+  margin-top: 10rem;
+  margin-bottom: 15rem;
+}
+
+.collection__view-all {
+  margin-top: 2rem;
+}
+
+.mcd_moreinfo.mcd_moreinfo-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 0 23px;
+}
+
+@media only screen and (min-width: 750px) {
+  .mcd_moreinfo.mcd_moreinfo-search {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+      margin: 0 0 50px;
+  }
+}
+
+.mcd_moreinfo-search .mcd_moreinfo-icons {
+    display: flex;
+}
+
+.mcd_moreinfo-search .mcd_moreinfo-icon {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: -0.3px;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  padding: 0 5px 10px 0;
+  width: 156px;
+}
+
+.mcd_moreinfo-search .mcd_moreinfo-icon-icon {
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 16px;
+  width: 46px;
+  min-width: 46px;
+  max-width: 46px;
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.template-search__header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.template-search__header .h2 {
+  margin: 0 10px 0 0;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  color: #12022F;
+}
+
+.template-search__header .template-search__header-result {
+  width: 100%;
+}
+
+.template-search__search .search__input.field__input {
+  max-width: 118px;
+  padding: 0.5rem 0.5rem 0.5rem 4rem;
+}
+
+.template-search__search .search-section__icon-wrapper {
+  position: absolute;
+  left: 8px;
+  width: 24px;
+  height: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media screen and (min-width: 990px) {
+  .template-search__header .h2 {
+    font-size: 40px;
+    line-height: 50px;
+  }
+  
+  .template-search__search .search__input.field__input {
+    max-width: 311px;
+    padding: 0.5rem 0.5rem 0.5rem 5rem;
+  }
+
+  .template-search__search .search-section__icon-wrapper {
+    left: 20px;
+  }
+}
+
+.template-search__search .search__button {
+  left: var(--inputs-border-width);
+  top: var(--inputs-border-width);
+}
+
+.template-search__search .field__button {
+  height: 3.4rem;
+}
+
+.template-search__header {
+  margin-bottom: 3rem;
+}
+
+.template-search__search .search__input {
+  background: #E7E5EA;
+  border-radius: 28px;
+  height: 33px;
+  border: none;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 22px;
+  color: #000000;
+}
+
+@media screen and (min-width: 750px) {
+  .template-search__search .search__input {
+    padding: 1.5rem 1.5rem 1.5rem 5rem;
+    height: 40px;
+    font-size: 18px;
+    line-height: 27px;
+  }
+}
+
+.template-search__search .search-input:focus {
+  padding: 15px 10px 15px 65px;
+  border: 2px solid #d32f7c;
+}
+
+.template-search__search .search-input::placeholder {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: -0.36px;
+  color: #12022F;
+  mix-blend-mode: normal;
+  opacity: 0.5;
+}
+
+.template-search__search .search-section__icon {
+  width: 100%;
+  height: auto;
+}
+
+.template-search--empty {
+  padding-bottom: 18rem;
+}
+
+@media screen and (min-width: 750px) {
+  .template-search__header {
+    margin-bottom: 5rem;
+  }
+}
+
+.search__button .icon {
+  height: 1.8rem;
+}
+
+.product2__form .button, 
+.product2__form .shopify-challenge__button, 
+.product2__form .customer button {
+  background-color: #0A0569;
+}
+
+
+.underline-links-hover:hover .product2__form .button, 
+.underline-links-hover:hover .product2__form .shopify-challenge__button, 
+.underline-links-hover:hover .product2__form .customer button {
+  text-decoration: none;
+  text-underline-offset: 0;
+}

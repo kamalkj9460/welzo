@@ -1,0 +1,23 @@
+<div class="highlights-product">
+    <div class="highlights-product__items">
+        {% for item in list %}
+            <div class="highlights-product__item">
+                <div class="highlights-product__icon">
+                  {% case item %}
+                    {% when 'Free next-day delivery' %}
+                      {%- render 'icon-truck' -%}
+                    {% when 'Results within 2 days' %}
+                      {%- render 'icon-results' -%}
+                    {% when 'MHRA Approved medication' %}
+                      {%- render 'icon-checkbox-shield' -%}
+                    {% when 'Discreet and fast delivery' %}
+                      {%- render 'icon-truck-2' -%}
+                    {% else %}
+                      {%- render 'icon-list-item' -%}
+                  {% endcase %}
+                </div>
+                <div class="highlights-product__title">{{ item }}</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

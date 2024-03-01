@@ -1,0 +1,215 @@
+
+<div id="alphabet_sort" class="alphabet_sort">
+
+  <div class="container">
+
+    {% if section.settings.title != blank %}
+      <h2 class="title main-title">
+        {{ section.settings.title }}
+      </h2>
+    {% endif %}
+
+    <h2>
+      Browse Drugs
+    </h2>
+
+    <ul id="alphabet_list"></ul>
+
+    <ul id="alphabet_list__data"></ul>
+
+</div>
+  <style>
+    #alphabet_list__data,
+    #alphabet_list,
+    #alphabet_list li{
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      overflow-x: auto;
+    }
+    #alphabet_list__data{
+      overflow-x: hidden;
+      flex-wrap: wrap;
+    }
+    #alphabet_list li{
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: #FEF2F8;
+      border-radius: 6px;
+
+      flex: 1 0 auto;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 28px;
+      text-align: center;
+      color: #000;
+      margin: 4px;
+      cursor: pointer;
+      transition: all 200ms ease-in-out;
+    }
+    #alphabet_list li.active{
+      background: #FFE3F1;
+    }
+    #alphabet_list li:hover{
+      /*background: #FFE3F1;*/
+    }
+
+    @media(min-width: 768px){
+      #alphabet_list{
+        flex-wrap: wrap;
+        overflow-x: hidden;
+      }
+      #alphabet_list li{
+        width: 40px;
+        height: 40px;
+        flex: none;
+      }
+    }
+
+
+
+
+    #alphabet_list__data li{
+      margin: 0 -13px;
+      display: none;
+      flex: 1 1 auto;
+    }
+    #alphabet_list__data li.active{
+      display: block;
+    }
+
+    #alphabet_list__data li div:empty{
+      padding: 0;
+    }
+    #alphabet_list__data li div:empty:before,
+    #alphabet_list__data li div:empty:after{
+      display: none;
+    }
+    #alphabet_list__data li div{
+      position: relative;
+      list-style: none;
+      flex-wrap: wrap;
+      align-items: stretch;
+      width: 100%;
+      display: flex;
+      padding: 76px 0 0 0;
+    }
+    #alphabet_list__data li div:before{
+      content: attr(data-letter-helper);
+      position: absolute;
+      top: 0;
+      left: 13px;
+
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #FFE3F1;
+      border-radius: 6px;
+
+      font-weight: 500;
+      font-size: 36px;
+      line-height: 54px;
+      text-align: center;
+      color: #000;
+
+      text-transform: uppercase;
+
+      z-index: 1;
+    }
+    #alphabet_list__data li div:after{
+      content: "";
+      background: #ECEBEF;
+      width: calc(100% - 120px);
+      height: 2px;
+      position: absolute;
+      top: 30px;
+      right: 13px;
+      z-index: 1;
+      display: none;
+    }
+    #alphabet_list__data li a{
+      padding: 13px;
+      width: 100%;
+      text-decoration: none;
+    }
+    #alphabet_list__data li a span{
+      background: #FEF2F8;
+      border-radius: 3px;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 28px;
+      color: #12022F;
+      padding: 11px 20px;
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      display: flex;
+    }
+    @media(min-width: 768px){
+      #alphabet_list__data li a{
+        width: 25%;
+      }
+      #alphabet_list__data li div:after{
+        display: block;
+      }
+    }
+  </style>
+  <script>
+    $(window).on("load", function (){
+
+      const alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+      for(let i = 0; i < alphabet.length; i++){
+        $("#alphabet_list").append("<li data-letter=" + alphabet[i] + ">"+ alphabet[i] +"</li>");
+      }
+
+      $(document).on("click", "#alphabet_list > li", function (e){
+        $(this).toggleClass("active");
+        $("[data-letter2=" + $(this).attr("data-letter") + "]").toggleClass("active");
+      });
+
+      (async() => {
+        const response = await fetch('/products.json?limit=250');
+        const result = await response.json();
+        console.log(result.products);
+
+        setTimeout(function (){
+          for(let j = 0; j < alphabet.length; j++){
+            $("#alphabet_list__data").append("<li data-letter2=" + alphabet[j] + "><div data-letter-helper=" + alphabet[j] + "></div></li>");
+            for(let i = 0; i < result.products.length; i++){
+              if(alphabet[j] == result.products[i].title.substring(0, 1)){
+                $("#alphabet_list__data > li[data-letter2=" + alphabet[j] + "] > div").append("<a href=/products/" + result.products[i].handle + "><span>"
+                        + result.products[i].title +
+
+                        "</span></a>");
+              }
+            }
+          }
+          }, 400);
+      })();
+    });
+  </script>
+{% schema %}
+{
+  "name": "Alphabet Sort",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title section"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Alphabet Sort"
+    }
+  ]
+}
+{% endschema %}

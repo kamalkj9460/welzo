@@ -1,0 +1,157 @@
+{{ 'meet-our-team.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="meet color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
+  <div class="page-width section-{{ section.id }}-padding isolate">
+    {% unless section.settings.title == blank %}
+      <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin{% if section.settings.title == blank %} title-wrapper-with-link--no-heading{% endif %}">
+        <div class="meet__header">
+          <h2 class="meet__title">{{ section.settings.title | escape }}</h2>
+          <div class="meet__navigations">
+            <button class="meet__button" onclick="meetPrev()">
+              {% render 'icon-arrow-left' %}
+            </button>
+            <button class="meet__button" onclick="meetNext()">
+              {% render 'icon-arrow-right' %}
+            </button>
+          </div>
+        </div>
+      </div>
+    {% endunless %}
+    <div class="swiper meet__items">
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          <div class="swiper-slide">
+            <div class="meet__item">
+              <div class="meet-item__image">
+                <img loading="lazy" src="{{ block.settings.image | img_url: 'master' }}"  alt="{{ block.settings.title }}">
+              </div>
+              <div class="meet-item__content">
+                {%- if block.settings.name != blank -%}
+                  <div class="meet-item__title">{{ block.settings.name | escape }}</div>
+                {%- endif -%}
+                {%- if block.settings.profession != blank -%}
+                  <div class="meet-item__text">{{ block.settings.profession }}</div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const meetSlider = new Swiper(".meet__items", {
+    slidesPerView: 1.1,
+    spaceBetween: 15,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    breakpoints: {
+      750: {
+        slidesPerView: 3,
+        spaceBetween: 30
+      }
+    }
+  });
+
+  const meetNext = () => {
+    meetSlider.slideNext();
+  }
+
+  const meetPrev = () => {
+    meetSlider.slidePrev();
+  }
+
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.meet.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Meet Our Qualified Team",
+      "label": "Title"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "t:sections.meet.blocks.column.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.meet.blocks.column.settings.image.label"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "default": "Joycelyn Elders, MD",
+          "label": "t:sections.meet.blocks.column.settings.name.label"
+        },
+        {
+          "type": "text",
+          "id": "profession",
+          "default": "UK Surgeon General",
+          "label": "t:sections.meet.blocks.column.settings.profession.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.meet.presets.name",
+      "blocks": [
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

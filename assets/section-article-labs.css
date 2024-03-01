@@ -1,0 +1,111 @@
+.article-labs__wrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 30px;
+}
+
+.article-labs__block {
+  flex: 1 0 0;
+}
+
+.article-labs__title,
+.article-labs__excerpt {
+  max-width: 445px;
+  width: 100%;
+}
+
+.article-labs__excerpt {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: -0.4px;
+  color: #12022F;
+}
+
+.article-labs__title h1 {
+  margin-top: 0;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 56px;
+  letter-spacing: -2px;
+}
+
+#shopify-toc {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 50px 62px 47px 33px;
+  max-width: 540px;
+  width: 100%;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.11);
+  border-radius: 16px;
+}
+
+#shopify-toc .title {
+  margin-top: 0;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 46px;
+  letter-spacing: -0.8px;
+  color: #12022F;
+}
+
+#shopify-toc .bullet {
+  padding-left: 20px;
+}
+
+#shopify-toc .bullet ul {
+  padding-left: 20px;
+}
+
+#shopify-toc li.bullet li.bullet {
+  padding-left: unset;
+  margin: 0;
+}
+
+#shopify-toc .bullet::marker {
+  color: #E5007D;
+}
+
+#shopify-toc .bullet a {
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.355556px;
+  text-decoration-line: underline;
+  color: #E5007D;
+}
+
+@media screen and (max-width: 990px) {
+  .article-labs__wrapper {
+    display: block;
+  }
+
+  article-labs__excerpt {
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  .article-labs__block:last-of-type {
+    margin-top: 45px;
+  }
+
+  .article-labs__title h1 {
+    font-size: 36px;
+    line-height: 46px;
+  }
+
+  .article-labs__info-wrapper {
+    flex-direction: column;
+    row-gap: 30px;
+  }
+
+  #shopify-toc {
+    margin-top: 32px;
+    padding: 24px 24px 30px;
+  }
+
+  #shopify-toc .title {
+    font-size: 24px;
+    line-height: 34px;
+  }
+}

@@ -1,0 +1,47 @@
+<!-- HTML for quiz form -->
+<form id="quiz-form">
+  <!-- first question -->
+  <p>1. Do you frequently talk about yourself and your accomplishments?</p>
+  <input type="radio" id="q1a1" name="q1" value="yes">
+  <label for="q1a1">Yes</label><br>
+  <input type="radio" id="q1a2" name="q1" value="no">
+  <label for="q1a2">No</label><br>
+
+  <!-- second question -->
+  <p>2. Do you have a strong sense of entitlement and expect special treatment from others?</p>
+  <input type="radio" id="q2a1" name="q2" value="yes">
+  <label for="q2a1">Yes</label><br>
+  <input type="radio" id="q2a2" name="q2" value="no">
+  <label for="q2a2">No</label><br>
+
+  <!-- third question -->
+  <p>3. Do you often manipulate or exploit others to get what you want?</p>
+  <input type="radio" id="q3a1" name="q3" value="yes">
+  <label for="q3a1">Yes</label><br>
+  <input type="radio" id="q3a2" name="q3" value="no">
+  <label for="q3a2">No</label><br>
+
+  <!-- fourth question -->
+  <p>4. Do you have a lack of empathy and difficulty understanding others' feelings?</p>
+  <input type="radio" id="q4a1" name="q4" value="yes">
+  <label for="q4a1">Yes</label><br>
+  <input type="radio" id="q4a2" name="q4" value="no">
+  <label for="q4a2">No</label><br>
+
+  <!-- submit button -->
+  <button type="button" id="submit-button">Submit</button>
+</form>
+
+<!-- HTML for diagnosis output -->
+<div id="diagnosis-output" style="display: none;">
+  <p>Based on your answers, your diagnosis is: <span id="diagnosis-result"></span></p>
+</div>
+
+<!-- CSS for styling -->
+<style>
+  form {
+    width: 250px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  p

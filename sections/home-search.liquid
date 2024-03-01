@@ -1,0 +1,188 @@
+{{ 'section-search.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+
+  #Search-{{ section.id }} {
+    height: unset;
+    padding-bottom: 10px;
+  }
+
+  .section-{{ section.id }}-padding {
+    margin-top: {{ section.settings.mobile_margin_top }}px;
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      margin-top: unset;
+    }
+    
+    #Search-{{ section.id }} {
+      height: 160px;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      position: relative;
+/*       z-index: 10; */
+    }
+  }
+{%- endstyle -%}
+<div id="Search-{{ section.id }}"
+  class="color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
+  <div id="Search-section-{{ section.id }}" class="search-section page-width section-{{ section.id }}-padding isolate {{ section.settings.custom_class }}">
+    <div class="search-section__container">
+      <div class="search-section__title">{{ section.settings.title }}</div>
+      <div class="search-section__search">
+        <predictive-search data-loading-text="{{ 'accessibility.loading' | t }}">
+          <form action="{{ routes.search_url }}" method="get" role="search" class="search">
+            <div class="field search-section__field">
+              <input class="search-section__input field__input" name="q"
+                value="{{ search.terms | escape }}" placeholder="{{ section.settings.placeholder }}" role="combobox" type="search"
+                aria-expanded="false" aria-owns="predictive-search-results-list"
+                aria-controls="predictive-search-results-list" aria-haspopup="listbox" aria-autocomplete="list"
+                autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false">
+              <input type="hidden" name="type" value="product" />
+              <input type="hidden" name="options[prefix]" value="last" />
+              {%- if settings.predictive_search_enabled -%}
+              <div class="predictive-search predictive-search--search-template" tabindex="-1" data-predictive-search>
+                <div class="predictive-search__loading-state">
+                  <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                  </svg>
+                </div>
+              </div>
+
+              <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+              {%- endif -%}
+
+              <button type="submit" class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
+              </button>
+
+              <div class="search-section__icon-wrapper">
+                <img width="24px" height="24px" loading="lazy" class="search-section__icon" src="{{ section.settings.icon | img_url: 'master' }}"
+                  alt="">
+              </div>
+            </div>
+          </form>
+        </predictive-search>
+      </div>
+
+      <div class="search-section__categories">
+        <div class="search-section__caption">{{ section.settings.categories_caption }}</div>
+        <div class="search-section__list">
+          {%- if section.settings.popular_list != blank -%}
+          {% for collection in section.settings.popular_list %}
+          <a href="{{ collection.url }}" class="link search-section__item">{{ collection.title }}</a>
+          {% endfor %}
+          {%- else -%}
+          {% for block in section.blocks %}
+          <a href="{{ block.settings.link }}" class="link--text search-section__item">{{ block.settings.name }}</a>
+          {% endfor %}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "t:sections.home-search.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.home-search.settings.title.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "t:sections.home-search.settings.icon.label"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "t:sections.home-search.settings.placeholder.label"
+    },
+    {
+      "type": "text",
+      "id": "categories_caption",
+      "label": "t:sections.home-search.settings.categories_caption.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "mobile_margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.home-search.settings.mobile_margin_top.label",
+      "default": 48
+    },
+    {
+      "type": "collection_list",
+      "id": "popular_list",
+      "label": "t:sections.home-search.settings.popular_list.label",
+      "limit": 8
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "t:sections.home-search.blocks.category.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "t:sections.home-search.blocks.category.settings.name.label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.home-search.blocks.category.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.home-search.name"
+    }
+  ]
+}
+{% endschema %}

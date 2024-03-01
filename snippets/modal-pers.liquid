@@ -1,0 +1,45 @@
+<modal-dialog id="PopupModal-{{product.id}}" class="modal-personal"> 
+  <div role="dialog" aria-label="{{ product.title }}" aria-modal="true" class="modal-personal__content" tabindex="-1">
+    <div class="modal-personal__bar">
+      <div class="modal-personal__bar-wrapper page-width">
+        <a href="/" class="header__heading-link link link--text focus-inset modal-personal__logo">
+          <img loading="lazy" srcset="//cdn.shopify.com/s/files/1/0571/9752/7133/files/welzo-white_110x.png?v=1653641227 1x, //cdn.shopify.com/s/files/1/0571/9752/7133/files/welzo-white_110x@2x.png?v=1653641227 2x" src="//cdn.shopify.com/s/files/1/0571/9752/7133/files/welzo-white_110x.png?v=1653641227" class="header__heading-logo" width="212" height="56" alt="welzo">
+        </a>
+        <button id="ModalClose-{{ block.id }}" type="button" class="modal-personal__toggle" aria-label="{{ 'accessibility.close' | t }}">{% render 'icon-close' %}</button>
+      </div>
+    </div>
+    
+    <div class="modal-personal__content-widget page-width modal-widget">
+      <div class="modal-widget__heading">
+        <h2>{{ product.title}}</h2>
+        <span class="modal-widget__description">{{ product.description }}</span>
+      </div>
+      <div class="modal-widget__count">
+        {%- render 'icon-list-item' %}
+        <span>{{product.metafields.accentuate.biomarkers_title | size}} biomarkers</span>
+      </div>
+
+      <div class="modal-widget__content">
+        <h3 class="modal-widget__caption">What’s included</h3>
+        <div class="modal-widget__cols">
+          <div class="modal-widget__left-col">
+            {%- for title in product.metafields.accentuate.biomarkers_title -%}
+              {% assign mod = forloop.index | modulo: 2 %}
+              {% if mod == 0 %}{% else %}
+                {%- render 'accordion-item', title: title, text: product.metafields.accentuate.biomarkers_text[forloop.index0]-%}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="modal-widget__right-col">
+            {%- for title in product.metafields.accentuate.biomarkers_title -%}
+              {% assign mod = forloop.index | modulo: 2 %}
+              {% if mod == 0 %}
+                {%- render 'accordion-item', title: title, text: product.metafields.accentuate.biomarkers_text[forloop.index0]-%}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</modal-dialog>

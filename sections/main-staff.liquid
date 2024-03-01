@@ -1,0 +1,208 @@
+{{ 'section-staff.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-staff__background {
+    background-image: url({{ section.settings.background_image | img_url: 'original'}});
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 200px;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 767px) {
+    .section-staff__background {
+      background-image: url({{ section.settings.background_image_mobile | img_url: 'original'}});
+      height: 200px;
+      width: 100%;
+    }
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign pageUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |
+        replace:'\/','/' |
+        replace:'%20',' ' |
+        replace:'\u0026','&'
+-%}
+{%- assign split1 = pageUrl | split: "/" -%}
+{%- assign split2 = split1[3] | split: "?" -%}
+{%- assign employee = split2[0] -%}
+
+{%- assign find-profile = false -%}
+
+{% for block-data in section.blocks %}
+  {%- assign full-name = block-data.settings.full-name | strip | downcase | replace: ' ', '-' -%}
+  {%- if employee == full-name -%}
+    {%- assign find-profile = true -%}
+    {%- assign block = block-data -%}
+    {% break %}
+  {%- endif -%}
+{% endfor %}
+
+{%- assign name = block.settings.full-name | split: ' ' -%}
+{%- assign new_name = '' -%}
+{% for str in name %}
+  {%- if forloop.last  -%}
+    {% break %}
+  {%- endif -%}
+  {% assign new_name = new_name | append: str | append: ' ' %}
+{% endfor %}
+
+<div class="section-staff">
+  {%- if find-profile -%}
+    <div class="section-staff__background"><span></span></div>
+    <div class="section-staff__content page-width section-{{ section.id }}-padding isolate">
+      <div class="section-staff__employee employee-section">
+        <div class="employee-section__wrapper">
+          <div class="employee-section__title">
+            <div class="employee-section__photo-wrapper">
+              <img loading="lazy" class="employee-section__photo" src="{{ block.settings.photo | img_url: 'master' }}" alt="{{ block.settings.photo.alt }}">
+            </div>
+            <div class="employee-section__title-wrapper">
+              <h2 class="employee-section__full-name">{{block.settings.full-name}}</h2>
+              <div class="employee-section__position">
+                {% render 'icon-briefcase' %}
+                <span>{{block.settings.position}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="employee-section__block">
+            <div class="employee-section__info-wrapper">
+              <div class="employee-section__resume">{{block.settings.description}}</div>
+              <div class="employee-section__expert-in">
+                <div class="employee-section__caption">Expert In</div>
+                <div class="employee-section__tags-list">
+                  {%- assign tags = block.settings.expert-in | split: ';' -%}
+                  {%- for tag in tags -%}
+                    <div class="employee-section__tag">{{tag}}</div>
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+            <div class="employee-section__social-wrapper">
+              <div class="employee-section__caption">Connect with {{new_name}}</div>
+              {% render 'social',
+                linkedin: block.settings.link-linkedin,
+                twitter: block.settings.link-twitter,
+                meta: block.settings.link-facebook,
+                instagram: ""
+              %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- else -%}
+    <div class="staff__list">
+      {%- if find-profile == false -%}
+      
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.staff.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "t:sections.staff.settings.background_image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "t:sections.staff.settings.background_image_mobile.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "employee",
+      "name": "t:sections.staff.blocks.employee.name",
+      "settings": [ 
+        {
+          "type": "image_picker",
+          "id": "photo",
+          "label": "t:sections.staff.blocks.employee.settings.photo.label"
+        },
+        {
+          "type": "text",
+          "id": "full-name",
+          "label": "t:sections.staff.blocks.employee.settings.full-name.label"
+        },
+        {
+          "type": "text",
+          "id": "position",
+          "label": "t:sections.staff.blocks.employee.settings.position.label"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "t:sections.staff.blocks.employee.settings.description.label"
+        },
+        {
+          "type": "textarea",
+          "id": "expert-in",
+          "label": "t:sections.staff.blocks.employee.settings.expert-in.label"
+        },
+        {
+          "type": "url",
+          "id": "link-linkedin",
+          "label": "t:sections.staff.blocks.employee.settings.link-linkedin.label"
+        },
+        {
+          "type": "url",
+          "id": "link-facebook",
+          "label": "t:sections.staff.blocks.employee.settings.link-facebook.label"
+        },
+        {
+          "type": "url",
+          "id": "link-twitter",
+          "label": "t:sections.staff.blocks.employee.settings.link-twitter.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.staff.name"
+    }
+  ]
+}
+{% endschema %}

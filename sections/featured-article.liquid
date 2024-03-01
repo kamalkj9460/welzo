@@ -1,0 +1,105 @@
+{{ 'featured-article.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+.featured-article__wrapper {
+    padding: {{ section.settings.padding | times: 0.75 | round: 0 }}px;
+    max-width: {{ section.settings.max-width }}%;
+    width: 100%;
+    margin: 0 auto;
+}
+
+  @media screen and (min-width: 750px) {
+    .featured-article__wrapper {
+      padding: {{ section.settings.padding }}px;
+    }
+  }
+
+
+  @media screen and (max-width: 990px) {
+    .featured-article__wrapper {
+      max-width: 100%;
+    }
+  }
+{%- endstyle -%}
+
+{%- assign featured_article = section.settings.article -%}
+
+<div class="featured-article">
+  <div class="featured-article__content page-width isolate">
+    <div class="featured-article__wrapper">
+      <div class="featured-article__block">
+        <div class="featured-article__image-wrapper">
+          <img loading="lazy" class="featured-article__image"
+           
+            srcset="{%- if featured_article.image.width >= 275 -%}{{ featured_article.image | img_url: '275x' }} 275w,{%- endif -%}
+                    {%- if featured_article.image.width >= 550 -%}{{ featured_article.image | img_url: '550x' }} 550w,{%- endif -%}
+                    {%- if featured_article.image.width >= 710 -%}{{ featured_article.image | img_url: '710x' }} 710w,{%- endif -%}
+                    {%- if featured_article.image.width >= 1420 -%}{{ featured_article.image | img_url: '1420x' }} 1420w,{%- endif -%}
+                    {{ featured_article.image | img_url: 'master' }} {{ featured_article.image.width }}w"
+            src="{{ featured_article.image | img_url: '550x' }}"
+            alt="{{ featured_article.image.alt }}"
+          >
+        </div>
+      </div>
+      <div class="featured-article__block">
+        <div class="featured-article__text-wrapper">
+          <div class="featured-article__tag">Featured</div>
+          <div class="featured-article__title">
+            <span>{{ featured_article.title }}</span>
+          </div>
+          <div class="featured-article__excerpt">
+            {%- if featured_article.excerpt == blank-%}
+              It’s estimated that over 20% of our lives will be spent in poor health — diseases we can prevent are the main cause of this.
+            {%- else -%}
+              {{ featured_article.excerpt }}
+            {%- endif -%}
+          </div>
+          <a href="{{ featured_article.url }}" class="featured-article__read-link">
+            <span>Read article</span> 
+            {% render 'icon-arrow' %}
+          </a>
+        </div>
+      </div>
+      </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.featured-article.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 25,
+      "unit": "px",
+      "label": "t:sections.featured-article.settings.padding.label"
+    },
+    {
+      "type": "range",
+      "id": "max-width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 80,
+      "unit": "%",
+      "label": "t:sections.featured-article.settings.max-width.label"
+    },
+    {
+      "type": "article",
+      "id": "article",
+      "label": "t:sections.featured-article.settings.article.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured-article.name"
+    }
+  ]
+}
+{% endschema %}

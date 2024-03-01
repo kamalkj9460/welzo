@@ -1,0 +1,74 @@
+<div class="num_list">
+    <div class="container">
+        <h2>
+            {{ section.settings.title }}
+        </h2>
+        <div class="row">
+            <ul>
+                {%- for block in section.blocks -%}
+                    {%- case block.type -%}
+                        {%- when 'item' -%}
+                            <li>
+                                <div class="inner">
+                                    <div class="icon-img">
+                                        {{ block.settings.item_icon }}
+                                    </div>
+                                    <h4>
+                                        {{ block.settings.item_title }}
+                                    </h4>
+                                    <p>
+                                        {{ block.settings.item_text }}
+                                    </p>
+                                </div>
+                            </li>
+                    {% endcase %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% schema %}
+    {
+        "name": "Num List",
+        "tag": "section",
+        "class": "section",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Title"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "item",
+                "name": "Item",
+                "limit": 4,
+                "settings": [
+                    {
+                        "type": "html",
+                        "id": "item_icon",
+                        "label": "Icon Item SVG"
+                    },
+                    {
+                        "type": "text",
+                        "id": "item_title",
+                        "label": "Item title",
+                        "default": "Item title"
+                    },
+                    {
+                        "type": "text",
+                        "id": "item_text",
+                        "label": "Item text",
+                        "default": "Item text"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Num List"
+            }
+        ]
+    }
+{% endschema %}

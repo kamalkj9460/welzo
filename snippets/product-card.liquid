@@ -1,0 +1,42 @@
+
+{% comment %}
+    Usage:
+    {% render 'product-card', product, slider: false %}
+{% endcomment %}
+
+{% liquid
+  if slider == true
+    assign classes = "snippet-card-product swiper-slide"
+  else
+    assign classes = "snippet-card-product"
+  endif
+
+  assign image = product.images | first
+  assign caption = product.title
+  assign link = product.url
+  assign price = product.price
+  assign money_price = price | money
+%}
+
+<div class="{{ classes }}">
+    <div class="snippet-card-product__image-wrapper">
+      <img loading="lazy" class="snippet-card-product__image"
+     
+      srcset="{%- if image.width >= 275 -%}{{ image | img_url: '275x' }} 275w,{%- endif -%}
+              {%- if image.width >= 550 -%}{{ image | img_url: '550x' }} 550w,{%- endif -%}
+              {%- if image.width >= 710 -%}{{ image | img_url: '710x' }} 710w,{%- endif -%}
+              {%- if image.width >= 1420 -%}{{ image | img_url: '1420x' }} 1420w,{%- endif -%}
+              {{ image | img_url: 'master' }} {{ image.width }}w"
+      src="{{ image | img_url: '550x' }}"
+      alt="{{ image.alt }}">
+    </div>
+    <div class="snippet-card-product__info-wrapper">
+      <div class="snippet-card-product__trust">
+        {% render 'trustindex-pdp-all' %}
+      </div>
+      <span class="snippet-card-product__caption">{{ caption }}</span>
+      <span class="snippet-card-product__price">{{ money_price }}</span>
+      <a class="snippet-card-product__link" href="{{ link }}"><span>View details</span>  {% render 'banana-stand-product-list-container', product: product %}
+</a>
+</div>
+</div>

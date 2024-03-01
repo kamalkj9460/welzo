@@ -1,0 +1,97 @@
+{{ 'section-404.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: 32px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="section-404 page-width section-{{ section.id }}-padding ">
+  <div class="section-404__image-wrapper">
+    <img loading="lazy" class="section-404__image"
+     
+      srcset="{%- if section.settings.image.width >= 275 -%}{{ section.settings.image | img_url: '275x' }} 275w,{%- endif -%}
+              {%- if section.settings.image.width >= 550 -%}{{ section.settings.image | img_url: '550x' }} 550w,{%- endif -%}
+              {%- if section.settings.image.width >= 710 -%}{{ section.settings.image | img_url: '710x' }} 710w,{%- endif -%}
+              {%- if section.settings.image.width >= 1420 -%}{{ section.settings.image | img_url: '1420x' }} 1420w,{%- endif -%}
+              {{ section.settings.image | img_url: 'master' }} {{ section.settings.image.width }}w"
+      src="{{ section.settings.image | img_url: '550x' }}"
+      alt="{{ section.settings.image }}"
+    >
+  </div>
+  <div class="section-404__messages">
+    <h3 class="section-404__subtitle">
+      {{ section.settings.subtitle }}
+    </h3>
+    <h1 class="section-404__title">
+      {{ section.settings.title }}
+    </h1>
+    <a href="{{section.settings.link}}" class="section-404__button">
+      {{ section.settings.caption }}
+    </a>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "t:sections.404.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.404.settings.image.label"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.404.settings.title.label"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "t:sections.404.settings.subtitle.label"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:sections.404.settings.link.label"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "t:sections.404.settings.caption.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 170
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 170
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,274 @@
+{{ 'section-hero.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  {% if section.settings.background_image != blank %}
+    #Hero-{{ section.id }} {
+    background-image: url({{ section.settings.background_image | img_url: 'original'}});
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
+  {% endif %}
+
+  #Hero-{{ section.id }} * {
+  color: {{ section.settings.body_text }};
+  }
+
+  @media screen and (max-width: 767px) {
+  #Hero-{{ section.id }} {
+  background-image: url({{ section.settings.background_image_mobile | img_url: 'original'}});
+  }
+  }
+
+  .section-{{ section.id }}-padding {
+  padding-top: 24px;
+  padding-bottom: 50px;
+  }
+
+  @media screen and (min-width: 750px) {
+  .section-{{ section.id }}-padding {
+  padding-top: {{ section.settings.padding_top }}px;
+  padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  }
+
+{%- endstyle -%}
+
+<div id="Hero-{{ section.id }}" class="hero-section hero-section-3">
+  <div class="hero-section__content page-width section-{{ section.id }}-padding isolate">
+    <div class="hero-section__wrapper">
+      <div class="hero-section__box content-container content-container--full-width-mobile">
+        {%- for block in section.blocks -%}
+        {%- case block.type -%}
+        {%- when 'heading' -%}
+        <{{ block.settings.title_tag }} class="hero-section__heading {% if block.settings.heading_size == 'medium' %}h1{% else %}h0{% endif %} {% if block.settings.show_line == true %}hero-section__heading--line{% endif %}" {{ block.shopify_attributes }}>
+        <span>{{ block.settings.heading | escape }}</span>
+      </{{ block.settings.title_tag }}>
+      {%- when 'text' -%}
+        <div class="hero-section__text {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
+          <span>{{ block.settings.text | escape }}</span>
+        </div>
+      {%- endcase -%}
+      {%- endfor -%}
+      <div class="hero-section__buttons">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'button_download' -%}
+              {% if block.settings.button_label_download != blank %}
+                <a target="_blank" href="{{ block.settings.button_link_download }}"
+                   style="color: {{ block.settings.color_label_download }}"
+                   download="{{ block.settings.file_name_download }}">
+                  {{ block.settings.button_label_download }}
+                </a>
+              {% endif %}
+            {%- when 'button' -%}
+              <div class="hero-section__button">
+                {%- if block.settings.button_label != blank -%}
+                  <a{% if block.settings.button_link == blank %} role="link" aria-disabled="true"{% else %}
+                    href="{{ block.settings.button_link }}"{% endif %}
+                          class="">
+                    {{ block.settings.button_label | escape }}</a>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="hero-section__box hero-section__box-image hero-section__box-map">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'image' -%}
+            {% render 'image-with-back', image: block.settings.image %}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Hero section 3",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "t:sections.hero-section.settings.background_image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "t:sections.hero-section.settings.background_image_mobile.label"
+    },
+    {
+      "type": "color",
+      "id": "body_text",
+      "label": "Section text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 150
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.hero-section.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Title",
+          "label": "Title"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "medium",
+              "label": "t:sections.hero-section.blocks.heading.settings.heading_size.options__1.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.hero-section.blocks.heading.settings.heading_size.options__2.label"
+            }
+          ],
+          "default": "medium",
+          "label": "t:sections.hero-section.blocks.heading.settings.heading_size.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_line",
+          "label": "t:sections.hero-section.blocks.heading.settings.show_line.label",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "title_tag",
+          "label": "Title html tag",
+          "options": [
+            {
+              "value": "h1",
+              "label": "H1"
+            },
+            {
+              "value": "h2",
+              "label": "H2"
+            }
+          ],
+          "default": "h1"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Give customers details about the banner image(s) or content on the template.",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 20,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    },
+    {
+      "type": "button_download",
+      "name": "Button download",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "color",
+          "id": "color_label_download",
+          "label": "Color Button label download"
+        },
+        {
+          "type": "text",
+          "id": "button_label_download",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link_download",
+          "label": "Button Link"
+        },
+        {
+          "type": "text",
+          "id": "file_name_download",
+          "label": "File name download"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero section 3",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "button"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,192 @@
+<link rel="stylesheet" href="{{ 'component-rte.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'section-main-page.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'section-main-page.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width page-width--narrow section-{{ section.id }}-padding">
+    <h2 class="page-title">
+      {%- if section.settings.page.title != blank -%}
+        {{ section.settings.page.title | escape }}
+      {%- else -%}
+
+      {%- endif -%}
+    </h2>
+  </div>
+  <div class="page-width section-{{ section.id }}-padding iframe-quiz">
+    <div class="rte">
+      <iframe id="iframe-quiz" style="width:100%; height:920px; border: none" src=""></iframe>
+    </div>
+  </div>
+</div>
+<script>
+const getQueryParams = (query) => {
+    let params = {};
+    new URLSearchParams(query).forEach((value, key) => {
+    let decodedKey = decodeURIComponent(key);
+    let decodedValue = decodeURIComponent(value);
+    // This key is part of an array
+    if (decodedKey.endsWith("[]")) {
+    decodedKey = decodedKey.replace("[]", "");
+    params[decodedKey] || (params[decodedKey] = []);
+    params[decodedKey].push(decodedValue);
+    // Just a regular parameter
+    } else {
+    params[decodedKey] = decodedValue;
+    }
+    });
+
+    return params;
+  };
+
+  let obj = getQueryParams(window.location.search);
+  let newObj = {};
+
+  for (const i in obj) {
+    let a = i.match(/([^\[\]]+)(\[[^\[\]]+[^\]])*?/g),
+    p = obj[i];
+    j = a.length;
+
+    while (j--) {
+    q = {};
+    q[a[j]] = p;
+    p = q;
+    }
+    // merge object
+    let k = Object.keys(p)[0],
+    o = newObj;
+
+    while (k in o) {
+    p = p[k];
+    o = o[k];
+    k = Object.keys(p)[0];
+    }
+
+    o[k] = p[k];
+  }
+
+    let continueStatId = newObj.continueStatId || null;
+    let customer_id = '{{ customer.id }}' || null;
+    let products = (!continueStatId && newObj.products) ? newObj.products.split(",") : null;
+    let id = newObj.id || '{{ page.metafields.accentuate.quizid }}';
+    let statId = newObj.askflowstatid || null;
+    let variant_id = newObj.variant_id || null;
+    let quantity = newObj.quantity || null;
+    let type = newObj.type || null;
+      let password = newObj.password || null;
+      let firstname = newObj.firstname || null;
+      let lastname = newObj.lastname || null;
+      let email = newObj.email || null;
+      let bday = newObj.bday || null;
+      let gender = newObj.gender || null;
+
+  
+    let extradata = {"customer_id":customer_id};
+    if(products) extradata['products'] = products;
+    if(statId) extradata['statId'] = statId;
+    if(variant_id) extradata['variant_id'] = variant_id;
+    if(quantity) extradata['quantity'] = quantity;
+    if(type) extradata['type'] = type;
+    if(password) extradata['password'] = password;
+    if(firstname) extradata['firstname'] = firstname;
+    if(lastname) extradata['lastname'] = lastname;
+    if(email) extradata['email'] = email;
+    if(bday) extradata['bday'] = bday;
+    if(gender) extradata['gender'] = gender;
+
+    let url = "https://quiz.askflow.io/?id="+id+"&extradata="+JSON.stringify(extradata);
+    if(continueStatId) url += "&statId="+continueStatId;
+    let quizIframe = document.getElementById('iframe-quiz');
+    quizIframe.setAttribute("src", url);
+
+    localStorage.removeItem('redirect_to');
+    localStorage.removeItem('registerError');
+    
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.page.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "page",
+      "id": "page",
+      "label": "t:sections.page.settings.page.label"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "t:sections.all.colors.accent_1.label"
+        },
+        {
+          "value": "accent-2",
+          "label": "t:sections.all.colors.accent_2.label"
+        },
+        {
+          "value": "background-1",
+          "label": "t:sections.all.colors.background_1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.all.colors.background_2.label"
+        },
+        {
+          "value": "inverse",
+          "label": "t:sections.all.colors.inverse.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.all.colors.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.page.presets.name"
+    }
+  ]
+}
+{% endschema %}

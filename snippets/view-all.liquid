@@ -1,0 +1,12 @@
+{% comment %}
+    Usage:
+    {%- render 'view-all', classNames: "list_of_classes", url: "url" -%}
+{% endcomment %}
+
+{%- liquid
+	if caption == blank
+		assign caption = "view all"
+	endif
+-%}
+
+<a class="{{ "link--view-all " | append: classNames }}" href="{{ url }}">{{ caption }}</a>

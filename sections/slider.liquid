@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="slider_wrap" style="background: linear-gradient(90deg, #172C85 0%, #1850A7 100%);">
+    <div class="container">
+        <div class="row">
+            <div class="slider owl-carousel">
+                {%- for block in section.blocks -%}
+                    <div class="slider_item">
+                        <div class="inner">
+                            <div class="text">
+                                <h3>
+                                    {{ block.settings.title }}
+                                </h3>
+                                <p>
+                                    {{ block.settings.description }}
+                                </p>
+                                <div class="personal">
+                                    {{ block.settings.personal }}
+                                </div>
+                                <abbr style="color: {{ block.settings.color_abbr }}">
+                                    {{ block.settings.abbr }}
+                                </abbr>
+                            </div>
+                            <div class="img" style="background: #B5EAF3;">
+                                <img loading="lazy" src="{{ block.settings.image | img_url: 'master' }}" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .slider *{
+        color: {{ section.settings.color_text }};
+    }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js" integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(".owl-carousel").owlCarousel({
+        loop: true,
+        margin: 0,
+        nav: true,
+        items: 1
+    });
+</script>
+{% schema %}
+    {
+        "name": "Slider",
+        "tag": "section",
+        "settings": [
+            {
+                "type": "color",
+                "id": "color_text",
+                "default": "#ffffff",
+                "label": "Color text slider"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "slide",
+                "name": "Slide item",
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Title text"
+                    },
+                    {
+                        "type": "richtext",
+                        "id": "description",
+                        "label": "Description text"
+                    },
+                    {
+                        "type": "richtext",
+                        "id": "personal",
+                        "label": "Personal data"
+                    },
+                    {
+                        "type": "richtext",
+                        "id": "abbr",
+                        "label": "Abbr data"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_abbr",
+                        "label": "Color Abbr text"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Image"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Slider"
+            }
+        ]
+    }
+{% endschema %}

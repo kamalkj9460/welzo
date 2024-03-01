@@ -1,0 +1,13 @@
+.all-condition__list {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 35px;
+  row-gap: 48px;
+}
+
+@media screen and (max-width: 767px) {
+  .all-condition__list {
+    row-gap: 24px;
+    column-gap: 28px;
+  }
+}

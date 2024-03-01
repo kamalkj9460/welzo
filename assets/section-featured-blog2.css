@@ -1,0 +1,105 @@
+.blog2-placeholder {
+  margin: 0 1.5rem;
+  background: rgb(var(--color-background));
+}
+
+@media screen and (min-width: 750px) {
+  .blog2-placeholder {
+    text-align: center;
+    width: 50%;
+    margin: 0;
+  }
+}
+
+.blog2-placeholder__content {
+  padding: 3rem;
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+.blog2-placeholder .placeholder {
+  position: relative;
+}
+
+.blog2-placeholder h2 {
+  margin: 0;
+}
+
+.blog2-placeholder .rte-width {
+  margin-top: 1.2rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.blog2__title {
+  margin: 0;
+}
+
+.blog2__posts.articles-wrapper {
+  margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 990px) {
+  .blog2__posts.articles-wrapper {
+    margin-bottom: 0;
+  }
+}
+
+.blog2__posts.articles-wrapper .article {
+  scroll-snap-align: start;
+}
+
+@media screen and (max-width: 749px) {
+  .blog2__post.article {
+    width: calc(100% - 3rem);
+  }
+}
+
+.background-secondary .blog2-placeholder__content {
+  background-color: rgb(var(--color-background));
+}
+
+.blog2__posts .card-wrapper {
+  width: 100%;
+}
+
+.blog2__button {
+  margin-top: 3rem;
+}
+
+@media screen and (min-width: 750px) {
+  .blog2__button {
+    margin-top: 5rem;
+  }
+}
+
+/* check for flexbox gap in older Safari versions */
+@supports not (inset: 10px) {
+  @media screen and (min-width: 750px) {
+    .blog2__posts .article + .article {
+      margin-left: var(--grid-desktop-horizontal-spacing);
+    }
+  }
+}
+
+.blog2 .blog__title {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 34px;
+  letter-spacing: -0.8px;
+  margin: 0;
+}
+
+.blog2 .title-wrapper-with-link a {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: -0.355556px;
+}
+
+@media screen and (min-width: 750px) {
+  .blog2 .blog__title {
+    font-size: 36px;
+    line-height: 46px;
+    margin: 0;
+  }
+}

@@ -1,0 +1,129 @@
+<div class="banner_text">
+    <div class="container">
+        <div class="row">
+            <div class="inner bg_{{ section.id }}">
+                {%- for block in section.blocks -%}
+                    {%- case block.type -%}
+                        {%- when 'heading' -%}
+                            <h2>
+                                {{ block.settings.heading }}
+                            </h2>
+                        {%- when 'text' -%}
+                            <div class="description">
+                                {{ block.settings.text }}
+                            </div>
+                        {%- when 'button' -%}
+                            <div class="button_wrap">
+                                <a href="{{ block.settings.button_link }}" class="btn_click">
+                                    {{ block.settings.button_label }}
+                                </a>
+                            </div>
+                    {%- endcase -%}
+                {%- endfor -%}
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .bg_{{ section.id }} *{
+        color: {{ section.settings.color_content }};
+    }
+    .bg_{{ section.id }}{
+    {% if section.settings.bg_m != blank %}
+        background-image: url('{{ section.settings.bg_m | img_url: "master" }}');
+    {% else %}
+        background-image: none;
+    {% endif %}
+    }
+    @media(min-width: 768px){
+        .bg_{{ section.id }}{
+        {% if section.settings.bg != blank %}
+            background-image: url('{{ section.settings.bg | img_url: "master" }}');
+        {% else %}
+            background-image: none;
+        {% endif %}
+        }
+    }
+</style>
+{% schema %}
+    {
+        "name": "Banner Text",
+        "tag": "section",
+        "class": "section",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "bg",
+                "label": "Background image desktop"
+            },
+            {
+                "type": "image_picker",
+                "id": "bg_m",
+                "label": "Background image mobile"
+            },
+            {
+                "type": "color",
+                "id": "color_content",
+                "label": "Color text section",
+                "default": "#FFFFFF"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "heading",
+                "name": "Heading",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "heading",
+                        "default": "Title section",
+                        "label": "Heading title"
+                    }
+                ]
+            },
+            {
+                "type": "text",
+                "name": "Description",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "richtext",
+                        "id": "text",
+                        "label": "Sub-title section"
+                    }
+                ]
+            },
+            {
+                "type": "button",
+                "name": "Button",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "button_label",
+                        "label": "Button label"
+                    },
+                    {
+                        "type": "url",
+                        "id": "button_link",
+                        "label": "Button Link"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Banner Text",
+                "blocks": [
+                    {
+                        "type": "heading"
+                    },
+                    {
+                        "type": "text"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}

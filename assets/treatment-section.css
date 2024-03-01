@@ -1,0 +1,30 @@
+.treatment-section__swiper {
+  margin-top: 58px;
+  width: 100%;
+}
+
+.treatment-section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.treatment-section__list-mobile {
+  display: none;
+}
+
+@media screen and (max-width: 990px) {
+
+  .treatment-section__list-mobile {
+    margin-top: 48px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    column-gap: 32px;
+    row-gap: 32px;
+  }
+
+  .treatment-section__swiper {
+    display: none;
+  }
+}

@@ -1,0 +1,52 @@
+{% comment %}
+  Usage:
+  {% render 'related-articles-list', class_list: "classes", all_blogs: blogs-menu, current_article: current-article, swiper: true|false %}
+{% endcomment %}
+
+{%- liquid
+  assign classes = "related-articles__list " | append: class_list
+  
+  if swiper == blank 
+    assign swiper = true 
+  endif
+
+  if swiper == true 
+    assign slide_class = "swiper-slide"
+  else
+    assign slide_class = ""
+  endif
+%}
+
+<div class="{{ classes }}{%- if swiper -%}swiper-wrapper{%- endif -%}">
+  {%- liquid
+    assign articles_ids = article.id | append: ','
+    if same_blog
+      for tag in current_article.tags
+        for related_article in current_blog.articles
+          if articles_ids contains related_article.id
+            continue
+          endif
+          if related_article.tags contains tag
+            assign articles_ids = articles_ids | append: related_article.id | append: ','
+            render 'article', article: related_article, url: related_article.url, classNames: slide_class, blog_title: current_blog.title
+          endif
+        endfor
+      endfor
+    else
+      for tag in current_article.tags
+        for link in all_blogs.links
+          assign current_blog = link.object
+          for related_article in current_blog.articles
+            if articles_ids contains related_article.id
+              continue
+            endif
+            if related_article.tags contains tag
+              assign articles_ids = articles_ids | append: related_article.id | append: ','
+              render 'article', article: related_article, url: related_article.url, classNames: slide_class, blog_title: current_blog.title
+            endif
+          endfor
+        endfor
+      endfor
+    endif
+  %}
+</div>

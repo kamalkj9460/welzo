@@ -1,0 +1,131 @@
+{{ 'all-condition-list.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div id="pharmacyServices" class="pharmacyServices">
+
+  <div class="container">
+    <h2 class="title main-title">
+      {{ section.settings.title | escape }}
+    </h2>
+    <div class="list_wrap">
+      <ul class="list">
+        {%- for block in section.blocks -%}
+          <li class="list_item {{ block.settings.icon_position }}">
+            <a href="{{ block.settings.url_link }}">
+              <div class="list_item__inner" style="background-color: {{ block.settings.bg }}">
+              {% if block.settings.svg_icon != blank %}
+                {{ block.settings.svg_icon }}
+              {% else %}
+                <img loading="lazy" src="{{ block.settings.image_icon | img_url: 'master' }}" alt="" />
+              {% endif %}
+              {% if block.settings.title != blank %}
+                <h4>
+                  {{ block.settings.title }}
+                </h4>
+              {% endif %}
+              {% if block.settings.description != blank %}
+                <p>
+                  {{ block.settings.description }}
+                </p>
+              {% endif %}
+            </div>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Local Pharmacy Services",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title section",
+      "default": "Local Pharmacy Services"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Pharmacy Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_icon",
+          "label": "Image Icon"
+        },
+        {
+          "type": "url",
+          "id": "url_link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "icon_position",
+          "label": "Icon position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "html",
+          "id": "svg_icon",
+          "label": "SVG Icon"
+        },
+        {
+          "type": "color",
+          "id": "bg",
+          "label": "Background color Item",
+          "default": "#FEF2F8"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title Item"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Local Pharmacy Services"
+    }
+  ]
+}
+{% endschema %}

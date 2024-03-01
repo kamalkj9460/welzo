@@ -1,0 +1,11 @@
+<div class="snippet-image">
+      <img loading="lazy" class="snippet-image__image"
+       
+        srcset="{%- if image.width >= 275 -%}{{ image | img_url: '275x' }} 275w,{%- endif -%}
+                {%- if image.width >= 550 -%}{{ image | img_url: '550x' }} 550w,{%- endif -%}
+                {%- if image.width >= 710 -%}{{ image | img_url: '710x' }} 710w,{%- endif -%}
+                {%- if image.width >= 1420 -%}{{ image | img_url: '1420x' }} 1420w,{%- endif -%}
+                {{ image | img_url: 'master' }} {{ image.width }}w"
+        src="{{ image | img_url: '550x' }}"
+        alt="{{ image.alt }}">
+</div>

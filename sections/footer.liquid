@@ -1,0 +1,910 @@
+{% comment %}theme-check-disable UndefinedObject{% endcomment %}
+{{ 'section-footer.aio.min.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'component-newsletter.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-list-menu.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-list-payment.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-list-social.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-rte.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'disclosure.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-list-payment.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-list-social.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'disclosure.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- style -%}
+  .footer {
+    margin-top: {{ section.settings.margin_top | times: 0.75 | round: 0 }}px;
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .footer {
+      margin-top: {{ section.settings.margin_top }}px;
+    }
+
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding isolate">
+  {%- if section.blocks.size > 0 or section.settings.newsletter_enable or section.settings.show_social -%}
+    <div class="footer__content-top page-width">
+      {%- if section.blocks.size > 0 -%}
+        <div class="footer__blocks-wrapper footer__row">
+          {%- for block in section.blocks -%}
+            <div class="footer__block footer__block--{{ block.type | replace: '_', '-' }}" {{ block.shopify_attributes }}>
+              <!-- {%- if block.settings.heading != blank -%}
+                <h2 class="footer-block__heading">{{- block.settings.heading | escape -}}</h2>
+              {%- endif -%} -->
+
+              {%- case block.type -%}
+                {%- when 'text' -%}
+                  <div class="footer-block__details-content rte">
+                    {{ block.settings.subtext }}
+                  </div>
+                {%- when 'link_list' -%}
+                  {%- if block.settings.menu != blank and block.settings.heading != blank -%}
+                    <ul class="footer-block__details-content list-unstyled">
+                      {%- for link in block.settings.menu.links -%}
+                        <li>
+                          <a href="{{ link.url }}" class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}">
+                            {{ link.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+        {%- when 'menu_list' -%}
+        {%- if block.settings.menu != blank and block.settings.heading != blank -%}
+          <div class="menu-list footer-accordion footer-accordion--one">
+          {%- for link in block.settings.menu.links -%}
+            <div class="menu-list__block footer-accordion__block">
+              <span class="menu-list__title footer-accordion__title">
+                {{ link.title }}
+              </span>
+              <ul class="menu-list__list footer-accordion__content">
+              {%- for sub_link in link.links -%}
+                <li class="link link--text list-menu__item list-menu__item--link">
+                  <a href="{{ sub_link.url }}" class="link link--text list-menu__item list-menu__item--link{% if sub_link.active %} list-menu__item--active{% endif %}">
+                    {{ sub_link.title }}
+                  </a>
+                </li>
+              {%- endfor -%}
+              </ul>
+            </div>
+          {%- endfor -%}
+          </div>
+        {%- endif -%}
+                {%- when 'image' -%}
+                  <div class="footer-block__details-content footer-block__first-col">
+                    <div class="footer-block-image">
+                      {% render 'icon-logo-white' %}
+                    </div>
+                    <div class="footer-block-subtext">
+                      {{ block.settings.image_subtext }}
+                    </div>
+                  </div>
+                {%- endcase -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="footer__content-top page-width">
+    <div class="footer-disclaimer">
+      <div class="footer-disclaimer__item">
+        <div class="footer-disclaimer__title">
+          Secure payment
+        </div>
+        <div class="footer-disclaimer__cards">
+          {% render 'icon-card-1' %}
+          {% render 'icon-card-2' %}
+          {% render 'icon-card-3' %}
+          {% render 'icon-card-4' %}
+          {% render 'icon-card-5' %}
+          {% render 'icon-card-6' %}
+        </div>
+      </div>
+      <div class="footer-disclaimer__item footer-disclaimer__item-mw">
+        <div class="footer-disclaimer__title">
+          Accreditation
+        </div>
+        <div class="footer-disclaimer__image-list">
+          {% if section.settings.footer_logo1 != blank %} 
+            {% assign img1_width =  section.settings.footer_logo1.width | divided_by: 3 %}
+            {% capture img1_widthX %}{{ img1_width }}x{% endcapture %}
+            {% capture {{ img1_widthW }} %}{{ img1_width }}w{% endcapture %}
+            <div class="footer-disclaimer__image-item" style="width: {{ img1_width }}px">
+              {% if section.settings.footer_logo_url1 != blank %} 
+                <a href="{{ section.settings.footer_logo_url1 }}" class="footer-disclaimer__image-item-link">
+              {%- else -%}
+                <div class="footer-disclaimer__image-item-link">
+              {%- endif -%}    
+                  <div class="media media--transparent media--adapt" style="padding-bottom: {{ 1 | divided_by: section.settings.footer_logo1.aspect_ratio | times: 100 }}%;">
+                    <img loading="lazy"
+                      class="multicolumn-card__image"
+                      srcset="{%- if section.settings.footer_logo1.width >= 275 -%}{{ section.settings.footer_logo1 | img_url: '275x' }} {{ img1_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo1.width >= 550 -%}{{ section.settings.footer_logo1 | img_url: '550x' }} {{ img1_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo1.width >= 710 -%}{{ section.settings.footer_logo1 | img_url: '710x' }} {{ img1_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo1.width >= 1420 -%}{{ section.settings.footer_logo1 | img_url: '1420x' }} {{ img1_widthW }},{%- endif -%}
+                        {{ section.settings.footer_logo1 | img_url: 'master' }} {{ section.settings.footer_logo1.width }}w"
+                      src="{{ section.settings.footer_logo1 | img_url: img1_widthX }}"
+                      sizes="{{ img1_width }}px"
+                      alt="{{ section.settings.footer_logo1.alt }}"
+                      height="{{ section.settings.footer_logo1.height }}"
+                      width="{{ section.settings.footer_logo1.width }}"
+                     
+                    >
+                  </div>
+              {% if section.settings.footer_logo_url1 != blank %}
+                </a>
+              {%- else -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          {% if section.settings.footer_logo2 != blank %} 
+            {% assign img2_width =  section.settings.footer_logo2.width | divided_by: 3 %}
+            {% capture img2_widthX %}{{ img2_width }}x{% endcapture %}
+            {% capture {{ img2_widthW }} %}{{ img2_width }}w{% endcapture %}
+            <div class="footer-disclaimer__image-item" style="width: {{ img2_width }}px">
+              {% if section.settings.footer_logo_url2 != blank %} 
+                <a href="{{ section.settings.footer_logo_url2 }}" class="footer-disclaimer__image-item-link">
+              {%- else -%}
+                <div class="footer-disclaimer__image-item-link">
+              {%- endif -%}    
+                  <div class="media media--transparent media--adapt" style="padding-bottom: {{ 1 | divided_by: section.settings.footer_logo2.aspect_ratio | times: 100 }}%;">
+                    <img loading="lazy"
+                      class="multicolumn-card__image"
+                      srcset="{%- if section.settings.footer_logo2.width >= 275 -%}{{ section.settings.footer_logo2 | img_url: '275x' }} {{ img2_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo2.width >= 550 -%}{{ section.settings.footer_logo2 | img_url: '550x' }} {{ img2_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo2.width >= 710 -%}{{ section.settings.footer_logo2 | img_url: '710x' }} {{ img2_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo2.width >= 1420 -%}{{ section.settings.footer_logo2 | img_url: '1420x' }} {{ img2_widthW }},{%- endif -%}
+                        {{ section.settings.footer_logo2 | img_url: 'master' }} {{ section.settings.footer_logo2.width }}w"
+                      src="{{ section.settings.footer_logo2 | img_url: img2_widthX }}"
+                      sizes="{{ img2_width }}px"
+                      alt="{{ section.settings.footer_logo2.alt }}"
+                      height="{{ section.settings.footer_logo2.height }}"
+                      width="{{ section.settings.footer_logo2.width }}"
+                     
+                    >
+                  </div>
+              {% if section.settings.footer_logo_url2 != blank %}
+                </a>
+              {%- else -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          {% if section.settings.footer_logo3 != blank %} 
+            {% assign img3_width =  section.settings.footer_logo3.width | divided_by: 3 %}
+            {% capture img3_widthX %}{{ img3_width }}x{% endcapture %}
+            {% capture {{ img3_widthW }} %}{{ img3_width }}w{% endcapture %}
+            <div class="footer-disclaimer__image-item" style="width: {{ img3_width }}px">
+              {% if section.settings.footer_logo_url3 != blank %} 
+                <a href="{{ section.settings.footer_logo_url3 }}" class="footer-disclaimer__image-item-link">
+              {%- else -%}
+                <div class="footer-disclaimer__image-item-link">
+              {%- endif -%}    
+                  <div class="media media--transparent media--adapt" style="padding-bottom: {{ 1 | divided_by: section.settings.footer_logo3.aspect_ratio | times: 100 }}%;">
+                    <img loading="lazy"
+                      class="multicolumn-card__image"
+                      srcset="{%- if section.settings.footer_logo3.width >= 275 -%}{{ section.settings.footer_logo3 | img_url: '275x' }} {{ img3_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo3.width >= 550 -%}{{ section.settings.footer_logo3 | img_url: '550x' }} {{ img3_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo3.width >= 710 -%}{{ section.settings.footer_logo3 | img_url: '710x' }} {{ img3_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo3.width >= 1420 -%}{{ section.settings.footer_logo3 | img_url: '1420x' }} {{ img3_widthW }},{%- endif -%}
+                        {{ section.settings.footer_logo3 | img_url: 'master' }} {{ section.settings.footer_logo3.width }}w"
+                      src="{{ section.settings.footer_logo3 | img_url: img3_widthX }}"
+                      sizes="{{ img3_width }}px"
+                      alt="{{ section.settings.footer_logo3.alt }}"
+                      height="{{ section.settings.footer_logo3.height }}"
+                      width="{{ section.settings.footer_logo3.width }}"
+                     
+                    >
+                  </div>
+              {% if section.settings.footer_logo_url3 != blank %}
+                </a>
+              {%- else -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          {% if section.settings.footer_logo4 != blank %} 
+            {% assign img4_width =  section.settings.footer_logo4.width | divided_by: 3 %}
+            {% capture img4_widthX %}{{ img4_width }}x{% endcapture %}
+            {% capture {{ img4_widthW }} %}{{ img4_width }}w{% endcapture %}
+            <div class="footer-disclaimer__image-item" style="width: {{ img4_width }}px">
+              {% if section.settings.footer_logo_url4 != blank %} 
+                <a href="{{ section.settings.footer_logo_url4 }}" class="footer-disclaimer__image-item-link">
+              {%- else -%}
+                <div class="footer-disclaimer__image-item-link">
+              {%- endif -%}    
+                  <div class="media media--transparent media--adapt" style="padding-bottom: {{ 1 | divided_by: section.settings.footer_logo4.aspect_ratio | times: 100 }}%;">
+                    <img loading="lazy"
+                      class="multicolumn-card__image"
+                      srcset="{%- if section.settings.footer_logo4.width >= 275 -%}{{ section.settings.footer_logo4 | img_url: '275x' }} {{ img4_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo4.width >= 550 -%}{{ section.settings.footer_logo4 | img_url: '550x' }} {{ img4_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo4.width >= 710 -%}{{ section.settings.footer_logo4 | img_url: '710x' }} {{ img4_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo4.width >= 1420 -%}{{ section.settings.footer_logo4 | img_url: '1420x' }} {{ img4_widthW }},{%- endif -%}
+                        {{ section.settings.footer_logo4 | img_url: 'master' }} {{ section.settings.footer_logo4.width }}w"
+                      src="{{ section.settings.footer_logo4 | img_url: img4_widthX }}"
+                      sizes="{{ img4_width }}px"
+                      alt="{{ section.settings.footer_logo4.alt }}"
+                      height="{{ section.settings.footer_logo4.height }}"
+                      width="{{ section.settings.footer_logo4.width }}"
+                     
+                    >
+                  </div>
+              {% if section.settings.footer_logo_url4 != blank %}
+                </a>
+              {%- else -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          {% if section.settings.footer_logo5 != blank %} 
+            {% assign img5_width =  section.settings.footer_logo5.width | divided_by: 3 %}
+            {% capture img5_widthX %}{{ img5_width }}x{% endcapture %}
+            {% capture {{ img5_widthW }} %}{{ img5_width }}w{% endcapture %}
+            <div class="footer-disclaimer__image-item" style="width: {{ img5_width }}px">
+              {% if section.settings.footer_logo_url5 != blank %} 
+                <a href="{{ section.settings.footer_logo_url5 }}" class="footer-disclaimer__image-item-link">
+              {%- else -%}
+                <div class="footer-disclaimer__image-item-link">
+              {%- endif -%}    
+                  <div class="media media--transparent media--adapt" style="padding-bottom: {{ 1 | divided_by: section.settings.footer_logo5.aspect_ratio | times: 100 }}%;">
+                    <img loading="lazy"
+                      class="multicolumn-card__image"
+                      srcset="{%- if section.settings.footer_logo5.width >= 275 -%}{{ section.settings.footer_logo5 | img_url: '275x' }} {{ img5_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo5.width >= 550 -%}{{ section.settings.footer_logo5 | img_url: '550x' }} {{ img5_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo5.width >= 710 -%}{{ section.settings.footer_logo5 | img_url: '710x' }} {{ img5_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo5.width >= 1420 -%}{{ section.settings.footer_logo5 | img_url: '1420x' }} {{ img5_widthW }},{%- endif -%}
+                        {{ section.settings.footer_logo5 | img_url: 'master' }} {{ section.settings.footer_logo5.width }}w"
+                      src="{{ section.settings.footer_logo5 | img_url: img5_widthX }}"
+                      sizes="{{ img5_width }}px"
+                      alt="{{ section.settings.footer_logo5.alt }}"
+                      height="{{ section.settings.footer_logo5.height }}"
+                      width="{{ section.settings.footer_logo5.width }}"
+                     
+                    >
+                  </div>
+              {% if section.settings.footer_logo_url5 != blank %}
+                </a>
+              {%- else -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          {% if section.settings.footer_logo6 != blank %} 
+            {% assign img6_width =  section.settings.footer_logo6.width | divided_by: 3 %}
+            {% capture img6_widthX %}{{ img6_width }}x{% endcapture %}
+            {% capture {{ img6_widthW }} %}{{ img6_width }}w{% endcapture %}
+            <div class="footer-disclaimer__image-item" style="width: {{ img6_width }}px">
+              {% if section.settings.footer_logo_url6 != blank %} 
+                <a href="{{ section.settings.footer_logo_url6 }}" class="footer-disclaimer__image-item-link">
+              {%- else -%}
+                <div class="footer-disclaimer__image-item-link">
+              {%- endif -%}    
+                  <div class="media media--transparent media--adapt" style="padding-bottom: {{ 1 | divided_by: section.settings.footer_logo6.aspect_ratio | times: 100 }}%;">
+                    <img loading="lazy"
+                      class="multicolumn-card__image"
+                      srcset="{%- if section.settings.footer_logo6.width >= 275 -%}{{ section.settings.footer_logo6 | img_url: '275x' }} {{ img6_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo6.width >= 550 -%}{{ section.settings.footer_logo6 | img_url: '550x' }} {{ img6_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo6.width >= 710 -%}{{ section.settings.footer_logo6 | img_url: '710x' }} {{ img6_widthW }},{%- endif -%}
+                        {%- if section.settings.footer_logo6.width >= 1420 -%}{{ section.settings.footer_logo6 | img_url: '1420x' }} {{ img6_widthW }},{%- endif -%}
+                        {{ section.settings.footer_logo6 | img_url: 'master' }} {{ section.settings.footer_logo6.width }}w"
+                      src="{{ section.settings.footer_logo6 | img_url: img6_widthX }}"
+                      sizes="{{ img6_width }}px"
+                      alt="{{ section.settings.footer_logo6.alt }}"
+                      height="{{ section.settings.footer_logo6.height }}"
+                      width="{{ section.settings.footer_logo6.width }}"
+                     
+                    >
+                  </div>
+              {% if section.settings.footer_logo_url6 != blank %}
+                </a>
+              {%- else -%}
+                </div>
+              {%- endif -%}
+            
+
+              
+            </div>
+          {%- endif -%}
+            <!-- script -->
+            <style>
+              .custom__legitscript {
+                width: 75px;
+                height: 50px;
+                flex-shrink: 0;
+                position: relative;
+                
+              }
+              @media screen and (max-width: 767px) {             
+                .custom__legitscript {
+                  width: 55px;
+                  height: 40px;
+                  flex-shrink: 0;
+                  position: relative;
+                  
+                } 
+              }
+
+              .custom__legitscript a {
+                width: 100%;
+                height: 100%;
+                display: block;
+              }
+              .custom__legitscript .media {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 5;
+              }
+              .custom__legitscript img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+              }
+            </style>
+            <div class="footer-disclaimer__image-item-link custom__legitscript" >
+               <a href="https://www.legitscript.com/websites/?checker_keywords=welzo.com" class="media media--transparent media--adapt">
+                 <script src="https://static.legitscript.com/seals/14521644.js"></script>
+              </a>
+            </div>
+        </div>
+        <div class="footer-disclaimer__text">All our partner labs hold UKAS, ISO17025 / ISO15189 / IS013485 accreditations. All our partner pharmacies are registered with GPhC.</div>
+      </div>
+      <div class="footer-disclaimer__item">
+        {% comment %}
+        <a class="footer-disclaimer__link" href="{{ section.settings.verify_link }}" target="_blank">
+          <img loading="lazy" src="{{ 'obligatory-pharmacy-logo.png' | asset_img_url: 'original' }}" alt="">
+        </a>
+        {% endcomment %}
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__content-bottom page-width">
+    <div class="footer__content-bottom-wrapper page-width">
+      <div class="footer__row">
+        <div class="footer__copyright caption">
+          <small class="copyright__content">&copy; {{ 'now' | date: "%Y" }}, {{ "Welzo." | link_to: routes.root_url }}</small>
+          <small class="copyright__content">All rights reserved.</small>
+        </div>
+    <div class="footer__social">
+      {%- if section.settings.show_social -%}
+      <ul class="footer__list-social list-unstyled list-social" role="list">
+        {%- if settings.social_twitter_link != blank -%}
+        <li class="list-social__item">
+          <a href="{{ settings.social_twitter_link }}" class="link list-social__link" >
+          {%- render 'icon-twitter' -%}
+          <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_facebook_link != blank -%}
+        <li class="list-social__item">
+          <a href="{{ settings.social_facebook_link }}" class="link list-social__link" >
+          {%- render 'icon-facebook' -%}
+          <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_pinterest_link != blank -%}
+        <li class="list-social__item">
+          <a href="{{ settings.social_pinterest_link }}" class="link list-social__link" >
+          {%- render 'icon-pinterest' -%}
+          <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_instagram_link != blank -%}
+        <li class="list-social__item">
+          <a href="{{ settings.social_instagram_link }}" class="link list-social__link" >
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-tiktok" width="16" height="18"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M7.5 0H16.5C20.6415 0 24 3.3585 24 7.5V16.5C24 20.6415 20.6415 24 16.5 24H7.5C3.3585 24 0 20.6415 0 16.5V7.5C0 3.3585 3.3585 0 7.5 0ZM16.5 21.75C19.395 21.75 21.75 19.395 21.75 16.5V7.5C21.75 4.605 19.395 2.25 16.5 2.25H7.5C4.605 2.25 2.25 4.605 2.25 7.5V16.5C2.25 19.395 4.605 21.75 7.5 21.75H16.5Z" fill="url(#paint0_linear_1281_9783)"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M6 12C6 8.6865 8.6865 6 12 6C15.3135 6 18 8.6865 18 12C18 15.3135 15.3135 18 12 18C8.6865 18 6 15.3135 6 12ZM8.25 12C8.25 14.067 9.933 15.75 12 15.75C14.067 15.75 15.75 14.067 15.75 12C15.75 9.9315 14.067 8.25 12 8.25C9.933 8.25 8.25 9.9315 8.25 12Z" fill="url(#paint1_linear_1281_9783)"/>
+              <circle cx="18.4499" cy="5.54999" r="0.7995" fill="url(#paint2_linear_1281_9783)"/>
+              <defs>
+                <linearGradient id="paint0_linear_1281_9783" x1="12.0001" y1="31.6062" x2="31.6062" y2="11.9999" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FFC107"/>
+                  <stop offset="0.507" stop-color="#F44336"/>
+                  <stop offset="0.99" stop-color="#9C27B0"/>
+                </linearGradient>
+                <linearGradient id="paint1_linear_1281_9783" x1="12" y1="20.485" x2="20.485" y2="12" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FFC107"/>
+                  <stop offset="0.507" stop-color="#F44336"/>
+                  <stop offset="0.99" stop-color="#9C27B0"/>
+                </linearGradient>
+                <linearGradient id="paint2_linear_1281_9783" x1="18.45" y1="6.68069" x2="19.5805" y2="5.54999" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FFC107"/>
+                  <stop offset="0.507" stop-color="#F44336"/>
+                  <stop offset="0.99" stop-color="#9C27B0"/>
+                </linearGradient>
+              </defs>
+            </svg>              
+          <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_tiktok_link != blank -%}
+        <li class="list-social__item">
+          <a href="{{ settings.social_tiktok_link }}" class="link list-social__link" >
+          {%- render 'icon-tiktok' -%}
+          <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_tumblr_link != blank -%}
+        <li class="list-social__item">
+          <a href="{{ settings.social_tumblr_link }}" class="link list-social__link" >
+          {%- render 'icon-tumblr' -%}
+          <span class="visually-hidden">{{ 'general.social.links.tumblr' | t }}</span>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_snapchat_link != blank -%}
+        <li class="list-social__item">
+          <a href="{{ settings.social_snapchat_link }}" class="link list-social__link" >
+          {%- render 'icon-snapchat' -%}
+          <span class="visually-hidden">{{ 'general.social.links.snapchat' | t }}</span>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_youtube_link != blank -%}
+        <li class="list-social__item">
+          <a href="{{ settings.social_youtube_link }}" class="link list-social__link" >
+          {%- render 'icon-youtube' -%}
+          <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_vimeo_link != blank -%}
+        <li class="list-social__item">
+          <a href="{{ settings.social_vimeo_link }}" class="link list-social__link" >
+          {%- render 'icon-vimeo' -%}
+          <span class="visually-hidden">{{ 'general.social.links.vimeo' | t }}</span>
+          </a>
+        </li>
+        {%- endif -%}
+      </ul>
+      {%- endif -%}
+    </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% javascript %}
+  class LocalizationForm extends HTMLElement {
+    constructor() {
+      super();
+      this.elements = {
+        input: this.querySelector('input[name="locale_code"], input[name="country_code"]'),
+        button: this.querySelector('button'),
+        panel: this.querySelector('ul'),
+      };
+      this.elements.button.addEventListener('click', this.openSelector.bind(this));
+      this.elements.button.addEventListener('focusout', this.closeSelector.bind(this));
+      this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
+
+      this.querySelectorAll('a').forEach(item => item.addEventListener('click', this.onItemClick.bind(this)));
+    }
+
+    hidePanel() {
+      this.elements.button.setAttribute('aria-expanded', 'false');
+      this.elements.panel.setAttribute('hidden', true);
+    }
+
+    onContainerKeyUp(event) {
+      if (event.code.toUpperCase() !== 'ESCAPE') return;
+
+      this.hidePanel();
+      this.elements.button.focus();
+    }
+
+    onItemClick(event) {
+      event.preventDefault();
+      const form = this.querySelector('form');
+      this.elements.input.value = event.currentTarget.dataset.value;
+      if (form) form.submit();
+    }
+
+    openSelector() {
+      this.elements.button.focus();
+      this.elements.panel.toggleAttribute('hidden');
+      this.elements.button.setAttribute('aria-expanded', (this.elements.button.getAttribute('aria-expanded') === 'false').toString());
+    }
+
+    closeSelector(event) {
+      const shouldClose = event.relatedTarget && event.relatedTarget.nodeName === 'BUTTON';
+      if (event.relatedTarget === null || shouldClose) {
+        this.hidePanel();
+      }
+    }
+  }
+
+  customElements.define('localization-form', LocalizationForm);
+
+    /* accordion function */
+  $(document).ready(function() {
+    const time = 400;
+    const mobileWidth = 767;
+    if($(window).width() <= mobileWidth) {
+      $('.footer-accordion__title').each(function() {
+        if($(this).hasClass('footer-accordion__title--open')) {
+          $(this).next().slideDown(time);
+        }
+      });
+    }
+
+    $('.footer-accordion__title').on('click', function() {
+      if($(window).width() > mobileWidth) {
+        return
+      }
+      if($('.footer-accordion').hasClass('footer-accordion--one'))  {
+        $('.footer-accordion__title').not($(this)).removeClass('footer-accordion__title--open');
+        $('.footer-accordion__content').not($(this).next()).slideUp(time);
+      }
+      $(this).toggleClass('footer-accordion__title--open').next().slideToggle(time);
+    });
+  });
+{% endjavascript %}
+
+
+<script>
+$(window).on("load", function() {
+    var titleElement = $(".jdgm-rev-widg__title");
+    var reviewCountElement = $(".product2-review span");
+
+    console.log('titleElement ' + titleElement);
+
+    if (titleElement.length > 0) {
+      var titleText = titleElement.text();
+      var regex = /(\d+) Reviews/;
+      var matches = titleText.match(regex);
+      console.log('Reviews ' + matches);
+
+      if (matches && matches.length > 1) {
+        var reviewCount = matches[1];
+        reviewCountElement.text(reviewCount + " Reviews");
+      }
+    }
+  });
+</script>
+                    
+{% schema %}
+{
+  "name": "t:sections.footer.name",
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "t:sections.footer.blocks.link_list.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Quick links",
+          "label": "t:sections.footer.blocks.link_list.settings.heading.label",
+          "info": "t:sections.footer.blocks.link_list.settings.heading.info"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "default": "footer",
+          "label": "t:sections.footer.blocks.link_list.settings.menu.label",
+          "info": "t:sections.footer.blocks.link_list.settings.menu.info"
+        }
+      ]
+    },
+  {
+    "type": "menu_list",
+    "name": "t:sections.footer.blocks.menu_list.name",
+    "settings": [
+      {
+      "type": "text",
+      "id": "heading",
+      "default": "Menu list",
+      "label": "t:sections.footer.blocks.menu_list.settings.heading.label",
+      "info": "t:sections.footer.blocks.menu_list.settings.heading.info"
+      },
+      {
+      "type": "link_list",
+      "id": "menu",
+      "default": "footer",
+      "label": "t:sections.footer.blocks.menu_list.settings.menu.label",
+      "info": "t:sections.footer.blocks.menu_list.settings.menu.info"
+      }
+    ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.footer.blocks.text.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Heading",
+          "label": "t:sections.footer.blocks.text.settings.heading.label"
+        },
+        {
+          "type": "richtext",
+          "id": "subtext",
+          "default": "<p>Share contact information, store details, and brand content with your customers.</p>",
+          "label": "t:sections.footer.blocks.text.settings.subtext.label"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "image_subtext",
+          "default": "<p>Welzo acts as healthcare platform only, connecting patients with the best healthcare providers to enable a seamless experience. We cannot be held liable for our third-party providers.</p>",
+          "label": "Text"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 50,
+          "max": 200,
+          "step": 5,
+          "unit": "px",
+          "label": "Image width",
+          "default": 100
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Image alignment on large screen",
+          "options": [
+            {
+              "value": "",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "t:sections.footer.settings.color_scheme.options__1.label"
+        },
+        {
+          "value": "accent-2",
+          "label": "t:sections.footer.settings.color_scheme.options__2.label"
+        },
+        {
+          "value": "background-1",
+          "label": "t:sections.footer.settings.color_scheme.options__3.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.footer.settings.color_scheme.options__4.label"
+        },
+        {
+          "value": "inverse",
+          "label": "t:sections.footer.settings.color_scheme.options__5.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.footer.settings.color_scheme.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__1.content",
+      "info": "t:sections.footer.settings.header__1.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "newsletter_enable",
+      "default": true,
+      "label": "t:sections.footer.settings.newsletter_enable.label"
+    },
+    {
+      "type": "text",
+      "id": "verify_link",
+      "default": "https://example.com",
+      "label": "Verify link"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "default": "Subscribe to our emails",
+      "label": "t:sections.footer.settings.newsletter_heading.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__2.content",
+      "info": "t:sections.footer.settings.header__2.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "default": true,
+      "label": "t:sections.footer.settings.show_social.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__3.content",
+      "info": "t:sections.footer.settings.header__4.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": true,
+      "label": "t:sections.footer.settings.enable_country_selector.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__5.content",
+      "info": "t:sections.footer.settings.header__6.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": true,
+      "label": "t:sections.footer.settings.enable_language_selector.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__7.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "payment_enable",
+      "default": false,
+      "label": "t:sections.footer.settings.payment_enable.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.footer_logolist.content"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_logo1",
+      "label": "t:sections.footer.settings.footer_logo1.label"
+    },
+    {
+      "type": "url",
+      "id": "footer_logo_url1",
+      "label": "t:sections.footer.settings.footer_logo_url1.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_logo2",
+      "label": "t:sections.footer.settings.footer_logo2.label"
+    },
+    {
+      "type": "url",
+      "id": "footer_logo_url2",
+      "label": "t:sections.footer.settings.footer_logo_url2.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_logo3",
+      "label": "t:sections.footer.settings.footer_logo3.label"
+    },
+    {
+      "type": "url",
+      "id": "footer_logo_url3",
+      "label": "t:sections.footer.settings.footer_logo_url3.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_logo4",
+      "label": "t:sections.footer.settings.footer_logo4.label"
+    },
+    {
+      "type": "url",
+      "id": "footer_logo_url4",
+      "label": "t:sections.footer.settings.footer_logo_url4.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_logo5",
+      "label": "t:sections.footer.settings.footer_logo5.label"
+    },
+    {
+      "type": "url",
+      "id": "footer_logo_url5",
+      "label": "t:sections.footer.settings.footer_logo_url5.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_logo6",
+      "label": "t:sections.footer.settings.footer_logo6.label"
+    },
+    {
+      "type": "url",
+      "id": "footer_logo_url6",
+      "label": "t:sections.footer.settings.footer_logo_url6.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.footer.settings.margin_top.label",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "image"
+      },
+      {
+        "type": "menu_list"
+      }
+    ]
+  }
+}
+{% endschema %}
