@@ -1,0 +1,347 @@
+{{ 'modal-fields2.aio.min.css' | asset_url | stylesheet_tag }}
+{{ 'datepicker.min.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'datepicker-full.min.js' | asset_url }}" defer="defer"></script>
+
+<style>
+    .modal-fields__button.dissable {
+        filter: grayscale(1);
+        pointer-events: none;
+    }
+</style>
+
+{% comment %}    Consultation Modal   {% endcomment %}
+
+<modal-dialog id="PopupModal-{{product.id}}" class="modal-fields start">
+    <div role="dialog" aria-label="{{ product.title }}" aria-modal="true" class="modal-fields__wrap modal-fields__wrap2" tabindex="-1">
+        <div type="button" class="modal-fields__close" aria-label="{{ 'accessibility.close' | t }}"></div>
+
+        <div class="modal-fields__content-widget modal-widget">
+            <div class="modal-fields__content">
+                <div class="modal-fields__content-socials">
+                    {%- render 'icon-raitingstars2' %}
+                    {%- render 'icon-trustindex' %}
+                    <script defer async src='https://cdn.trustindex.io/loader.js?48b79d412a616064bd66254fd18'></script>
+                </div>
+                <ul class="modal-fields__content-steps">
+                    <li class="modal-fields__content-steps-item active">{{ 'products.product.product_popup_step1' | t }}</li>
+                    <li class="modal-fields__content-steps-item">{{ 'products.product.product_popup_step2' | t }}</li>
+                    <li class="modal-fields__content-steps-item">{{ 'products.product.product_popup_step3' | t }}</li>
+                </ul>
+                <form class="modal-fields__form" action="#" onsubmit="formSubmit();return false">
+                    <div class="modal-fields__caption-holder">
+                        <p class="modal-fields__caption">{{ 'products.product.product_popup_title' | t }}</p>
+                        <div class="modal-fields__caption-text">{{ 'products.product.product_popup_text' | t }}</div>
+                    </div>
+                    <div>{% render 'collection-order-properties-fields', accentuate_fields: accentuate_fields %}</div>
+                    <button id="ModalClose-{{ product.id }}" type="submit" class="modal-fields__button">
+                        <span>{{ 'products.product.product_popup_btn_text2' | t }}</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</modal-dialog>
+
+{% comment %}   Prepare Consultation Modal   {% endcomment %}
+
+{% for metaobject in shop.metaobjects.start_consultation_popup.values %}
+    <modal-dialog id="PopupModal-{{ product.id }}-prepare" class="modal-fields modal-fields-prepare yoyoyoy">
+        <div role="dialog" aria-label="{{ product.title }}" aria-modal="true"
+             class="modal-fields__wrap modal-fields__wrap2"
+             tabindex="-1">
+            <div type="button" class="modal-fields__close" aria-label="{{ 'accessibility.close' | t }}"></div>
+            <div class="modal-fields__content-widget modal-widget">
+                <div class="modal-fields__content start-consultation">
+                    <div class="modal-header">
+                        <div class="modal-fields__content-socials">
+                            <p class="modal-fields__caption header-title">{{ metaobject.head_title }}</p>
+                            <div class="mcd_moreinfo-review">
+                                <style>
+                                    @media (max-width: 768px) {
+                                        .modal-fields-prepare .modal-fields__content-socials {
+                                            flex-direction: column;
+                                            align-items: flex-start;
+                                        }
+                                    }
+
+                                    .modal-fields-prepare .modal-fields__content-socials .ti-widget .ti-widget-container .ti-header.source-all {
+                                        padding: 0;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review {
+                                        margin-left: 25px;
+                                        position: relative;
+                                        top: 3px;
+                                    }
+
+                                    @media (max-width: 768px) {
+                                        .modal-fields-prepare .mcd_moreinfo-review {
+                                            margin-left: 0;
+                                        }
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='11'][data-set-id='light-minimal'] .ti-widget-container {
+                                        text-align: left;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='56'][data-set-id='light-minimal'] .ti-widget-container {
+                                        margin: 0;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='11'][data-set-id='light-minimal'] .ti-header {
+                                        padding: 0;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='58'][data-set-id='light-minimal'] a.ti-header:hover {
+                                        background: none !important;
+                                        border: none !important;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget-container .ti-header {
+                                        display: flex !important;
+                                        flex-direction: row !important;
+                                        align-items: center;
+                                    }
+
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-large-logo {
+                                        order: 1;
+                                        position: relative;
+                                        margin: 0 5px;
+                                        padding-left: 5px;
+                                    }
+
+                                    .modal-fields-prepare .ti-widget[data-layout-id='56'][data-set-id='light-minimal'] .ti-large-logo img {
+                                        width: 17px !important;
+                                        height: 15px !important;
+                                        object-fit: cover;
+                                        object-position: left;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-large-logo:after {
+                                        content: '';
+                                        position: absolute;
+                                        top: 2px;
+                                        bottom: 2px;
+                                        left: 0;
+                                        width: 2px;
+                                        background: #D9D9D9;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-stars {
+                                        order: 0;
+                                        margin-top: 0 !important;
+                                        background-image: url({{ 'review-star.png' | asset_img_url: 'master' }});
+                                        background-size: contain;
+                                        background-repeat: no-repeat;
+                                        background-position: left center;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-stars .ti-star {
+                                        opacity: 0;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-text {
+                                        order: 2;
+                                        position: relative;
+                                        padding: 0 6px;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='56'][data-set-id='light-minimal'] .ti-text span, .ti-widget[data-layout-id='56'][data-set-id='light-minimal'] .ti-text strong {
+                                        color: rgba(0, 0, 0, 0.88);
+                                        font-size: 8px;
+                                        font-weight: 400;
+                                        line-height: 350%;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-text:before {
+                                        content: '(';
+                                        position: absolute;
+                                        left: 3px;
+                                        color: rgba(0, 0, 0, 0.88);
+                                        font-size: 8px;
+                                        font-weight: 400;
+                                        line-height: 28px; /* 350% */
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-text:after {
+                                        content: ')';
+                                        position: absolute;
+                                        right: 3px;
+                                        color: rgba(0, 0, 0, 0.88);
+                                        font-size: 8px;
+                                        font-weight: 400;
+                                        line-height: 28px; /* 350% */
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-rating {
+                                        display: none;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='56'][data-set-id='light-minimal'] .ti-large-logo {
+                                        margin-bottom: 0 !important;
+                                        height: auto;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='56'][data-set-id='light-minimal'][data-pid='2ff7541186a82522fe065ae717f'] .ti-header {
+                                        background-color: transparent !important;
+                                    }
+                                </style>
+                                {% comment %}<script defer async src='https://cdn.trustindex.io/loader.js?ac297c511a5f1631bc465f1fabd'></script>{% endcomment %}
+                                <script type="lazyload_int"
+                                        data-src='https://cdn.trustindex.io/loader.js?2ff7541186a82522fe065ae717f'></script>
+                            </div>
+                        </div>
+                        <div class="modal-fields__caption-text header-text">{{ metaobject.head_text }}</div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="consultation-steps">
+                            <div class="consultation-step">
+                                <div class="consultation-step-image">
+                                    {%- if metaobject.image_1 != blank -%}
+                                        {%- capture sizes -%}
+                                            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                                            (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+                                        {%- endcapture -%}
+                                        {{
+                                        metaobject.image_1
+                                        | image_url: width: 200
+                                        | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+                                        }}
+                                    {%- else -%}
+                                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    {%- endif -%}
+                                </div>
+                                <div class="consultation-step-time">{{ metaobject.time_1 }}</div>
+                                <div class="consultation-step-header">
+                                    <span class="consultation-step-number">1</span>
+                                    <span class="consultation-step-title">{{ metaobject.step_title_1 }}</span>
+                                </div>
+                                <div class="consultation-step-text">{{ metaobject.step_text_1 }}</div>
+                            </div>
+                            <div class="consultation-step">
+                                <div class="consultation-step-image">
+                                    {%- if metaobject.image_2 != blank -%}
+                                        {%- capture sizes -%}
+                                            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                                            (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+                                        {%- endcapture -%}
+                                        {{
+                                        metaobject.image_2
+                                        | image_url: width: 200
+                                        | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+                                        }}
+                                    {%- else -%}
+                                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    {%- endif -%}
+                                </div>
+                                <div class="consultation-step-time">{{ metaobject.time_2 }}</div>
+                                <div class="consultation-step-header">
+                                    <span class="consultation-step-number">2</span>
+                                    <span class="consultation-step-title">{{ metaobject.step_title_2 }}</span>
+                                </div>
+                                <div class="consultation-step-text">{{ metaobject.step_text_2 }}</div>
+                            </div>
+                            <div class="consultation-step">
+                                <div class="consultation-step-image">
+                                    {%- if metaobject.image_3 != blank -%}
+                                        {%- capture sizes -%}
+                                            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                                            (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+                                        {%- endcapture -%}
+                                        {{
+                                        metaobject.image_3
+                                        | image_url: width: 200
+                                        | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+                                        }}
+                                    {%- else -%}
+                                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    {%- endif -%}
+                                </div>
+                                <div class="consultation-step-time">{{ metaobject.time_3 }}</div>
+                                <div class="consultation-step-header">
+                                    <span class="consultation-step-number">3</span>
+                                    <span class="consultation-step-title">{{ metaobject.step_title_3 }}</span>
+                                </div>
+                                <div class="consultation-step-text">{{ metaobject.step_text_3 }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="ModalClose-{{ product.id }}-prepare" type="submit" class="modal-fields__button_prepare">
+                        <span>Continue consultation ></span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </modal-dialog>
+{% endfor %}
+
+
+<script>
+
+
+    const formSubmit = (event) => {
+
+        // event.preventDefault();
+        {% if accentuate_fields.popup_question_field %}
+
+        {%- for popup_question_field in accentuate_fields.popup_question_field -%}
+        {% assign inputParamCount = popup_question_field | split: "-----field-----" %}
+        {% assign inputParam = inputParamCount[0] | split: "|" %}
+        {% case inputParam[0] %}
+        {% when "checkbox" %}
+        {% assign forLoopIndex = forloop.index0 %}
+        {% assign inputParamItems = inputParam[1] | split: ":" %}
+        let checkboxValues{{forLoopIndex}} = '';
+        {% for inputParamItem in inputParamItems %}
+        if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked) {
+            if ( checkboxValues{{forLoopIndex}} !='') {
+                checkboxValues{{forLoopIndex}} = checkboxValues{{forLoopIndex}} +', '+ document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+            } else {
+                checkboxValues{{forLoopIndex}} = document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+            }
+        }
+        {% endfor %}
+
+        if (checkboxValues{{forLoopIndex}} && $(".popup_question_field-{{ forloop.index0 }}-h").length > 0) $(".popup_question_field-{{ forloop.index0 }}-h").val(checkboxValues{{forLoopIndex}});
+
+        {% when "date" %}
+        if (document.getElementById("popup_question_field-{{ forloop.index0 }}") && $(".popup_question_field-{{ forloop.index0 }}-h").length > 0) $(".popup_question_field-{{ forloop.index0 }}-h").val(document.getElementById("popup_question_field-{{ forloop.index0 }}").value);
+
+        {% when "radio" %}
+        {% assign forLoopIndex = forloop.index0 %}
+        {% assign inputParamItems = inputParam[1] | split: ":" %}
+        let radioValues{{forLoopIndex}} = '';
+        {% for inputParamItem in inputParamItems %}
+        if (document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").checked) {
+            if ( radioValues{{forLoopIndex}} !='') {
+                radioValues{{forLoopIndex}} = radioValues{{forLoopIndex}} +', '+ document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+            } else {
+                radioValues{{forLoopIndex}} = document.getElementById("popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}").value;
+            }
+        }
+        {% endfor %}
+
+        {% if inputParamCount[1] and inputParamCount[1] != '' %}
+        radioValues{{forLoopIndex}} = document.getElementById("popup_question_field-{{ forloop.index0 }}-second").value+' '+radioValues{{forLoopIndex}};
+        {% endif %}
+
+        if (radioValues{{forLoopIndex}} && $(".popup_question_field-{{ forloop.index0 }}-h").length > 0) $(".popup_question_field-{{ forloop.index0 }}-h").val(radioValues{{forLoopIndex}});
+
+        if (document.getElementById("popup_question_field-radAddField-{{ forloop.index0 }}") && $(".popup_question_field-{{ forloop.index0 }}-radAddField-h").length > 0) $(".popup_question_field-{{ forloop.index0 }}-radAddField-h").val(document.getElementById("popup_question_field-radAddField-{{ forloop.index0 }}").value);
+
+        {% else %}
+        if (document.getElementById("popup_question_field-{{ forloop.index0 }}") && $(".popup_question_field-{{ forloop.index0 }}-h").length > 0) $(".popup_question_field-{{ forloop.index0 }}-h").val(document.getElementById("popup_question_field-{{ forloop.index0 }}").value);
+
+        {% endcase %}
+        {% endfor %}
+        {% endif %}
+    }
+
+    {% assign product_cart_quantity = cart | line_items_for: product | sum: 'quantity' %}
+
+</script>
+

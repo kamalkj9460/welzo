@@ -1,5 +1,8 @@
 {{ 'customer.aio.min.css' | asset_url | stylesheet_tag }}
 
+<script type="lazyload_int" data-src="{{'re-order.js' | asset_url }}"></script>
+<script>odersList = [];</script>
+
 <div class="customer account">
   <div>
     <h1 class="customer__title" >{{ 'customer.account.title' | t }}</h1>
@@ -17,40 +20,71 @@
           <table role="table" class="order-history">
             <caption class="visually-hidden">{{ 'customer.orders.title' | t }}</caption>
             <thead role="rowgroup">
-              <tr role="row">
-                <th id="ColumnOrder" scope="col" role="columnheader">{{ 'customer.orders.order_number' | t }}</th>
-                <th id="ColumnDate" scope="col" role="columnheader">{{ 'customer.orders.date' | t }}</th>
-                <th id="ColumnPayment" scope="col" role="columnheader">{{ 'customer.orders.payment_status' | t }}</th>
-                <th id="ColumnFulfillment" scope="col" role="columnheader">{{ 'customer.orders.fulfillment_status' | t }}</th>
-                <th id="ColumnTotal" scope="col" role="columnheader">{{ 'customer.orders.total' | t }}</th>
-              </tr>
+            <tr role="row">
+              <th id="ColumnReOrder" scope="col" role="columnheader">Re-order</th>
+              <th id="ColumnOrder" scope="col" role="columnheader">{{ 'customer.orders.order_number' | t }}</th>
+              <th id="ColumnDate" scope="col" role="columnheader">{{ 'customer.orders.date' | t }}</th>
+              <th id="ColumnPayment" scope="col" role="columnheader">{{ 'customer.orders.payment_status' | t }}</th>
+              <th id="ColumnFulfillment" scope="col" role="columnheader">{{ 'customer.orders.fulfillment_status' | t }}</th>
+              <th id="ColumnTotal" scope="col" role="columnheader">{{ 'customer.orders.total' | t }}</th>
+            </tr>
             </thead>
             <tbody role="rowgroup">
-              {%- for order in customer.orders -%}
-                <tr role="row">
-                  <td
-                    id="RowOrder"
-                    role="cell"
-                    headers="ColumnOrder"
-                    data-label="{{ 'customer.orders.order_number' | t }}"
-                  >
-                    <a class="customer__link" href="{{ order.customer_url }}" aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">
-                      {{ order.name }}
-                    </a>
-                  </td>
-                  <td headers="RowOrder ColumnDate" role="cell" data-label="{{ 'customer.orders.date' | t }}">
-                    {{ order.created_at | time_tag: format: 'date' }}
-                  </td>
-                  <td headers="RowOrder ColumnPayment" role="cell" data-label="{{ 'customer.orders.payment_status' | t }}">
-                    {{ order.financial_status_label }}
-                  </td>
-                  <td headers="RowOrder ColumnFulfillment" role="cell" data-label="{{ 'customer.orders.fulfillment_status' | t }}">
-                    {{ order.fulfillment_status_label }}
-                  </td>
-                  <td headers="RowOrder ColumnTotal" role="cell" data-label="{{ 'customer.orders.total' | t }}">
-                    {{ order.total_price | money_with_currency }}</td>
-                </tr>
-              {%- endfor -%}
+
+            <script>let lineItems;</script>
+
+            {%- for order in customer.orders -%}
+              <script>
+                lineItems = {{ order.line_items | json }};
+
+                // add max quantity metafield
+                {%- for item in order.line_items -%}
+                {% if forloop.firts %}
+                if('{{ item.product.metafields.custom.max_quantity }}' !== '') {
+                  lineItems[0]['maxQuantity'] = '{{ item.product.metafields.custom.max_quantity }}';
+                }
+                {% else %}
+                if('{{ item.product.metafields.custom.max_quantity }}' !== '') {
+                  lineItems[{{ forloop.index0 }}]['maxQuantity'] = '{{ item.product.metafields.custom.max_quantity }}';
+                }
+                {% endif %}
+                {%- endfor -%}
+
+                odersList.push({ '{{ order.name }}': lineItems })
+              </script>
+
+              <tr role="row">
+                <td
+                        id="RowReOrder"
+                        role="cell"
+                        headers="ColumnReOrder"
+                        data-label="Re-order"
+                >
+                  <button class="re-order-btn" data-order-id="{{ order.name }}">Re-order</button>
+                </td>
+                <td
+                        id="RowOrder"
+                        role="cell"
+                        headers="ColumnOrder"
+                        data-label="{{ 'customer.orders.order_number' | t }}"
+                >
+                  <a class="customer__link" href="{{ order.customer_url }}" aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">
+                    {{ order.name }}
+                  </a>
+                </td>
+                <td headers="RowOrder ColumnDate" role="cell" data-label="{{ 'customer.orders.date' | t }}">
+                  {{ order.created_at | time_tag: format: 'date' }}
+                </td>
+                <td headers="RowOrder ColumnPayment" role="cell" data-label="{{ 'customer.orders.payment_status' | t }}">
+                  {{ order.financial_status_label }}
+                </td>
+                <td headers="RowOrder ColumnFulfillment" role="cell" data-label="{{ 'customer.orders.fulfillment_status' | t }}">
+                  {{ order.fulfillment_status_label }}
+                </td>
+                <td headers="RowOrder ColumnTotal" role="cell" data-label="{{ 'customer.orders.total' | t }}">
+                  {{ order.total_price | money_with_currency }}</td>
+              </tr>
+            {%- endfor -%}
             </tbody>
           </table>
         {%- else -%}
@@ -59,8 +93,8 @@
 
         {%- if paginate.pages > 1 -%}
           {%- if paginate.parts.size > 0 -%}
-              <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
-                <ul role="list">
+            <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+              <ul role="list">
                 {%- if paginate.previous -%}
                   <li>
                     <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
@@ -94,8 +128,8 @@
                     </a>
                   </li>
                 {%- endif -%}
-                </ul>
-              </nav>
+              </ul>
+            </nav>
           {%- endif -%}
         {%- endif -%}
       {% endpaginate %}
@@ -105,7 +139,7 @@
       <h2 class="customer__subtitle customer__subtitle-big">{{ 'customer.account.details' | t }}</h2>
 
       <p class="customer__subtitle">
-      {{ customer.default_address | format_address }}
+        {{ customer.default_address | format_address }}
       </p>
 
       <a class="customer__link" href="{{ routes.account_addresses_url }}">

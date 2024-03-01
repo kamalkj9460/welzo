@@ -1,5 +1,8 @@
-{{ 'video-welzo-section.aio.min.css' | asset_url | stylesheet_tag }}
-{{ 'component-deferred-media.aio.min.css' | asset_url | stylesheet_tag }}
+{% unless template contains "index" or template contains "collection" or template contains "product"  %}
+    <style>.video-welzo{max-width:50%;margin:0 auto}.video-welzo__title{font-family:Quicksand;font-style:normal;font-weight:700;font-size:36px;line-height:46px;text-align:center;letter-spacing:-.8px;color:#12022f}.video-welzo__text{font-family:Poppins;font-style:normal;font-weight:400;font-size:18px;line-height:28px;text-align:center;letter-spacing:-.4px;color:#12022f;margin:2% 0 8% 0}.video-welzo__container{border-radius:20px;overflow:hidden}.video-welzo__media{position:relative;padding-bottom:56.25%}.video-welzo__media.deferred-media{box-shadow:var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius) rgba(var(--color-shadow),var(--media-shadow-opacity))}.video-welzo__media.deferred-media:after{content:none}.video-welzo__poster.deferred-media__poster:focus{outline-offset:0.3rem}.video-welzo__media iframe{background-color:rgba(var(--color-foreground),.03);border:0}.video-welzo__media iframe,.video-welzo__poster{position:absolute;width:100%;height:100%}@media (max-width:768px){.video-welzo{max-width:90%;margin:0 auto}.video-welzo__title{font-size:24px;line-height:34px}.video-welzo__text{font-size:16px;line-height:26px}}.deferred-media__poster{background-color:transparent;border:none;cursor:pointer;margin:0;padding:0;height:100%;width:100%;overflow:hidden}.media>.deferred-media__poster{display:flex;align-items:center;justify-content:center}.deferred-media__poster img{width:auto;max-width:100%;height:100%}.deferred-media{overflow:hidden}.deferred-media:not([loaded]) template{z-index:-1}.deferred-media[loaded]>.deferred-media__poster{display:none}.deferred-media__poster:focus-visible{outline:0;box-shadow:0 0 0 var(--media-border-width) rgba(var(--color-foreground),var(--media-border-opacity)),0 0 0 calc(var(--media-border-width) + .3rem) rgb(var(--color-background)),0 0 0 calc(var(--media-border-width) + .5rem) rgba(var(--color-foreground),.5);border-radius:calc(var(--media-radius) - var(--media-border-width))}.deferred-media__poster:focus{outline:0;box-shadow:0 0 0 var(--media-border-width) rgba(var(--color-foreground),var(--media-border-opacity)),0 0 0 calc(var(--media-border-width) + .3rem) rgb(var(--color-background)),0 0 0 calc(var(--media-border-width) + .5rem) rgba(var(--color-foreground),.5);border-radius:calc(var(--media-radius) - var(--media-border-width))}.deferred-media__poster:focus:not(:focus-visible){outline:0;box-shadow:none}.deferred-media__poster-button{background-color:#e5007d;border:.1rem solid rgba(var(--color-foreground),.1);border-radius:50%;color:rgb(var(--color-foreground));display:flex;align-items:center;justify-content:center;height:8rem;width:8rem;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(1);transition:transform var(--duration-short) ease,color var(--duration-short) ease;z-index:1}.deferred-media__poster-button:hover{transform:translate(-50%,-50%) scale(1.1)}.deferred-media__poster-button .icon{width:2rem;height:2rem}.deferred-media__poster-button .icon-play{margin-left:.2rem}</style>
+{% endunless %} 
+<link rel="stylesheet" data-href="{{ 'video-welzo-section.aio.min.css' | asset_url }}">
+<link rel="stylesheet" data-href="{{ 'component-deferred-media.aio.min.css' | asset_url }}">
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -35,7 +38,8 @@
           <a href="{{ section.settings.video_url }}" class="video-welzo__poster media media--transparent media--landscape{% if section.settings.cover_image == blank %} video-welzo__placeholder{% endif %}">
             {%- if section.settings.cover_image != blank -%}
               <img loading="lazy"
-                srcset="{%- if section.settings.cover_image.width >= 375 -%}{{ section.settings.cover_image | img_url: '375x' }} 375w,{%- endif -%}
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad"
+                data-srcset="{%- if section.settings.cover_image.width >= 375 -%}{{ section.settings.cover_image | img_url: '375x' }} 375w,{%- endif -%}
                   {%- if section.settings.cover_image.width >= 750 -%}{{ section.settings.cover_image | img_url: '750x' }} 750w,{%- endif -%}
                   {%- if section.settings.cover_image.width >= 1100 -%}{{ section.settings.cover_image | img_url: '1100x' }} 1100w,{%- endif -%}
                   {%- if section.settings.cover_image.width >= 1500 -%}{{ section.settings.cover_image | img_url: '1500x' }} 1500w,{%- endif -%}
@@ -44,7 +48,7 @@
                   {%- if section.settings.cover_image.width >= 3000 -%}{{ section.settings.cover_image | img_url: '3000x' }} 3000w,{%- endif -%}
                   {%- if section.settings.cover_image.width >= 3840 -%}{{ section.settings.cover_image | img_url: '3840x' }} 3840w,{%- endif -%}
                   {{ section.settings.cover_image | img_url: 'master' }} {{ section.settings.cover_image.width }}w"
-                src="{{ section.settings.cover_image | img_url: '1920x' }}"
+                data-src="{{ section.settings.cover_image | img_url: '1920x' }}"
                 alt="{{ 'sections.video_welzo.load_video' | t: description: section.settings.description | escape }}"
                
                 width="{{ section.settings.cover_image.width }}"
@@ -66,7 +70,8 @@
       >
         {%- if section.settings.cover_image != blank -%}
           <img loading="lazy"
-            srcset="{%- if section.settings.cover_image.width >= 375 -%}{{ section.settings.cover_image | img_url: '375x' }} 375w,{%- endif -%}
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad"
+            data-srcset="{%- if section.settings.cover_image.width >= 375 -%}{{ section.settings.cover_image | img_url: '375x' }} 375w,{%- endif -%}
               {%- if section.settings.cover_image.width >= 750 -%}{{ section.settings.cover_image | img_url: '750x' }} 750w,{%- endif -%}
               {%- if section.settings.cover_image.width >= 1100 -%}{{ section.settings.cover_image | img_url: '1100x' }} 1100w,{%- endif -%}
               {%- if section.settings.cover_image.width >= 1500 -%}{{ section.settings.cover_image | img_url: '1500x' }} 1500w,{%- endif -%}
@@ -75,7 +80,7 @@
               {%- if section.settings.cover_image.width >= 3000 -%}{{ section.settings.cover_image | img_url: '3000x' }} 3000w,{%- endif -%}
               {%- if section.settings.cover_image.width >= 3840 -%}{{ section.settings.cover_image | img_url: '3840x' }} 3840w,{%- endif -%}
               {{ section.settings.cover_image | img_url: 'master' }} {{ section.settings.cover_image.width }}w"
-            src="{{ section.settings.cover_image | img_url: '1920x' }}"
+            data-src="{{ section.settings.cover_image | img_url: '1920x' }}"
             alt="{{ 'sections.video_welzo.load_video' | t: description: section.settings.description | escape }}"
            
             width="{{ section.settings.cover_image.width }}"
@@ -90,9 +95,9 @@
       </button>
       <template>
         {%- if section.settings.video_url.type == 'youtube' -%}
-          <iframe src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?enablejsapi=1" class="js-youtube" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.description | escape }}"></iframe>
+          <iframe data-src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?enablejsapi=1" class="js-youtube" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.description | escape }}"></iframe>
         {%- else -%}
-          <iframe src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}" class="js-vimeo" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.description | escape }}"></iframe>
+          <iframe data-src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}" class="js-vimeo" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.description | escape }}"></iframe>
         {%- endif -%}
       </template>
     </deferred-media>

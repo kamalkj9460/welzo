@@ -2501,3 +2501,295 @@ li.product2-treatment-list-item {
 .sealsubs-target-element .sls-more-info-popup a {
   display: none;
 }
+
+.actions-form-container {
+  background-color: #FEF2F8;
+  border-radius: 30px;
+  padding: 25px;
+  margin-bottom: 35px;
+}
+
+@media (max-width: 768px) {
+  .actions-form-container {
+    padding: 16px;
+  }
+}
+
+.actions-form-container .product2__variants {
+  display: none;
+}
+
+.actions-form-container .product2__variants.active {
+  display: block;
+}
+
+.actions-form-container .product3-form__btnholder.need-consult #add-to-cart-modal-opener {
+  display: none!important;
+}
+
+.actions-form-container #add-to-cart-modal-opener.active {
+  display: flex;
+}
+
+.actions-form-container #modal-opener_prepare.inactive {
+  display: none;
+}
+
+.table-price-checker {
+  background: #FFFFFF;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.11);
+  padding: 25px;
+  border-radius: 30px;
+}
+
+@media (max-width: 768px) {
+  .table-price-checker {
+    padding: 15px;
+  }
+}
+
+.table-price-checker.inactive {
+  display: none;
+}
+
+.table-price-checker .table-price-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+}
+
+@media (max-width: 768px) {
+  .table-price-checker .table-price-container {
+    padding: 10px;
+  }
+}
+
+.table-price-checker .table-price {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  line-height: 135%;
+}
+
+.table-price-checker .table-price thead td {
+  border-top: 2px solid #F5F7FC;
+  font-size: 14px;
+  font-weight: 700;
+  padding-left: 20px
+}
+
+@media (max-width: 768px) {
+  .table-price-checker .table-price thead td {
+    padding-left: 12px;
+  }
+}
+
+.table-price-checker .table-price tr {
+  border: 2px solid #F5F7FC;
+}
+
+.table-price-checker .table-price td {
+  border-left: 0;
+  border-right: 0;
+  padding: 5px 10px;
+}
+
+.table-price-checker .table-price tbody tr td:first-child {
+  padding-left: 20px;
+}
+
+@media (max-width: 768px) {
+  .table-price-checker .table-price tbody tr td:first-child {
+    padding-left: 12px;
+  }
+}
+
+.table-price-checker .table-price tbody tr td:last-child {
+  text-align: left;
+  width: 90px;
+}
+
+@media (max-width: 768px) {
+  .table-price-checker .table-price tbody tr td:last-child {
+    text-align: right;
+    width: auto;
+  }
+}
+
+.table-price-checker .table-price tbody tr:last-child td {
+  border-bottom: 2px solid #F5F7FC;
+}
+
+.modal-fields.modal-fields-prepare .modal-fields__wrap {
+  max-width: 1040px!important;
+  width: 90%;
+  padding: 50px!important;
+}
+
+@media (max-width: 1100px) {
+  .modal-fields.modal-fields-prepare .modal-fields__wrap {
+    padding: 25px!important;
+  }
+}
+
+.modal-fields.modal-fields-prepare .modal-fields__button_prepare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  width: 100%;
+  max-width: 542px;
+  height: 48px;
+  background: #e5007d;
+  border-radius: 28px;
+  cursor: pointer;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 26px;
+  text-align: center;
+  letter-spacing: -.36px;
+  color: #fff;
+  border: none;
+  margin: auto;
+  margin-top: 35px;
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-header {
+  margin-bottom: 30px;
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-header .modal-fields__content-socials {
+  justify-content: flex-start;
+  margin-bottom: 30px;
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-header .header-title {
+  color: #0A0569;
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 93.6%;
+  letter-spacing: 0.6px;
+  margin: 0;
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-header .header-text {
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 160%;
+  max-width: 468px;
+  width: 100%;
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-steps {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 990px) {
+  .modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-steps {
+    flex-direction: column;
+    align-items: center;
+    gap: 35px;
+  }
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-steps:before {
+  content: '';
+  display: block;
+  border-top: 1px dashed #0a0569;
+  position: absolute;
+  top: 45%;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+
+@media (max-width: 990px) {
+  .modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-steps:before {
+    border-top: 0;
+    border-left: 1px dashed #0a0569;
+    top: 0;
+    left: 50%;
+    right: initial;
+    gap: 35px;
+    height: 100%;
+    width: 1px;
+  }
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-step {
+  max-width: 280px;
+  width: 100%;
+  border-radius: 24px;
+  background: #FFF;
+  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.12);
+  padding: 37px 27px 20px;
+  text-align: center;
+}
+
+@media (max-width: 1100px) {
+  .modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-step {
+    max-width: 240px;
+    padding: 27px 14px 15px;
+  }
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-step .consultation-step-image {
+  height: 125px;
+  margin-bottom: 15px;
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-step .consultation-step-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-step .consultation-step-header {
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-step .consultation-step-time {
+  color: rgba(0, 0, 0, 0.89);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 145.455%;
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-step .consultation-step-number {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  padding: 5px;
+  background-color: #FEF2F8;
+  border-radius: 100%;
+  width: 23px;
+  height: 23px;
+  font-size: 14px;
+  color: #d32f7c;
+  line-height: 100%;
+  margin-right: 4px;
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-step .consultation-step-title {
+  color: rgba(0, 0, 0, 0.89);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 176.471%;
+}
+
+.modal-fields.modal-fields-prepare .start-consultation .modal-body .consultation-step .consultation-step-text {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  max-width: 90%;
+  margin: auto;
+}

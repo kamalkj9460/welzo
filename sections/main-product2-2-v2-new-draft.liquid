@@ -695,7 +695,7 @@
                   {% endif %}
                 {% endif %}
               </product-form>
-              <script>
+              <script type="lazyload_int">
                 const getQueryParams = (query) => {
                     let params = {};
                     new URLSearchParams(query).forEach((value, key) => {
@@ -716,7 +716,7 @@
                 };
     
               </script>
-              <script>
+              <script type="lazyload_int">
                 var variant_id = {{ product.selected_or_first_available_variant.id }};
                 var variantsArray = {{ product.variants | json }};
                 var quantity = 1;
@@ -808,7 +808,7 @@
               </script>
     
               {% unless product.metafields.accentuate.popup_question_field %}
-                <script defer>
+                <script type="lazyload_int">
                   onVariantChange();
                 </script>
               {% endunless %}

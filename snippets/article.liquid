@@ -10,13 +10,13 @@
     <a href="{{ url }}" class="snippet-article-card__link">
       <div class="snippet-article-card__image-wrapper">
         <img loading="lazy"
-         
-          srcset="{%- if article.image.width >= 275 -%}{{ article.image | img_url: '275x' }} 275w,{%- endif -%}
+         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad"
+          data-srcset="{%- if article.image.width >= 275 -%}{{ article.image | img_url: '275x' }} 275w,{%- endif -%}
                   {%- if article.image.width >= 550 -%}{{ article.image | img_url: '550x' }} 550w,{%- endif -%}
                   {%- if article.image.width >= 710 -%}{{ article.image | img_url: '710x' }} 710w,{%- endif -%}
                   {%- if article.image.width >= 1420 -%}{{ article.image | img_url: '1420x' }} 1420w,{%- endif -%}
                   {{ article.image | img_url: 'master' }} {{ article.image.width }}w"
-          src="{{ article.image | img_url: '550x' }}"
+          data-src="{{ article.image | img_url: '550x' }}"
           alt="{{ article.image }}"
         >
       </div>

@@ -1,4 +1,7 @@
-{{ 'section-latest-articles.aio.min.css' | asset_url | stylesheet_tag }}
+{% unless template contains "index" or template contains "collection" or template contains "product"  %}
+    <style>.latest-articles *{box-sizing:border-box}.latest-articles{overflow:hidden}.latest-articles__swiper{width:100%;margin-top:10px}.latest-articles__list{margin:0;padding:0;display:flex;justify-content:space-between;align-items:stretch;list-style-type:none}.latest-articles__item{display:flex;flex-direction:column;justify-content:space-between;max-width:350px;width:100%}.latest-articles__link{display:flex;flex-direction:column;justify-content:flex-start;color:var(--color-foreground);text-decoration:none}.latest-articles__header{display:flex;justify-content:space-between;align-items:center}.latest-articles__title{display:flex;align-items:center;column-gap:20px;max-width:538px;width:100%}.latest-articles__name{margin-top:8px;font-weight:600;font-size:18px;line-height:28px;letter-spacing:-.4px}.latest-articles__category{margin-top:20px;font-weight:600;font-size:12px;line-height:24px;letter-spacing:2px;text-transform:uppercase;color:#e5007d}@media screen and (max-width:767px){.latest-articles__title{max-width:unset;width:unset}.latest-articles__item{max-width:295px}}</style>
+{% endunless %} 
+<link rel="stylesheet" data-href="{{ 'section-latest-articles.aio.min.css' | asset_url  }}">
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -94,7 +97,7 @@
   </div>
 </div>
 
-{% javascript %}
+<script type="lazyload_int">
   const swiperLatestArticles = new Swiper(".latest-articles__swiper", {
     slidesPerView: 1.2,
     spaceBetween: 15,
@@ -112,7 +115,7 @@
       },
     },
   });
-{% endjavascript %}
+</script>
 
 {% schema %}
 {

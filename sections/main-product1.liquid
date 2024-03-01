@@ -8,28 +8,30 @@
 {{ 'component-rating.aio.min.css' | asset_url | stylesheet_tag }}
 {{ 'component-loading-overlay.aio.min.css' | asset_url | stylesheet_tag }}
 
-<link rel="stylesheet" href="{{ 'component-deferred-media.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-deferred-media.aio.min.css' | asset_url }}" media="print"
+      onload="this.media='all'">
 
-{%- style -%}
+<style>
     .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+        padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+        padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
     }
 
     @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
+        .section-{{ section.id }}-padding {
+            padding-top: {{ section.settings.padding_top }}px;
+            padding-bottom: {{ section.settings.padding_bottom }}px;
+        }
     }
-    }
+
     .product2-review {
-    cursor: pointer;
+        cursor: pointer;
     }
-{%- endstyle -%}
+</style>
 
 <script>
-    $(document).ready(function() {
-        $('.product2-review').on('click', function(event) {
+    $(document).ready(function () {
+        $('.product2-review').on('click', function (event) {
             event.preventDefault(); // Предотвращаем стандартное действие ссылки
 
             const offsetTop = $('.jdgm-rev-widg').offset().top;
@@ -52,13 +54,13 @@
         $("#popup_question_field-13").attr("type", "date");
         $("#popup_question_field-13").attr("min", "1899-01-01");
         $("#popup_question_field-13").attr("max", today);
-        $("#popup_question_field-13").on('keydown', function(e) {
+        $("#popup_question_field-13").on('keydown', function (e) {
             e.preventDefault();
         });
         $(".popup-question__item-input-date").attr("type", "date");
         $(".popup-question__item-input-date").attr("min", "1899-01-01");
         $(".popup-question__item-input-date").attr("max", today);
-        $(".popup-question__item-input-date").on('keydown', function(e) {
+        $(".popup-question__item-input-date").on('keydown', function (e) {
             e.preventDefault();
         });
 
@@ -66,7 +68,7 @@
         $("#ProductDateBirth").attr("type", "date");
         $("#ProductDateBirth").attr("min", "1899-01-01");
         $("#ProductDateBirth").attr("max", today);
-        $("#ProductDateBirth").on('keydown', function(e) {
+        $("#ProductDateBirth").on('keydown', function (e) {
             e.preventDefault();
         });
     });
@@ -77,8 +79,11 @@
 {%- assign first_3d_model = product.media | where: "media_type", "model" | first -%}
 {%- if first_3d_model -%}
     {{ 'component-product-model.aio.min.css' | asset_url | stylesheet_tag }}
-    <link id="ModelViewerStyle" rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'">
-    <link id="ModelViewerOverride" rel="stylesheet" href="{{ 'component-model-viewer-ui.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link id="ModelViewerStyle" rel="stylesheet"
+          href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print"
+          onload="this.media='all'">
+    <link id="ModelViewerOverride" rel="stylesheet" href="{{ 'component-model-viewer-ui.aio.min.css' | asset_url }}"
+          media="print" onload="this.media='all'">
 {%- endif -%}
 
 
@@ -90,7 +95,8 @@
         </div>
 
         <div class="product1__info-wrapper ">
-            <div id="ProductInfo-{{ section.id }}" class="product1__info-container{% if section.settings.enable_sticky_info %} product1__info-container--sticky{% endif %}">
+            <div id="ProductInfo-{{ section.id }}"
+                 class="product1__info-container{% if section.settings.enable_sticky_info %} product1__info-container--sticky{% endif %}">
                 {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
                 {%- for block in section.blocks -%}
@@ -139,70 +145,91 @@
                                 {% assign value_percentage = tmp_value | divided_by: 100 %}
                                 {% assign discount_price = money_price | times: value_percentage %}
 
-                                {% if value_type == "percentage" and value > 0 %}
-                                    <div class="subscription-product__variants" id="subscription-product">
-                                        <label id="radio-add-to-cart" selling-plan-id="null" class="subscription-product__variant subscription-product__variant-active">
-                                            <span class="subscription-product__design"></span>
-                                            <input class="subscription-product__radio" type="radio" name="selling_plan" value="" id="selling_plan_onetime">
-                                            <div class="subscription-product__content">
-                                                <div class="subscription-product__v-title">
-                                                    <label for="selling_plan_onetime">One-time purchase (£ {{ money_price }})</label><br>
-                                                </div>
+                                {% comment %}Old variation ?{% endcomment %}
+
+                                {% comment %}{% if value_type == "percentage" and value > 0 %}{% endcomment %}
+                                {% comment %}<div class="subscription-product__variants" id="subscription-product">{% endcomment %}
+                                {% comment %}<label id="radio-add-to-cart" selling-plan-id="null"{% endcomment %}
+                                {% comment %}class="subscription-product__variant subscription-product__variant-active">{% endcomment %}
+                                {% comment %}<span class="subscription-product__design"></span>{% endcomment %}
+                                {% comment %}<input class="subscription-product__radio" type="radio" name="selling_plan"{% endcomment %}
+                                {% comment %}value="" id="selling_plan_onetime">{% endcomment %}
+                                {% comment %}<div class="subscription-product__content">{% endcomment %}
+                                {% comment %}<div class="subscription-product__v-title">{% endcomment %}
+                                {% comment %}<label for="selling_plan_onetime">One-time purchase{% endcomment %}
+                                {% comment %}(£ {{ money_price }})</label><br>{% endcomment %}
+                                {% comment %}</div>{% endcomment %}
+                                {% comment %}</div>{% endcomment %}
+                                {% comment %}</label>{% endcomment %}
+                                {% comment %}{% for group in product.selling_plan_groups %}{% endcomment %}
+                                {% comment %}{% for selling_plan in group.selling_plans %}{% endcomment %}
+                                {% comment %}{% assign price_adjustments2 = selling_plan.price_adjustments | first %}{% endcomment %}
+                                {% comment %}{% assign value_type2 = price_adjustments2.value_type %}{% endcomment %}
+                                {% comment %}{% assign value2 = price_adjustments2.value %}{% endcomment %}
+                                {% comment %}{% endcomment %}
+                                {% comment %}{% assign tmp_value2 = value2 | times: 1.0 %}{% endcomment %}
+                                {% comment %}{% assign value_percentage2 = tmp_value2 | divided_by: 100 %}{% endcomment %}
+                                {% comment %}{% assign discount_price2 = money_price | times: value_percentage2 %}{% endcomment %}
+                                {% comment %}{% endcomment %}
+                                {% comment %}<label id="radio-subscribe"{% endcomment %}
+                                {% comment %}selling-plan-id={{ selling_plan.id }} class="subscription-product__variant">{% endcomment %}
+                                {% comment %}<span class="subscription-product__design"></span>{% endcomment %}
+                                {% comment %}<input class="subscription-product__radio"{% endcomment %}
+                                {% comment %}type="radio" {%- if forloop.first %} checked="checked"{% endif %}{% endcomment %}
+                                {% comment %}name="selling_plan" value="{{ selling_plan.id }}"{% endcomment %}
+                                {% comment %}id="selling_plan_{{ selling_plan.id }}">{% endcomment %}
+                                {% comment %}<div class="subscription-product__content">{% endcomment %}
+                                {% comment %}<div class="subscription-product__v-title">{% endcomment %}
+                                {% comment %}<label for="selling_plan_{{ selling_plan.id }}">Subscribe &{% endcomment %}
+                                {% comment %}Save £{{ discount_price2 }}</label><br>{% endcomment %}
+                                {% comment %}</div>{% endcomment %}
+                                {% comment %}<div class="subscription-product__v-text">{% endcomment %}
+                                {% comment %}{{ selling_plan.name }}.{% endcomment %}
+                                {% comment %}You save {{ value2 }}% on auto-deliveries for this item{% endcomment %}
+                                {% comment %}through Subscribe and Save.{% endcomment %}
+                                {% comment %}</div>{% endcomment %}
+                                {% comment %}</div>{% endcomment %}
+                                {% comment %}</label>{% endcomment %}
+                                {% comment %}{% endfor %}{% endcomment %}
+                                {% comment %}{% endfor %}{% endcomment %}
+                                {% comment %}</div>{% endcomment %}
+                                {% comment %}<a{% endcomment %}
+                                {% comment %}href="/pages/subscription-page/{{ product.handle }}?selling-plan-id=null"{% endcomment %}
+                                {% comment %}id="button-subscribe"{% endcomment %}
+                                {% comment %}class="subscription-product__button subscription-product__button-not-active"{% endcomment %}
+                                {% comment %}>{% endcomment %}
+                                {% comment %}<span>Subscribe</span>{% endcomment %}
+                                {% comment %}</a>{% endcomment %}
+                                {% comment %}{% endif %}{% endcomment %}
+
+                                {% if section.settings.show_popup %}
+                                    <div class="product2-form__btnholder">
+                                        <product-form id="button-add-to-cart" class="product-form">
+                                            <div class="product-form__error-message-wrapper" role="alert" hidden>
+                                                <svg aria-hidden="true" focusable="false" role="presentation"
+                                                     class="icon icon-error" viewBox="0 0 13 13">
+                                                    <circle cx="6.5" cy="6.50049" r="5.5" stroke="white"
+                                                            stroke-width="2"/>
+                                                    <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B"
+                                                            stroke-width="0.7"/>
+                                                    <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z"
+                                                          fill="white"/>
+                                                    <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z"
+                                                          fill="white" stroke="#EB001B" stroke-width="0.7"/>
+                                                </svg>
+                                                <span class="product-form__error-message"></span>
                                             </div>
-                                        </label>
-                                        {% for group in product.selling_plan_groups %}
-                                            {% for selling_plan in group.selling_plans %}
-                                                {% assign price_adjustments2 = selling_plan.price_adjustments | first %}
-                                                {% assign value_type2 = price_adjustments2.value_type %}
-                                                {% assign value2 = price_adjustments2.value %}
 
-                                                {% assign tmp_value2 = value2 | times: 1.0 %}
-                                                {% assign value_percentage2 = tmp_value2 | divided_by: 100 %}
-                                                {% assign discount_price2 = money_price | times: value_percentage2 %}
+                                            <div class="customer product1__clear">
+                                                {%- form 'product', product, id: product_form_id, class: 'form', data-type: 'add-to-cart-form' -%}
+                                                    <input type="hidden" name="id"
+                                                           value="{{ product.selected_or_first_available_variant.id }}"
+                                                           disabled>
+                                                    {% render 'order-properties-fields-hide' %}
 
-                                                <label id="radio-subscribe" selling-plan-id={{ selling_plan.id }} class="subscription-product__variant">
-                                                    <span class="subscription-product__design"></span>
-                                                    <input class="subscription-product__radio" type="radio" {%- if forloop.first %} checked="checked"{% endif %} name="selling_plan" value="{{ selling_plan.id }}" id="selling_plan_{{ selling_plan.id }}">
-                                                    <div class="subscription-product__content">
-                                                        <div class="subscription-product__v-title">
-                                                            <label for="selling_plan_{{ selling_plan.id }}">Subscribe & Save £{{ discount_price2 }}</label><br>
-                                                        </div>
-                                                        <div class="subscription-product__v-text">
-                                                            {{ selling_plan.name }}.
-                                                            You save {{ value2 }}% on auto-deliveries for this item through Subscribe and Save.
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                            {% endfor %}
-                                        {% endfor %}
-                                    </div>
-                                    <a
-                                            href="/pages/subscription-page/{{product.handle}}?selling-plan-id=null"
-                                            id="button-subscribe"
-                                            class="subscription-product__button subscription-product__button-not-active"
-                                    >
-                                        <span>Subscribe</span>
-                                    </a>
-                                {% endif %}
-
-                                <div class="product2-form__btnholder">
-                                    <product-form id="button-add-to-cart" class="product-form">
-                                        <div class="product-form__error-message-wrapper" role="alert" hidden>
-                                            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-error" viewBox="0 0 13 13">
-                                                <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
-                                                <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
-                                                <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
-                                                <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7"/>
-                                            </svg>
-                                            <span class="product-form__error-message"></span>
-                                        </div>
-
-                                        <div class="customer product1__clear">
-                                            {%- form 'product', product, id: product_form_id, class: 'form', data-type: 'add-to-cart-form' -%}
-                                                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled>
-                                                {% render 'order-properties-fields-hide' %}
-
-                                                <button id="form-add-to-cart-button-id" type="submit" class="subscription-product__button" style="display: none" {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+                                                    <button id="form-add-to-cart-button-id" type="submit"
+                                                            class="subscription-product__button" style="display: none"
+                                                            {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
                           <span>
                             {%- if product.selected_or_first_available_variant.available -%}
                                 {{ 'products.product.add_to_cart' | t }}
@@ -210,32 +237,38 @@
                                 {{ 'products.product.sold_out' | t }}
                             {%- endif -%}
                           </span>
-                                                    <div class="loading-overlay__spinner hidden">
-                                                        <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-                                                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                                                        </svg>
+                                                        <div class="loading-overlay__spinner hidden">
+                                                            <svg aria-hidden="true" focusable="false"
+                                                                 role="presentation" class="spinner" viewBox="0 0 66 66"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <circle class="path" fill="none" stroke-width="6"
+                                                                        cx="33" cy="33" r="30"></circle>
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+
+                                                    <div class="product-form__buttons">
+                                                        {%- if block.settings.show_dynamic_checkout -%}
+                                                            {{ form | payment_button }}
+                                                        {%- endif -%}
                                                     </div>
-                                                </button>
-
-                                                <div class="product-form__buttons">
-
-
-                                                    {%- if block.settings.show_dynamic_checkout -%}
-                                                        {{ form | payment_button }}
-                                                    {%- endif -%}
-                                                </div>
-                                            {%- endform -%}
-                                        </div>
-                                    </product-form>
-                                </div>
+                                                    <a class="klaviyo-bis-trigger button" href="#"><span>Email when stocked</span></a>
+                                                {%- endform -%}
+                                            </div>
+                                        </product-form>
+                                    </div>
+                                {% endif %}
 
                                 <div class="product3-form__btnholder">
                                     <div class="product3-form">
                                         {% if section.settings.show_popup %}
 
 
-                                            <modal-opener data-modal="#PopupModal-{{product.id}}" class="included-section__opener">
-                                                <button id="add-to-cart-modal-opener" class="subscription-product__button" {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+                                            <modal-opener data-modal="#PopupModal-{{ product.id }}"
+                                                          class="included-section__opener">
+                                                <button id="add-to-cart-modal-opener"
+                                                        class="subscription-product__button"
+                                                        {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
                             <span>
                               {%- if product.selected_or_first_available_variant.available -%}
                                   {{ 'products.product.add_to_cart' | t }}
@@ -244,8 +277,11 @@
                               {%- endif -%}
                             </span>
                                                     <div class="loading-overlay__spinner hidden">
-                                                        <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-                                                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                                                        <svg aria-hidden="true" focusable="false" role="presentation"
+                                                             class="spinner" viewBox="0 0 66 66"
+                                                             xmlns="http://www.w3.org/2000/svg">
+                                                            <circle class="path" fill="none" stroke-width="6" cx="33"
+                                                                    cy="33" r="30"></circle>
                                                         </svg>
                                                     </div>
                                                 </button>
@@ -259,10 +295,13 @@
 
                                                 <div class="customer product1__clear">
                                                     {%- form 'product', product, id: product_form_id, class: 'form', data-type: 'add-to-cart-form' -%}
-                                                        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled>
+                                                        <input type="hidden" name="id"
+                                                               value="{{ product.selected_or_first_available_variant.id }}"
+                                                               disabled>
                                                         {% render 'order-properties-fields-hide2', product: product %}
 
-                                                        <button id="form-add-to-cart-button-id" type="submit" class="subscription-product__button">
+                                                        <button id="form-add-to-cart-button-id" type="submit"
+                                                                class="subscription-product__button">
                               <span>
                                 {%- if product.selected_or_first_available_variant.available -%}
                                     {{ 'products.product.add_to_cart' | t }}
@@ -273,6 +312,7 @@
                                                             <div class="loading-overlay__spinner hidden">
                                                             </div>
                                                         </button>
+                                                        <a class="klaviyo-bis-trigger button" href="#"><span>Email when stocked</span></a>
                                                     {%- endform -%}
                                                 </div>
                                             </product-form>
@@ -432,7 +472,8 @@
                     {%- when 'price' -%}
 
                         <div class="product1-price">
-                            <div class="no-js-hidden" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                            <div class="no-js-hidden" id="price-{{ section.id }}"
+                                 role="status" {{ block.shopify_attributes }}>
                                 {%- render 'price1', product: product, use_variant: true, show_badges: true, price_class: 'price--large' -%}
                             </div>
                             <!----<div class="product1-review ">
@@ -452,7 +493,8 @@
 
                         <div {{ block.shopify_attributes }}>
                             {%- form 'product', product, id: 'product-form-installment', class: 'installment caption-large' -%}
-                                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                                <input type="hidden" name="id"
+                                       value="{{ product.selected_or_first_available_variant.id }}">
                                 {{ form | payment_terms }}
                             {%- endform -%}
                         </div>
@@ -476,17 +518,22 @@
                                     </div>
                                     {% render 'icon-caret' %}
                                 </summary>
-                                <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
+                                <div class="accordion__content rte"
+                                     id="ProductAccordion-{{ block.id }}-{{ section.id }}">
                                     {{ block.settings.content }}
                                     {{ block.settings.page.content }}
                                 </div>
                             </details>
                         </div>
                     {%- when 'popup' -%}
-                        <modal-opener class="product1-popup-modal__opener no-js-hidden" data-modal="#PopupModal-{{ block.id }}" {{ block.shopify_attributes }}>
-                            <button id="ProductPopup-{{ block.id }}" class="product1-popup-modal__button link" type="button" aria-haspopup="dialog">{{ block.settings.text | default: block.settings.page.title }}</button>
+                        <modal-opener class="product1-popup-modal__opener no-js-hidden"
+                                      data-modal="#PopupModal-{{ block.id }}" {{ block.shopify_attributes }}>
+                            <button id="ProductPopup-{{ block.id }}" class="product1-popup-modal__button link"
+                                    type="button"
+                                    aria-haspopup="dialog">{{ block.settings.text | default: block.settings.page.title }}</button>
                         </modal-opener>
-                        <a href="{{ block.settings.page.url }}" class="product1-popup-modal__button link no-js">{{ block.settings.text }}</a>
+                        <a href="{{ block.settings.page.url }}"
+                           class="product1-popup-modal__button link no-js">{{ block.settings.text }}</a>
                     {%- when 'share' -%}
                         <share-button id="Share-{{ section.id }}" class="share-button" {{ block.shopify_attributes }}>
                             <button class="share-button__button hidden">
@@ -510,7 +557,8 @@
                                                onclick="this.select();"
                                                readonly
                                         >
-                                        <label class="field__label" for="url">{{ 'general.share.share_url' | t }}</label>
+                                        <label class="field__label"
+                                               for="url">{{ 'general.share.share_url' | t }}</label>
                                     </div>
                                     <button class="share-button__close hidden no-js-hidden">
                                         {% render 'icon-close' %}
@@ -527,12 +575,14 @@
                     {%- when 'variant_picker' -%}
                     {%- unless product.has_only_default_variant -%}
                     {%- if block.settings.picker_type == 'button' -%}
-                        <variant-radios class="no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}" {{ block.shopify_attributes }}>
+                        <variant-radios class="no-js-hidden" data-section="{{ section.id }}"
+                                        data-url="{{ product.url }}" {{ block.shopify_attributes }}>
                             {%- for option in product.options_with_values -%}
                                 <fieldset class="js product1-form__input">
                                     <legend class="form__label">{{ option.name }}</legend>
                                     {%- for value in option.values -%}
-                                        <input type="radio" id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                                        <input type="radio"
+                                               id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
                                                name="{{ option.name }}"
                                                value="{{ value | escape }}"
                                                form="{{ product_form_id }}"
@@ -546,10 +596,12 @@
                             {%- endfor -%}
                             <script type="application/json">
                     {{ product.variants | json }}
-                  </script>
+
+                            </script>
                         </variant-radios>
                     {%- else -%}
-                        <variant-selects class="no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}" {{ block.shopify_attributes }}>
+                        <variant-selects class="no-js-hidden" data-section="{{ section.id }}"
+                                         data-url="{{ product.url }}" {{ block.shopify_attributes }}>
                             {%- for option in product.options_with_values -%}
                                 <div class="product1-form__input product1-form__input--dropdown">
                                     <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
@@ -562,7 +614,8 @@
                                                 form="{{ product_form_id }}"
                                         >
                                             {%- for value in option.values -%}
-                                                <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
+                                                <option value="{{ value | escape }}"
+                                                        {% if option.selected_value == value %}selected="selected"{% endif %}>
                                                     {{ value }}
                                                 </option>
                                             {%- endfor -%}
@@ -574,16 +627,19 @@
 
                             <script type="application/json">
                     {{ product.variants | json }}
-                  </script>
+
+                            </script>
                         </variant-selects>
                     {%- endif -%}
                     {%- endunless -%}
 
                         <noscript class="product1-form__noscript-wrapper-{{ section.id }}">
                             <div class="product1-form__input{% if product.has_only_default_variant %} hidden{% endif %}">
-                                <label class="form__label" for="Variants-{{ section.id }}">{{ 'products.product.product_variants' | t }}</label>
+                                <label class="form__label"
+                                       for="Variants-{{ section.id }}">{{ 'products.product.product_variants' | t }}</label>
                                 <div class="select">
-                                    <select name="id" id="Variants-{{ section.id }}" class="select__select" form="{{ product_form_id }}">
+                                    <select name="id" id="Variants-{{ section.id }}" class="select__select"
+                                            form="{{ product_form_id }}">
                                         {%- for variant in product.variants -%}
                                             <option
                                                     {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
@@ -604,17 +660,22 @@
                         <div class="product1-form__btnholder" {{ block.shopify_attributes }}>
                             <product-form class="product1-form">
                                 <div class="product1-form__error-message-wrapper" role="alert" hidden>
-                                    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-error" viewBox="0 0 13 13">
+                                    <svg aria-hidden="true" focusable="false" role="presentation"
+                                         class="icon icon-error" viewBox="0 0 13 13">
                                         <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
-                                        <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
-                                        <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
-                                        <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7"/>
+                                        <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B"
+                                                stroke-width="0.7"/>
+                                        <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z"
+                                              fill="white"/>
+                                        <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z"
+                                              fill="white" stroke="#EB001B" stroke-width="0.7"/>
                                     </svg>
                                     <span class="product1-form__error-message"></span>
                                 </div>
 
                                 {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
-                                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled>
+                                    <input type="hidden" name="id"
+                                           value="{{ product.selected_or_first_available_variant.id }}" disabled>
                                     <div class="product1-form__buttons">
                                         <button
                                                 type="submit"
@@ -630,8 +691,11 @@
                           {%- endif -%}
                         </span>
                                             <div class="loading-overlay__spinner hidden">
-                                                <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-                                                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                                                <svg aria-hidden="true" focusable="false" role="presentation"
+                                                     class="spinner" viewBox="0 0 66 66"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33"
+                                                            r="30"></circle>
                                                 </svg>
                                             </div>
                                         </button>
@@ -639,6 +703,7 @@
                                             {{ form | payment_button }}
                                         {%- endif -%}
                                     </div>
+                                    <a class="klaviyo-bis-trigger button" href="#"><span>Email when stocked</span></a>
                                 {%- endform -%}
                             </product-form>
 
@@ -676,8 +741,10 @@
                                 assign rating_decimal = 1
                             endif
                         %}
-                        <div class="rating" role="img" aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: product.metafields.reviews.rating.value, rating_max: product.metafields.reviews.rating.value.scale_max }}">
-                            <span aria-hidden="true" class="rating-star color-icon-{{ settings.accent_icons }}" style="--rating: {{ product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"></span>
+                        <div class="rating" role="img"
+                             aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: product.metafields.reviews.rating.value, rating_max: product.metafields.reviews.rating.value.scale_max }}">
+                            <span aria-hidden="true" class="rating-star color-icon-{{ settings.accent_icons }}"
+                                  style="--rating: {{ product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"></span>
                         </div>
                         <p class="rating-text caption">
                             <span aria-hidden="true">{{ product.metafields.reviews.rating.value }} / {{ product.metafields.reviews.rating.value.scale_max }}</span>
@@ -710,7 +777,8 @@
                                         <div class="prod2-review__slide-video">
                                             <div class="prod2-review__slide-video-raiting">{%- render 'icon-raitingstars' %}</div>
                                             <div class="prod2-review__slide-video-holder">
-                                                <iframe width="290" height="223" src="https://www.youtube.com/embed/{{ section.settings.video_reviews }}"></iframe>
+                                                <iframelazy width="290" height="223" data-class="LazyLoad"
+                                                            data-src="https://www.youtube.com/embed/{{ section.settings.video_reviews }}"></iframelazy>
                                             </div>
                                         </div>
                                     {%- endif -%}
@@ -721,27 +789,32 @@
                                                     <div class=" prod2-review__slide-img">
                                                         <img loading="lazy" class="snippet-image__image"
 
-                                                             srcset="{%- if section.settings.image_reviews.width >= 275 -%}{{ section.settings.image_reviews | img_url: '275x' }} 275w,{%- endif -%}
+                                                             data-srcset="{%- if section.settings.image_reviews.width >= 275 -%}{{ section.settings.image_reviews | img_url: '275x' }} 275w,{%- endif -%}
                                       {%- if section.settings.image_reviews.width >= 330 -%}{{ section.settings.image_reviews | img_url: '330x' }} 330w,{%- endif -%}
                                       {%- if section.settings.image_reviews.width >= 445 -%}{{ section.settings.image_reviews | img_url: '445x' }} 445w,{%- endif -%}
                                       {%- if section.settings.image_reviews.width >= 550 -%}{{ section.settings.image_reviews | img_url: '550x' }} 550w,{%- endif -%}
                                       {%- if section.settings.image_reviews.width >= 710 -%}{{ section.settings.image_reviews | img_url: '710x' }} 710w,{%- endif -%}
                                       {%- if section.settings.image_reviews.width >= 828 -%}{{ section.settings.image_reviews | img_url: '828x' }} 828w,{%- endif -%}
                                       {{ section.settings.image_reviews | img_url: 'master' }} {{ section.settings.image_reviews.width }}w"
-                                                             src="{{ section.settings.image_reviews | img_url: '90x' }}"
+                                                             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ section.settings.image_reviews | img_url: '90x' }}"
                                                              alt="{{ section.settings.image_reviews.alt }}">
                                                     </div>
                                                 {%- endif -%}
-                                                {% if section.settings.position_reviews != blank %}<div class=" prod2-review__slide-position">{{ section.settings.position_reviews }}</div>{%- endif -%}
+                                                {% if section.settings.position_reviews != blank %}
+                                                    <div class=" prod2-review__slide-position">{{ section.settings.position_reviews }}</div>{%- endif -%}
                                             </div>
                                         {%- endif -%}
                                         <div class="prod2-review__slide-content">
                                             <div class="prod2-review__slide-raiting">{%- render 'icon-raitingstars' %}</div>
                                             {% if section.settings.name_reviews != blank %}
-                                                <div class="prod2-review__slide-title"><strong>{{ section.settings.name_reviews }}</strong> reviewed <strong>welzo.com</strong></div>
+                                                <div class="prod2-review__slide-title">
+                                                    <strong>{{ section.settings.name_reviews }}</strong> reviewed
+                                                    <strong>welzo.com</strong></div>
                                             {%- endif -%}
                                             {% if section.settings.text_reviews != blank %}
-                                                <div class="prod2-review__slide-text">"{{ section.settings.text_reviews }}"</div>
+                                                <div class="prod2-review__slide-text">
+                                                    "{{ section.settings.text_reviews }}"
+                                                </div>
                                             {%- endif -%}
                                         </div>
                                     </div>
@@ -756,7 +829,8 @@
                                         <div class="prod2-review__slide-video">
                                             <div class="prod2-review__slide-video-raiting">{%- render 'icon-raitingstars' %}</div>
                                             <div class="prod2-review__slide-video-holder">
-                                                <iframe width="290" height="223" src="https://www.youtube.com/embed/{{ section.settings.video_reviews2 }}"></iframe>
+                                                <iframelazy width="290" height="223" data-class="LazyLoad"
+                                                            data-src="https://www.youtube.com/embed/{{ section.settings.video_reviews2 }}"></iframelazy>
                                             </div>
                                         </div>
                                     {%- endif -%}
@@ -778,16 +852,21 @@
                                                              alt="{{ section.settings.image_reviews2.alt }}">
                                                     </div>
                                                 {%- endif -%}
-                                                {% if section.settings.position_reviews2 != blank %}<div class=" prod2-review__slide-position">{{ section.settings.position_reviews2 }}</div>{%- endif -%}
+                                                {% if section.settings.position_reviews2 != blank %}
+                                                    <div class=" prod2-review__slide-position">{{ section.settings.position_reviews2 }}</div>{%- endif -%}
                                             </div>
                                         {%- endif -%}
                                         <div class="prod2-review__slide-content">
                                             <div class="prod2-review__slide-raiting">{%- render 'icon-raitingstars' %}</div>
                                             {% if section.settings.name_reviews2 != blank %}
-                                                <div class="prod2-review__slide-title"><strong>{{ section.settings.name_reviews2 }}</strong> reviewed <strong>welzo.com</strong></div>
+                                                <div class="prod2-review__slide-title">
+                                                    <strong>{{ section.settings.name_reviews2 }}</strong> reviewed
+                                                    <strong>welzo.com</strong></div>
                                             {%- endif -%}
                                             {% if section.settings.text_reviews2 != blank %}
-                                                <div class="prod2-review__slide-text">"{{ section.settings.text_reviews2 }}"</div>
+                                                <div class="prod2-review__slide-text">
+                                                    "{{ section.settings.text_reviews2 }}"
+                                                </div>
                                             {%- endif -%}
                                         </div>
                                     </div>
@@ -802,7 +881,8 @@
                                         <div class="prod2-review__slide-video">
                                             <div class="prod2-review__slide-video-raiting">{%- render 'icon-raitingstars' %}</div>
                                             <div class="prod2-review__slide-video-holder">
-                                                <iframe width="290" height="223" src="https://www.youtube.com/embed/{{ section.settings.video_reviews3 }}"></iframe>
+                                                <iframelazy width="290" height="223" data-class="LazyLoad"
+                                                            data-src="https://www.youtube.com/embed/{{ section.settings.video_reviews3 }}"></iframelazy>
                                             </div>
                                         </div>
                                     {%- endif -%}
@@ -824,16 +904,21 @@
                                                              alt="{{ section.settings.image_reviews3.alt }}">
                                                     </div>
                                                 {%- endif -%}
-                                                {% if section.settings.position_reviews3 != blank %}<div class=" prod2-review__slide-position">{{ section.settings.position_reviews3 }}</div>{%- endif -%}
+                                                {% if section.settings.position_reviews3 != blank %}
+                                                    <div class=" prod2-review__slide-position">{{ section.settings.position_reviews3 }}</div>{%- endif -%}
                                             </div>
                                         {%- endif -%}
                                         <div class="prod2-review__slide-content">
                                             <div class="prod2-review__slide-raiting">{%- render 'icon-raitingstars' %}</div>
                                             {% if section.settings.name_reviews3 != blank %}
-                                                <div class="prod2-review__slide-title"><strong>{{ section.settings.name_reviews3 }}</strong> reviewed <strong>welzo.com</strong></div>
+                                                <div class="prod2-review__slide-title">
+                                                    <strong>{{ section.settings.name_reviews3 }}</strong> reviewed
+                                                    <strong>welzo.com</strong></div>
                                             {%- endif -%}
                                             {% if section.settings.text_reviews3 != blank %}
-                                                <div class="prod2-review__slide-text">"{{ section.settings.text_reviews3 }}"</div>
+                                                <div class="prod2-review__slide-text">
+                                                    "{{ section.settings.text_reviews3 }}"
+                                                </div>
                                             {%- endif -%}
                                         </div>
                                     </div>
@@ -848,7 +933,8 @@
                                         <div class="prod2-review__slide-video">
                                             <div class="prod2-review__slide-video-raiting">{%- render 'icon-raitingstars' %}</div>
                                             <div class="prod2-review__slide-video-holder">
-                                                <iframe width="290" height="223" src="https://www.youtube.com/embed/{{ section.settings.video_reviews4 }}"></iframe>
+                                                <iframelazy width="290" height="223" data-class="LazyLoad"
+                                                            data-src="https://www.youtube.com/embed/{{ section.settings.video_reviews4 }}"></iframelazy>
                                             </div>
                                         </div>
                                     {%- endif -%}
@@ -859,27 +945,32 @@
                                                     <div class=" prod2-review__slide-img">
                                                         <img loading="lazy" class="snippet-image__image"
 
-                                                             srcset="{%- if section.settings.image_reviews4.width >= 275 -%}{{ section.settings.image_reviews4 | img_url: '275x' }} 275w,{%- endif -%}
+                                                             data-srcset="{%- if section.settings.image_reviews4.width >= 275 -%}{{ section.settings.image_reviews4 | img_url: '275x' }} 275w,{%- endif -%}
                                       {%- if section.settings.image_reviews4.width >= 330 -%}{{ section.settings.image_reviews4 | img_url: '330x' }} 330w,{%- endif -%}
                                       {%- if section.settings.image_reviews4.width >= 445 -%}{{ section.settings.image_reviews4 | img_url: '445x' }} 445w,{%- endif -%}
                                       {%- if section.settings.image_reviews4.width >= 550 -%}{{ section.settings.image_reviews4 | img_url: '550x' }} 550w,{%- endif -%}
                                       {%- if section.settings.image_reviews4.width >= 710 -%}{{ section.settings.image_reviews4 | img_url: '710x' }} 710w,{%- endif -%}
                                       {%- if section.settings.image_reviews4.width >= 828 -%}{{ section.settings.image_reviews4 | img_url: '828x' }} 828w,{%- endif -%}
                                       {{ section.settings.image_reviews4 | img_url: 'master' }} {{ section.settings.image_reviews4.width }}w"
-                                                             src="{{ section.settings.image_reviews4 | img_url: '90x' }}"
+                                                             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ section.settings.image_reviews4 | img_url: '90x' }}"
                                                              alt="{{ section.settings.image_reviews4.alt }}">
                                                     </div>
                                                 {%- endif -%}
-                                                {% if section.settings.position_reviews4 != blank %}<div class=" prod2-review__slide-position">{{ section.settings.position_reviews4 }}</div>{%- endif -%}
+                                                {% if section.settings.position_reviews4 != blank %}
+                                                    <div class=" prod2-review__slide-position">{{ section.settings.position_reviews4 }}</div>{%- endif -%}
                                             </div>
                                         {%- endif -%}
                                         <div class="prod2-review__slide-content">
                                             <div class="prod2-review__slide-raiting">{%- render 'icon-raitingstars' %}</div>
                                             {% if section.settings.name_reviews4 != blank %}
-                                                <div class="prod2-review__slide-title"><strong>{{ section.settings.name_reviews4 }}</strong> reviewed <strong>welzo.com</strong></div>
+                                                <div class="prod2-review__slide-title">
+                                                    <strong>{{ section.settings.name_reviews4 }}</strong> reviewed
+                                                    <strong>welzo.com</strong></div>
                                             {%- endif -%}
                                             {% if section.settings.text_reviews4 != blank %}
-                                                <div class="prod2-review__slide-text">"{{ section.settings.text_reviews4 }}"</div>
+                                                <div class="prod2-review__slide-text">
+                                                    "{{ section.settings.text_reviews4 }}"
+                                                </div>
                                             {%- endif -%}
                                         </div>
                                     </div>
@@ -910,7 +1001,7 @@
                         {%- for title in product.metafields.accentuate.biomarkers_title -%}
                             {% assign mod = forloop.index | modulo: 2 %}
                             {% if mod == 0 %}{% else %}
-                                {%- render 'accordion-item', title: title, text: product.metafields.accentuate.biomarkers_text[forloop.index0]-%}
+                                {%- render 'accordion-item', title: title, text: product.metafields.accentuate.biomarkers_text[forloop.index0] -%}
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -918,7 +1009,7 @@
                         {%- for title in product.metafields.accentuate.biomarkers_title -%}
                             {% assign mod = forloop.index | modulo: 2 %}
                             {% if mod == 0 %}
-                                {%- render 'accordion-item', title: title, text: product.metafields.accentuate.biomarkers_text[forloop.index0]-%}
+                                {%- render 'accordion-item', title: title, text: product.metafields.accentuate.biomarkers_text[forloop.index0] -%}
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -930,7 +1021,7 @@
                         {%- for title in product.metafields.accentuate.symptoms_title -%}
                             {% assign mod = forloop.index | modulo: 2 %}
                             {% if mod == 0 %}{% else %}
-                                {%- render 'accordion-item', title: title, text: product.metafields.accentuate.symptoms_text[forloop.index0]-%}
+                                {%- render 'accordion-item', title: title, text: product.metafields.accentuate.symptoms_text[forloop.index0] -%}
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -938,7 +1029,7 @@
                         {%- for title in product.metafields.accentuate.symptoms_title -%}
                             {% assign mod = forloop.index | modulo: 2 %}
                             {% if mod == 0 %}
-                                {%- render 'accordion-item', title: title, text: product.metafields.accentuate.symptoms_text[forloop.index0]-%}
+                                {%- render 'accordion-item', title: title, text: product.metafields.accentuate.symptoms_text[forloop.index0] -%}
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -968,7 +1059,7 @@
                     %}
                 {% endif %}
                 {% if product.metafields.accentuate.why_take_card1_title %}
-                    {% assign img = section.settings.card2_background | img_url:  'original' %}
+                    {% assign img = section.settings.card2_background | img_url: 'original' %}
                     {% render
                             'card-percent',
                             image_url: img,
@@ -982,10 +1073,13 @@
     {% endif %}
 
     <product-modal id="ProductModal-{{ section.id }}" class="product1-media-modal media-modal">
-        <div class="product1-media-modal__dialog" role="dialog" aria-label="{{ 'products.modal.label' | t }}" aria-modal="true" tabindex="-1">
-            <button id="ModalClose-{{ section.id }}" type="button" class="product1-media-modal__toggle" aria-label="{{ 'accessibility.close' | t }}">{% render 'icon-close' %}</button>
+        <div class="product1-media-modal__dialog" role="dialog" aria-label="{{ 'products.modal.label' | t }}"
+             aria-modal="true" tabindex="-1">
+            <button id="ModalClose-{{ section.id }}" type="button" class="product1-media-modal__toggle"
+                    aria-label="{{ 'accessibility.close' | t }}">{% render 'icon-close' %}</button>
 
-            <div class="product1-media-modal__content" role="document" aria-label="{{ 'products.modal.label' | t }}" tabindex="0">
+            <div class="product1-media-modal__content" role="document" aria-label="{{ 'products.modal.label' | t }}"
+                 tabindex="0">
                 {%- liquid
                     if product.selected_or_first_available_variant.featured_media != null
                         assign media = product.selected_or_first_available_variant.featured_media
@@ -1013,8 +1107,10 @@
     {% assign popups = section.blocks | where: "type", "popup" %}
     {%- for block in popups -%}
         <modal-dialog id="PopupModal-{{ block.id }}" class="product1-popup-modal" {{ block.shopify_attributes }}>
-            <div role="dialog" aria-label="{{ block.settings.text }}" aria-modal="true" class="product1-popup-modal__content" tabindex="-1">
-                <button id="ModalClose-{{ block.id }}" type="button" class="product1-popup-modal__toggle" aria-label="{{ 'accessibility.close' | t }}">{% render 'icon-close' %}</button>
+            <div role="dialog" aria-label="{{ block.settings.text }}" aria-modal="true"
+                 class="product1-popup-modal__content" tabindex="-1">
+                <button id="ModalClose-{{ block.id }}" type="button" class="product1-popup-modal__toggle"
+                        aria-label="{{ 'accessibility.close' | t }}">{% render 'icon-close' %}</button>
                 <div class="product1-popup-modal__content-info">
                     <h1 class="h2">{{ block.settings.page.title }}</h1>
                     {{ block.settings.page.content }}
@@ -1024,49 +1120,49 @@
     {%- endfor -%}
 </section>
 
-{% javascript %}
-class ProductModal extends ModalDialog {
-constructor() {
-super();
-}
+<script>
+    class ProductModal extends ModalDialog {
+        constructor() {
+            super();
+        }
 
-hide() {
-super.hide();
-}
+        hide() {
+            super.hide();
+        }
 
-show(opener) {
-super.show(opener);
-this.showActiveMedia();
-}
+        show(opener) {
+            super.show(opener);
+            this.showActiveMedia();
+        }
 
-showActiveMedia() {
-this.querySelectorAll(`[data-media-id]:not([data-media-id="${this.openedBy.getAttribute("data-media-id")}"])`).forEach((element) => {
-element.classList.remove('active');
-}
-)
-const activeMedia = this.querySelector(`[data-media-id="${this.openedBy.getAttribute("data-media-id")}"]`);
-const activeMediaTemplate = activeMedia.querySelector('template');
-const activeMediaContent = activeMediaTemplate ? activeMediaTemplate.content : null;
-activeMedia.classList.add('active');
-activeMedia.scrollIntoView();
+        showActiveMedia() {
+            this.querySelectorAll(`[data-media-id]:not([data-media-id="${this.openedBy.getAttribute("data-media-id")}"])`).forEach((element) => {
+                    element.classList.remove('active');
+                }
+            )
+            const activeMedia = this.querySelector(`[data-media-id="${this.openedBy.getAttribute("data-media-id")}"]`);
+            const activeMediaTemplate = activeMedia.querySelector('template');
+            const activeMediaContent = activeMediaTemplate ? activeMediaTemplate.content : null;
+            activeMedia.classList.add('active');
+            activeMedia.scrollIntoView();
 
-const container = this.querySelector('[role="document"]');
-container.scrollLeft = (activeMedia.width - container.clientWidth) / 2;
+            const container = this.querySelector('[role="document"]');
+            container.scrollLeft = (activeMedia.width - container.clientWidth) / 2;
 
-if (activeMedia.nodeName == 'DEFERRED-MEDIA' && activeMediaContent && activeMediaContent.querySelector('.js-youtube'))
-activeMedia.loadContent();
-}
-}
+            if (activeMedia.nodeName == 'DEFERRED-MEDIA' && activeMediaContent && activeMediaContent.querySelector('.js-youtube'))
+                activeMedia.loadContent();
+        }
+    }
 
-if (!customElements.get('product-modal')) customElements.define('product-modal', ProductModal);
-{% endjavascript %}
+    if (!customElements.get('product-modal')) customElements.define('product-modal', ProductModal);
+</script>
 
 {% if product.media.size > 0 %}
     <script src="{{ 'media-gallery.aio.min.js' | asset_url }}" defer="defer"></script>
 {% endif %}
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         function isIE() {
             const ua = window.navigator.userAgent;
             const msie = ua.indexOf('MSIE ');
@@ -1082,7 +1178,7 @@ if (!customElements.get('product-modal')) customElements.define('product-modal',
         noScriptInputWrapper.innerHTML = document.querySelector('.product1-form__noscript-wrapper-{{ section.id }}').textContent;
         variantSwitcher.outerHTML = noScriptInputWrapper.outerHTML;
 
-        document.querySelector('#Variants-{{ section.id }}').addEventListener('change', function(event) {
+        document.querySelector('#Variants-{{ section.id }}').addEventListener('change', function (event) {
             hiddenInput.value = event.currentTarget.value;
         });
     });
@@ -1091,7 +1187,8 @@ if (!customElements.get('product-modal')) customElements.define('product-modal',
 {%- if first_3d_model -%}
     <script type="application/json" id="ProductJSON-{{ product.id }}">
     {{ product.media | where: 'media_type', 'model' | json }}
-  </script>
+
+    </script>
 
     <script src="{{ 'product-model.aio.min.js' | asset_url }}" defer></script>
 {%- endif -%}
@@ -1141,7 +1238,7 @@ if (!customElements.get('product-modal')) customElements.define('product-modal',
   }
 </script>
 {% endcomment %}
-<script>
+<script type="lazyload_int">
 
     $(document).ready(function(){
         if($(".product1-form__btnholder").length){
@@ -1309,6 +1406,7 @@ if (!customElements.get('product-modal')) customElements.define('product-modal',
             },
         }
     });
+
 </script>
 {% schema %}
 {

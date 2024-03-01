@@ -30,11 +30,39 @@
   endif
 -%}
 
-<div class="product1__price-block price-block">
+<div class="product__price-block price-block {% if compare_at_price != blank %}price-with-sale{% endif %}">
   <div class="price-block__container">
     <div class="price-block__regular">
       {% comment %}<span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.regular_price' | t }}</span>{% endcomment %}
       <span class="price-block__price">{{ money_price }}</span>
+    </div>
+    <div class="price__sale price-block__sale">
+
+      <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.sale_price' | t }}</span>
+      <span class="price-item price-block__price price-item--sale price-item--last">
+        {{ money_price }}
+      </span>
+      {%- unless product.price_varies == false and product.compare_at_price_varies %}
+        <div class="compare-price-block">
+          {% assign price_current = price | money_without_currency %}
+          {% assign price_compare = compare_at_price | money_without_currency %}
+          {% assign percent_values = price_compare | times: 100 | divided_by: price_current | minus: 100 | round: 2 %}
+          {% capture percentage %}
+            {{ percent_values | round }}%
+          {% endcapture %}
+          <span class="save-percent">Save {{ percentage }}</span>
+          <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.regular_price' | t }}</span>
+          <span class="price-item--compare-price_container">
+            <s class="price-item price-item--regular price-item--compare-price">
+              {% if settings.currency_code_enabled %}
+                {{ compare_at_price | money_with_currency }}
+              {% else %}
+                {{ compare_at_price | money }}
+              {% endif %}
+            </s>
+          </span>
+        </div>
+      {%- endunless -%}
     </div>
   </div>
 </div>

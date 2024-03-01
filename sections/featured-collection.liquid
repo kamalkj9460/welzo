@@ -1,25 +1,28 @@
-{{ 'component-card.aio.min.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.aio.min.css' | asset_url | stylesheet_tag }}
+{% unless template contains "index" or template contains "collection" or template contains "product"  %}
+  <style> .card-wrapper{color:inherit;height:100%;position:relative;text-decoration:none}.card{text-align:var(--card-text-alignment);text-decoration:none}.card--card{height:100%}.card--card{border-radius:calc(var(--card-corner-radius)/ 1.5);border:var(--card-border-width) solid rgba(var(--color-foreground),var(--card-border-opacity));position:relative;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between}.card--standard .card__inner{border-radius:calc(var(--card-corner-radius)/ 1.5);border:var(--card-border-width) solid rgba(var(--color-foreground),var(--card-border-opacity));position:relative;box-sizing:border-box}.card--card:after,.card--standard .card__inner:after{content:'';position:absolute;width:calc(var(--card-border-width) * 2 + 100%);height:calc(var(--card-border-width) * 2 + 100%);top:calc(var(--card-border-width) * -1);left:calc(var(--card-border-width) * -1);z-index:-1;border-radius:calc(var(--card-corner-radius)/ 1.5);box-shadow:var(--card-shadow-horizontal-offset) var(--card-shadow-vertical-offset) var(--card-shadow-blur-radius) rgba(var(--color-shadow),var(--card-shadow-opacity))}@media screen and (min-width:750px){.card--card,.card--card:after,.card--standard .card__inner,.card--standard .card__inner:after{border-radius:var(--card-corner-radius)}}.card .card__inner .card__media{overflow:hidden;z-index:0;border-radius:calc(var(--card-corner-radius) - var(--card-border-width) - var(--card-image-padding))}.card--card .card__inner .card__media{border-bottom-right-radius:0;border-bottom-left-radius:0}.card--standard.card--text{background-color:transparent}.card-information{text-align:var(--card-text-alignment)}.card .media,.card__media{position:relative}.card .media{width:100%;height:100%}.card--standard .card .media{height:unset}.card__media{margin:var(--card-image-padding);width:calc(100% - 2 * var(--card-image-padding))}.card--standard .card__media{margin:var(--card-image-padding)}.card__inner{width:100%}.card__inner.ratio{flex-wrap:wrap}.card--card .card--media .card__inner .card__content{padding:var(--card-image-padding);position:relative}.card--standard .card--media .card__inner .card__content{padding:var(--card-image-padding);position:relative}.card--standard .card--media .card__inner .card__content{position:absolute;left:0;top:0}.card__content{display:grid;grid-template-rows:minmax(0,1fr) max-content minmax(0,1fr);padding:calc(var(--card-image-padding)/ 2);width:100%}@media screen and (min-width:750px){.card__content{padding:var(--card-image-padding)}}.card__content--auto-margins{grid-template-rows:minmax(0,auto) max-content minmax(0,auto)}.card__information{grid-row-start:2}.card--standard .card__information{grid-row-start:2;padding:1.3rem}@media screen and (min-width:750px){.card--standard .card__information{padding:1.3rem}}.card__badge{align-self:flex-end;grid-row-start:3;justify-self:flex-start}.card__badge.top{align-self:flex-start;grid-row-start:1}.card--card .card__badge.top.left{position:absolute;left:-1px;top:28px}.card__badge.top.left .badge{border-radius:0 var(--badge-corner-radius) var(--badge-corner-radius) 0}.card__badge.right{justify-self:flex-end}.card__media .media img{height:100%;object-fit:contain;object-position:center center;width:100%}.card__inner:not(.ratio)>.card__content{height:100%}.card__heading{margin-top:0}.card--card.card--media>.card__content{margin-top:calc(0rem - var(--card-image-padding))}.card--standard.card--text a::after{bottom:calc(var(--card-border-width) * -1);left:calc(var(--card-border-width) * -1);right:calc(var(--card-border-width) * -1);top:calc(var(--card-border-width) * -1)}.card--standard .card__heading a::after{bottom:0;content:"";left:0;position:absolute;right:0;top:0;z-index:1}.card--standard .card__heading a:after{outline-offset:0.3rem}.card--standard .card__heading a:focus:after{box-shadow:0 0 0 .3rem rgb(var(--color-background)),0 0 .5rem .4rem rgba(var(--color-foreground),.3);outline:.2rem solid rgba(var(--color-foreground),.5)}.card--standard .card__heading a:focus-visible:after{box-shadow:0 0 0 .3rem rgb(var(--color-background)),0 0 .5rem .4rem rgba(var(--color-foreground),.3);outline:.2rem solid rgba(var(--color-foreground),.5)}.card--standard .card__heading a:focus:not(:focus-visible):after{box-shadow:none;outline:0}.card__heading a:focus{box-shadow:none;outline:0}@media screen and (min-width:990px){.card .media.media--hover-effect>img:only-child,.card-wrapper .media.media--hover-effect>img:only-child{transition:transform var(--duration-long) ease}.card-wrapper:hover .media.media--hover-effect>img:first-child:only-child,.card:hover .media.media--hover-effect>img:first-child:only-child{transform:scale(1.03)}.card-wrapper:hover .media.media--hover-effect>img:first-child:not(:only-child){opacity:0}.card-wrapper:hover .media.media--hover-effect>img+img{opacity:1;transition:transform var(--duration-long) ease;transform:scale(1.03)}.underline-links-hover:hover a{text-decoration:underline;text-underline-offset:0.3rem}}.card--standard.card--media .card__inner .card__information,.card--standard.card--text.article-card>.card__content .card__information,.card--standard.card--text>.card__content .card__heading,.card--standard>.card__content .card__badge,.card--standard>.card__content .card__caption{display:none}.card--standard>.card__content{padding:0}.card--standard>.card__content .card__information{padding-left:0;padding-right:0}.article-card .card__inner .card__content,.card--card.card--media>.card__content .card__badge,card--card.card--text .card__inner{display:none}.card--extend-height{height:100%}.card--extend-height.card--media,.card--extend-height.card--standard.card--text{display:flex;flex-direction:column}.card--extend-height.card--media .card__inner,.card--extend-height.card--standard.card--text .card__inner{flex-grow:1}.card .icon-wrap{margin-left:.8rem;white-space:nowrap;transition:transform var(--duration-short) ease;overflow:hidden}.card-information>*+*{margin-top:.5rem}.card-information{width:100%}.card-information>*{line-height:calc(1 + .4 / var(--font-body-scale));color:rgb(var(--color-foreground))}.card-information>.price{color:rgb(var(--color-foreground))}.card-information>.rating{margin-top:.4rem}.card-information>:not(.visually-hidden:first-child)+:not(.rating){margin-top:.7rem}.card-information .caption{letter-spacing:.07rem}.card-article-info{margin-top:1rem}.product-form__input.product-form__quantity{margin:0 0 8px}.product-form__quantity .quantity:after,.product-form__quantity .quantity:before,.product-form__quantity .quantity__button:after,.product-form__quantity .quantity__button:before{display:none}.product-form__quantity .quantity{min-height:28px;width:auto}.product-form__quantity .quantity__button{color:rgb(var(--color-foreground));width:27px;height:21px;min-width:unset;min-height:unset;padding:0;background-color:#fef2f8!important;border:1px solid #fff;border-radius:8px}.product-form__quantity .quantity__input{border-radius:25px;border:2px solid #eef3f7;width:27px;height:21px;max-width:27px;min-width:unset;margin:0 3px}.card.card--card .card__content2 .card__heading{display:none}h3.card__heading{font-family:Poppins;font-style:normal;font-weight:400;font-size:16px;line-height:26px;letter-spacing:-.04em;color:#12022f;margin:0}.product2__form .price{font-family:Quicksand;font-style:normal;font-weight:600;font-size:18px;line-height:22px;color:#d32f7c;margin:0 0 12px}.product2__form .button{font-family:Quicksand;font-style:normal;font-weight:600;font-size:14px;line-height:18px;height:unset;min-height:unset;text-align:center;padding:5px 1px}@media screen and (min-width:990px){.product-form__input.product-form__quantity{margin:0 0 15px}h3.card__heading{font-size:18px;margin:0 0 5px}.product-form__quantity .quantity__button{width:37px;height:28px}.product-form__quantity .quantity__input{width:37px;height:28px;max-width:37px}.product2__form .price{font-size:24px;line-height:30px}.product2__form .button{font-size:19px;line-height:24px;height:unset;padding:7px 2px}}.product-form__quantity .quantity__input:focus-visible{box-shadow:none}.card--card .card__content2 .product2-review{display:none}.product2-review{display:flex;flex-wrap:wrap;align-items:flex-end;font-family:Poppins;font-style:normal;font-weight:700;font-size:8px;line-height:14px;color:#12022f;margin:0 0 5px}.product2-review-icons{color:#10b67b;margin:0 5px 5px 0}.product2-review span{margin:0 0 5px}.product2-review-icons svg{width:10px;height:10px}@media screen and (min-width:750px){.product2-review{font-size:12px}.product2-review-icons svg{width:15px;height:15px}}.price{font-size:1.6rem;letter-spacing:.1rem;line-height:calc(1 + .5 / var(--font-body-scale));color:rgb(var(--color-foreground))}.price>*{display:inline-block;vertical-align:top}.price.price--unavailable{visibility:hidden}.price--end{text-align:right}.price .price-item{margin:0 1rem 0 0}.price__regular .price-item--regular{margin-right:0}.price:not(.price--show-badge) .price-item--last:last-of-type{margin:0}@media screen and (min-width:750px){.price{margin-bottom:0}}.price--large{font-size:1.6rem;line-height:calc(1 + .5 / var(--font-body-scale));letter-spacing:.13rem}@media screen and (min-width:750px){.price--large{font-size:1.8rem}}.price--sold-out .price__availability,.price__regular{display:block}.price .price__badge-sale,.price .price__badge-sold-out,.price--on-sale .price__availability,.price--on-sale .price__regular,.price__availability,.price__sale{display:none}.price--on-sale .price__badge-sale,.price--sold-out .price__badge-sold-out{display:inline-block}.price--on-sale .price__sale{display:initial;flex-direction:row;flex-wrap:wrap}.price--center{display:initial;justify-content:center}.price--on-sale .price-item--regular{text-decoration:line-through;color:rgba(var(--color-foreground),.75);font-size:1.3rem}.unit-price{display:block;font-size:1.1rem;letter-spacing:.04rem;line-height:calc(1 + .2 / var(--font-body-scale));margin-top:.2rem;text-transform:uppercase;color:rgba(var(--color-foreground),.7)}slider-component{position:relative;display:block}@media screen and (max-width:989px){.no-js slider-component .slider{padding-bottom:3rem}}.slider__slide{scroll-snap-align:start;flex-shrink:0}@media screen and (max-width:749px){.slider.slider--mobile{position:relative;flex-wrap:inherit;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scroll-padding-left:1.5rem;-webkit-overflow-scrolling:touch;margin-bottom:1rem;padding-top:max(.5rem,calc(var(--shadow-vertical-offset) * -1 + var(--shadow-blur-radius)));padding-bottom:max(.5rem,calc(var(--shadow-vertical-offset) + var(--shadow-blur-radius)))}.slider.slider--mobile .slider__slide{margin-bottom:0;padding-bottom:0}}@media screen and (min-width:750px){.slider.slider--tablet-up{position:relative;flex-wrap:inherit;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scroll-padding-left:1rem;-webkit-overflow-scrolling:touch}.slider.slider--tablet-up .slider__slide{margin-bottom:0;padding-bottom:0}}@media screen and (max-width:989px){.slider.slider--tablet{position:relative;flex-wrap:inherit;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scroll-padding-left:1.5rem;-webkit-overflow-scrolling:touch;margin-bottom:1rem;padding-top:max(.5rem,calc(var(--shadow-vertical-offset) * -1 + var(--shadow-blur-radius)));padding-bottom:max(.5rem,calc(var(--shadow-vertical-offset) + var(--shadow-blur-radius)))}.slider.slider--tablet .slider__slide{margin-bottom:0;padding-bottom:0}}.slider--everywhere{position:relative;flex-wrap:inherit;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;margin-bottom:1rem}@media (prefers-reduced-motion){.slider--everywhere{scroll-behavior:auto}}.slider.slider--everywhere .slider__slide{margin-bottom:0;padding-bottom:0;scroll-snap-align:center}.slider{scrollbar-color:rgb(var(--color-foreground)) rgba(var(--color-foreground),0.04);-ms-overflow-style:none;scrollbar-width:none}.slider::-webkit-scrollbar{height:.4rem;width:.4rem;display:none}.no-js .slider{-ms-overflow-style:auto;scrollbar-width:auto}.no-js .slider::-webkit-scrollbar{display:initial}.slider::-webkit-scrollbar-thumb{background-color:rgb(var(--color-foreground));border-radius:.4rem;border:0}.slider::-webkit-scrollbar-track{background:rgba(var(--color-foreground),.04);border-radius:.4rem}.slider-counter{margin:0 1.2rem;display:flex;min-width:2rem}@media screen and (max-width:749px){.slider-counter--dots,.slider-counter--numbers{margin:0}}.slider-counter__link{padding:1rem}@media screen and (max-width:749px){.slider-counter__link{padding:.7rem}}.slider-counter__link--dots .dot{width:1rem;height:1rem;border-radius:50%;border:.1rem solid rgba(var(--color-foreground),.5);padding:0;display:block}.slider-counter__link--active.slider-counter__link--dots .dot{background-color:rgb(var(--color-foreground))}@media screen and (forced-colors:active){.slider-counter__link--active.slider-counter__link--dots .dot{background-color:CanvasText}}.slider-counter__link--dots:not(.slider-counter__link--active):hover .dot{border-color:rgb(var(--color-foreground))}.slider-counter__link--dots .dot,.slider-counter__link--numbers{transition:transform .2s ease-in-out}.slider-counter__link--active.slider-counter__link--numbers,.slider-counter__link--dots:not(.slider-counter__link--active):hover .dot,.slider-counter__link--numbers:hover{transform:scale(1.1)}.slider-counter__link--numbers{color:rgba(var(--color-foreground),.5);text-decoration:none}.slider-counter__link--numbers:hover{color:rgb(var(--color-foreground))}.slider-counter__link--active.slider-counter__link--numbers{text-decoration:underline;color:rgb(var(--color-foreground))}.slider-buttons{display:flex;align-items:center;justify-content:center}@media screen and (min-width:990px){.slider:not(.slider--everywhere)+.slider-buttons{display:none}}@media screen and (min-width:750px){.slider--mobile+.slider-buttons{display:none}}.slider-button{color:rgba(var(--color-foreground),.75);background:0 0;border:none;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center}.slider-button:not([disabled]):hover{color:rgb(var(--color-foreground))}.slider-button .icon{height:.6rem}.slider-button[disabled] .icon{color:rgba(var(--color-foreground),.3);cursor:not-allowed}.slider-button--next .icon{transform:rotate(-90deg)}.slider-button--prev .icon{transform:rotate(90deg)}.slider-button--next:not([disabled]):hover .icon{transform:rotate(-90deg) scale(1.1)}.slider-button--prev:not([disabled]):hover .icon{transform:rotate(90deg) scale(1.1)}@media screen and (max-width:749px){.collection .grid__item:only-child{flex:0 0 100%;max-width:100%}}@media screen and (min-width:750px){.collection .title-wrapper-with-link--no-heading{margin-top:calc(6rem + var(--page-width-margin))}}@media screen and (max-width:989px){.collection .slider.slider--tablet{margin-bottom:1.5rem}}.collection .loading-overlay{top:0;right:0;bottom:0;left:0;display:none;width:100%;padding:0 1.5rem;opacity:.7}@media screen and (min-width:750px){.collection .loading-overlay{padding-left:5rem;padding-right:5rem}}.collection.loading .loading-overlay{display:block}.collection--empty .title-wrapper{margin-top:10rem;margin-bottom:15rem}.collection__view-all{margin-top:2rem}</style>
+{% endunless %}
+<link rel="stylesheet" data-href="{{ 'component-card.aio.min.css' | asset_url }}">
+<link rel="stylesheet" data-href="{{ 'component-price.aio.min.css' | asset_url }}">
 
-<link rel="stylesheet" href="{{ 'component-slider.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'template-collection.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" data-href="{{ 'component-slider.aio.min.css' | asset_url }}">
+<link rel="stylesheet" data-href="{{ 'template-collection.aio.min.css' | asset_url }}">
 
 <noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
 <noscript>{{ 'template-collection.css' | asset_url | stylesheet_tag }}</noscript>
 
-<script src="{{ 'product-form.aio.min.js' | asset_url }}" defer="defer"></script>
+<script type="lazyload_int" data-src="{{ 'product-form.aio.min.js' | asset_url }}"></script>
 
 {%- style -%}
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+  padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
   @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
+  .section-{{ section.id }}-padding {
+  padding-top: {{ section.settings.padding_top }}px;
+  padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
   }
 {%- endstyle -%}
 
@@ -31,10 +34,10 @@
     assign more_in_collection = true
   endif
 -%}
- 
+
 {%- assign featured_collection_id = ''-%}
 {%- if section.settings.featured_collection_id != blank  -%}
-   {% capture featured_collection_id %}id="{{ section.settings.featured_collection_id }}"{% endcapture %}
+  {% capture featured_collection_id %}id="{{ section.settings.featured_collection_id }}"{% endcapture %}
 {%- endif-%}
 
 
@@ -43,23 +46,41 @@
     {% unless section.settings.title == blank %}
       <div class="title-wrapper-with-link{% if section.settings.title == blank %} title-wrapper-with-link--no-heading{% endif %}{% if section.settings.collection.all_products_count > 2 and section.settings.swipe_on_mobile and section.settings.products_to_show > 2 %} title-wrapper--self-padded-tablet-down{% endif %} title-wrapper--no-top-margin">
         <h2 class="title{% if section.settings.title == blank %} title--no-heading{% endif %}">{{ section.settings.title | escape }}</h2>
-  
+
         {%- if section.settings.show_view_all and section.settings.swipe_on_mobile and more_in_collection -%}
           <a href="{{ section.settings.collection.url }}" class="link underlined-link large-up-hide">{{ 'sections.featured_collection.view_all' | t }}</a>
         {%- endif -%}
       </div>
     {% endunless %}
-  
+
+    {% comment %} if collection have template 2 add consult form {% endcomment %}
+
+    {%- assign have_template_2 = false -%}
+
     <slider-component class="slider-mobile-gutter">
       <ul id="Slider-{{ section.id }}" class="grid grid--2-col product-grid{% if products_to_display == 4 or section.settings.collection == blank %} grid--2-col-tablet grid--4-col-desktop{% else %} grid--3-col-tablet{% endif %}{% if products_to_display > 5 %} grid--one-third-max grid--4-col-desktop grid--quarter-max{% endif %}{% if section.settings.collection.all_products_count > 2 and section.settings.swipe_on_mobile and section.settings.products_to_show > 2 %} slider slider--tablet grid--peek{% endif %}" role="list">
         {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+          {% if section.settings.add_consult_form %}
+            {% if product.template_suffix == 'product2' or product.template_suffix == 'wegovy' and have_template_2 == false %}
+              {%- assign have_template_2 = true -%}
+              {% if section.settings.consult_form_from == 'product' %}
+                {% if accentuate_fields == blank %}
+                  {%- assign accentuate_fields = product.metafields.accentuate -%}
+                {% endif %}
+              {% else %}
+                {%- assign accentuate_fields = section.settings.collection.metafields.accentuate -%}
+              {% endif %}
+            {% endif %}
+          {% endif %}
+
           <li id="Slide-{{ section.id }}-{{ forloop.index }}" class="grid__item{% if section.settings.collection.all_products_count > 2 and section.settings.swipe_on_mobile and section.settings.products_to_show > 2 %} slider__slide{% endif %}">
             {% render 'card-product',
-              card_product: product,
-              media_aspect_ratio: section.settings.image_ratio,
-              show_secondary_image: section.settings.show_secondary_image,
-              show_vendor: section.settings.show_vendor,
-              show_rating: section.settings.show_rating
+                    card_product: product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    accentuate_fields: accentuate_fields
             %}
           </li>
         {%- else -%}
@@ -83,12 +104,12 @@
         </div>
       {%- endif -%}
     </slider-component>
-  
+
     {%- if section.settings.show_view_all and more_in_collection -%}
       <div class="center collection__view-all{% if section.settings.swipe_on_mobile %} small-hide medium-hide{% endif %}">
         <a href="{{ section.settings.collection.url }}"
-          class="button"
-          aria-label="{{ 'sections.featured_collection.view_all_label' | t: collection_name: section.settings.collection.title }}"
+           class="button"
+           aria-label="{{ 'sections.featured_collection.view_all_label' | t: collection_name: section.settings.collection.title }}"
         >
           {{ 'sections.featured_collection.view_all' | t }}
         </a>
@@ -96,6 +117,10 @@
     {%- endif -%}
   </div>
 </div>
+
+{% if section.settings.add_consult_form %}
+  {% render 'collection-modal-fields', accentuate_fields: accentuate_fields %}
+{% endif %}
 
 {% schema %}
 {
@@ -235,6 +260,33 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Form consultation"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_consult_form",
+      "default": false,
+      "label": "Add form consultation",
+      "info": "You can change fields value in metaobject 'Start your online consultation'"
+    },
+    {
+      "type": "select",
+      "id": "consult_form_from",
+      "options": [
+        {
+          "value": "product",
+          "label": "Product"
+        },
+        {
+          "value": "collection",
+          "label": "Collection"
+        }
+      ],
+      "default": "product",
+      "label": "Take questions from:"
     }
   ],
   "presets": [

@@ -7,6 +7,7 @@
 {{ 'component-slider.aio.min.css' | asset_url | stylesheet_tag }}
 {{ 'component-rating.aio.min.css' | asset_url | stylesheet_tag }}
 {{ 'component-loading-overlay.aio.min.css' | asset_url | stylesheet_tag }}
+{{ 'datepicker.min.css' | asset_url | stylesheet_tag }}
 
 <link rel="stylesheet" href="{{ 'component-deferred-media.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
 
@@ -56,12 +57,18 @@
 <script src="{{ 'product-form.aio.min.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'delivery-timer.aio.min.js' | asset_url }}" defer="defer"></script>
 
+<script src="{{ 'datepicker-full.min.js' | asset_url }}" defer="defer"></script>
+
 {%- assign first_3d_model = product.media | where: "media_type", "model" | first -%}
 {%- if first_3d_model -%}
     {{ 'component-product-model.aio.min.css' | asset_url | stylesheet_tag }}
     <link id="ModelViewerStyle" rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'">
     <link id="ModelViewerOverride" rel="stylesheet" href="{{ 'component-model-viewer-ui.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
+
+{% assign product_cart_quantity = cart | line_items_for: product | sum: 'quantity' %}
+{% assign product_cart_quantity = product_cart_quantity | floor %}
+{% assign current_available_quantity = product.metafields.custom.max_quantity | minus: product_cart_quantity %}
 
 {% comment %} MEDIA BLOCK {% endcomment %}
 
@@ -79,7 +86,7 @@
                     {%- if image.width >= 940 -%}{{ image | img_url: '940x' }} 940w,{%- endif -%}
                     {%- if image.width >= 1066 -%}{{ image | img_url: '1066x' }} 1066w,{%- endif -%}
                     {{ image | img_url: 'master' }} {{ image.width }}w"
-                             src="{{ image | img_url: '533x' }}"
+                              src="{{ image | img_url: '533x' }}"
                              sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
                              alt="{{ image.alt | escape }}"
                              class="motion-reduce"
@@ -113,14 +120,15 @@
                                         <div class=" prod2-review__slide-img">
                                             <img loading="lazy" class="snippet-image__image"
 
-                                                 srcset="{%- if section.settings.image_reviews.width >= 275 -%}{{ section.settings.image_reviews | img_url: '275x' }} 275w,{%- endif -%}
+                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" 
+                                              data-srcset="{%- if section.settings.image_reviews.width >= 275 -%}{{ section.settings.image_reviews | img_url: '275x' }} 275w,{%- endif -%}
                                   {%- if section.settings.image_reviews.width >= 330 -%}{{ section.settings.image_reviews | img_url: '330x' }} 330w,{%- endif -%}
                                   {%- if section.settings.image_reviews.width >= 445 -%}{{ section.settings.image_reviews | img_url: '445x' }} 445w,{%- endif -%}
                                   {%- if section.settings.image_reviews.width >= 550 -%}{{ section.settings.image_reviews | img_url: '550x' }} 550w,{%- endif -%}
                                   {%- if section.settings.image_reviews.width >= 710 -%}{{ section.settings.image_reviews | img_url: '710x' }} 710w,{%- endif -%}
                                   {%- if section.settings.image_reviews.width >= 828 -%}{{ section.settings.image_reviews | img_url: '828x' }} 828w,{%- endif -%}
                                   {{ section.settings.image_reviews | img_url: 'master' }} {{ section.settings.image_reviews.width }}w"
-                                                 src="{{ section.settings.image_reviews | img_url: '90x' }}"
+                                                 data-src="{{ section.settings.image_reviews | img_url: '90x' }}"
                                                  alt="{{ section.settings.image_reviews.alt }}">
                                         </div>
                                     {%- endif -%}
@@ -143,14 +151,15 @@
                                         <div class=" prod2-review__slide-img">
                                             <img loading="lazy" class="snippet-image__image"
 
-                                                 srcset="{%- if section.settings.image_reviews2.width >= 275 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 275w,{%- endif -%}
+                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" 
+                                              data-srcset="{%- if section.settings.image_reviews2.width >= 275 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 275w,{%- endif -%}
                                   {%- if section.settings.image_reviews2.width >= 330 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 330w,{%- endif -%}
                                   {%- if section.settings.image_reviews2.width >= 445 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 445w,{%- endif -%}
                                   {%- if section.settings.image_reviews2.width >= 550 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 550w,{%- endif -%}
                                   {%- if section.settings.image_reviews2.width >= 710 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 710w,{%- endif -%}
                                   {%- if section.settings.image_reviews2.width >= 828 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 828w,{%- endif -%}
                                   {{ section.settings.image_reviews2 | img_url: 'master' }} {{ section.settings.image_reviews2.width }}w"
-                                                 src="{{ section.settings.image_reviews2 | img_url: '90x' }}"
+                                                 data-src="{{ section.settings.image_reviews2 | img_url: '90x' }}"
                                                  alt="{{ section.settings.image_reviews2.alt }}">
                                         </div>
                                     {%- endif -%}
@@ -173,14 +182,15 @@
                                         <div class=" prod2-review__slide-img">
                                             <img loading="lazy" class="snippet-image__image"
 
-                                                 srcset="{%- if section.settings.image_reviews3.width >= 275 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 275w,{%- endif -%}
+                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" 
+                                              data-srcset="{%- if section.settings.image_reviews3.width >= 275 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 275w,{%- endif -%}
                                   {%- if section.settings.image_reviews3.width >= 330 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 330w,{%- endif -%}
                                   {%- if section.settings.image_reviews3.width >= 445 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 445w,{%- endif -%}
                                   {%- if section.settings.image_reviews3.width >= 550 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 550w,{%- endif -%}
                                   {%- if section.settings.image_reviews3.width >= 710 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 710w,{%- endif -%}
                                   {%- if section.settings.image_reviews3.width >= 828 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 828w,{%- endif -%}
                                   {{ section.settings.image_reviews3 | img_url: 'master' }} {{ section.settings.image_reviews3.width }}w"
-                                                 src="{{ section.settings.image_reviews3 | img_url: '90x' }}"
+                                                 data-src="{{ section.settings.image_reviews3 | img_url: '90x' }}"
                                                  alt="{{ section.settings.image_reviews3.alt }}">
                                         </div>
                                     {%- endif -%}
@@ -263,8 +273,8 @@
                                   {{ product.title | size | times: 2 }} Reviews
                               {% endif %}
                             </span>
-                                            </div>
-                                        {%- endif -%}
+                                </div>
+                            {%- endif -%}
                         </div>
                     </div>
                     <div class="product2__heading-box-right">
@@ -309,7 +319,7 @@
                                 <div><a href="#" class="mcd_description-text-open">{{ 'sections.collection_read_more.title' | t }}</a></div>
                             </div>
                             <div class="mcd_description-text-full">
-                                {{ product.description }}
+                                {{ product.description | replace: 'iframe', 'iframelazy' | replace: 'src="https://www.youtube.com', 'data-class="LazyLoad" data-src="https://www.youtube.com' }}
                             </div>
                         </div>
                     </div>
@@ -446,8 +456,10 @@
                 </noscript>
 
                 <div class="product2__form-block">
+                    {% if product.selling_plan_groups.size > 0 %}
+                        <div class="sealsubs-target-element" data-product="{{ product | json | escape }}" data-handle="{{ product.handle }}"></div>
+                    {% endif %}
                     <div class="product2__form-holder">
-
                         <div class="product-form__input product-form__quantity" {% unless section.settings.enable_quantity %}style="display:none;"{%- endunless -%}>
                             <label class="form__label" for="Quantity-{{ section.id }}">
                                 {{ 'products.product.quantity.label' | t }}
@@ -543,6 +555,7 @@
                                                             <div class="loading-overlay__spinner hidden">
                                                             </div>
                                                         </button>
+                                                        <a class="klaviyo-bis-trigger button" href="#"><span>Email when stocked</span></a>
                                                     {%- endform -%}
                                                 </div>
                                             </product-form>
@@ -599,7 +612,7 @@
 
 
                                                 </div>
-
+                                                <a class="klaviyo-bis-trigger button" href="#"><span>Email when stocked</span></a>
                                             {%- endform -%}
                                         </div>
 
@@ -681,7 +694,7 @@
                                     {% endif %}
                                 {% endif %}
                             </product-form>
-                            <script>
+                            <script type="lazyload_int">
                                 const getQueryParams = (query) => {
                                     let params = {};
                                     new URLSearchParams(query).forEach((value, key) => {
@@ -702,7 +715,7 @@
                                 };
 
                             </script>
-                            <script>
+                            <script type="lazyload_int">
                                 var variant_id = {{ product.selected_or_first_available_variant.id }};
                                 var variantsArray = {{ product.variants | json }};
                                 var quantity = 1;
@@ -829,7 +842,7 @@
                                 }
                             </script>
 
-                            <script defer>
+                            <script type="lazyload_int">
                                 onVariantChange();
                             </script>
 
@@ -875,6 +888,7 @@
                             <p>Maximum "{{ product.metafields.custom.max_quantity }}" units of this item can be added to your basket</p>
                         </div>
                     {% endif %}
+                    {% comment %}<a class="klaviyo-bis-trigger button" href="#"><span>Email when stocked</span></a>{% endcomment %}
                 </div>
 
                 <div class="product2__dfrt-info">
@@ -911,13 +925,13 @@
                                     <div class="product2__news-item">
                                         <img loading="lazy" class="snippet-image__image"
 
-                                             srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
+                                             data-srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
                             {%- if section.settings.image_news1.width >= 275 -%}{{ section.settings.image_news1 | img_url: '275x' }} 275w,{%- endif -%}
                             {%- if section.settings.image_news1.width >= 550 -%}{{ section.settings.image_news1 | img_url: '550x' }} 550w,{%- endif -%}
                             {%- if section.settings.image_news1.width >= 710 -%}{{ section.settings.image_news1 | img_url: '710x' }} 710w,{%- endif -%}
                             {%- if section.settings.image_news1.width >= 1420 -%}{{ section.settings.image_news1 | img_url: '1420x' }} 1420w,{%- endif -%}
                             {{ section.settings.image_news1 | img_url: 'master' }} {{ section.settings.image_news1.width }}w"
-                                             src="{{ section.settings.image_news1 | img_url: '47x' }}"
+                                             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ section.settings.image_news1 | img_url: '47x' }}"
                                              alt="{{ section.settings.image_news1.alt }}">
                                     </div>
                                 {%- endif -%}
@@ -925,13 +939,13 @@
                                     <div class="product2__news-item">
                                         <img class="snippet-image__image"
                                              loading="lazy"
-                                             srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
+                                             data-srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
                             {%- if section.settings.image_news2.width >= 275 -%}{{ section.settings.image_news2 | img_url: '275x' }} 275w,{%- endif -%}
                             {%- if section.settings.image_news2.width >= 550 -%}{{ section.settings.image_news2 | img_url: '550x' }} 550w,{%- endif -%}
                             {%- if section.settings.image_news2.width >= 710 -%}{{ section.settings.image_news2 | img_url: '710x' }} 710w,{%- endif -%}
                             {%- if section.settings.image_news2.width >= 1420 -%}{{ section.settings.image_news2 | img_url: '1420x' }} 1420w,{%- endif -%}
                             {{ section.settings.image_news2 | img_url: 'master' }} {{ section.settings.image_news2.width }}w"
-                                             src="{{ section.settings.image_news2 | img_url: '47x' }}"
+                                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ section.settings.image_news2 | img_url: '47x' }}"
                                              alt="{{ section.settings.image_news2.alt }}">
                                     </div>
                                 {%- endif -%}
@@ -939,13 +953,13 @@
                                     <div class="product2__news-item">
                                         <img class="snippet-image__image"
                                              loading="lazy"
-                                             srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
+                                             data-srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
                             {%- if section.settings.image_news3.width >= 275 -%}{{ section.settings.image_news3 | img_url: '275x' }} 275w,{%- endif -%}
                             {%- if section.settings.image_news3.width >= 550 -%}{{ section.settings.image_news3 | img_url: '550x' }} 550w,{%- endif -%}
                             {%- if section.settings.image_news3.width >= 710 -%}{{ section.settings.image_news3 | img_url: '710x' }} 710w,{%- endif -%}
                             {%- if section.settings.image_news3.width >= 1420 -%}{{ section.settings.image_news3 | img_url: '1420x' }} 1420w,{%- endif -%}
                             {{ section.settings.image_news3 | img_url: 'master' }} {{ section.settings.image_news3.width }}w"
-                                             src="{{ section.settings.image_news3 | img_url: '47x' }}"
+                                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ section.settings.image_news3 | img_url: '47x' }}"
                                              alt="{{ section.settings.image_news3.alt }}">
                                     </div>
                                 {%- endif -%}
@@ -953,13 +967,13 @@
                                     <div class="product2__news-item">
                                         <img class="snippet-image__image"
                                              loading="lazy"
-                                             srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
+                                             data-srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
                             {%- if section.settings.image_news4.width >= 275 -%}{{ section.settings.image_news4 | img_url: '275x' }} 275w,{%- endif -%}
                             {%- if section.settings.image_news4.width >= 550 -%}{{ section.settings.image_news4 | img_url: '550x' }} 550w,{%- endif -%}
                             {%- if section.settings.image_news4.width >= 710 -%}{{ section.settings.image_news4 | img_url: '710x' }} 710w,{%- endif -%}
                             {%- if section.settings.image_news4.width >= 1420 -%}{{ section.settings.image_news4 | img_url: '1420x' }} 1420w,{%- endif -%}
                             {{ section.settings.image_news4 | img_url: 'master' }} {{ section.settings.image_news4.width }}w"
-                                             src="{{ section.settings.image_news4 | img_url: '47x' }}"
+                                             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ section.settings.image_news4 | img_url: '47x' }}"
                                              alt="{{ section.settings.image_news4.alt }}">
                                     </div>
                                 {%- endif -%}
@@ -1067,14 +1081,15 @@
                                         <div class=" prod2-review__slide-img">
                                             <img loading="lazy" class="snippet-image__image"
 
-                                                 srcset="{%- if section.settings.image_reviews.width >= 275 -%}{{ section.settings.image_reviews | img_url: '275x' }} 275w,{%- endif -%}
+                                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" 
+                                              data-srcset="{%- if section.settings.image_reviews.width >= 275 -%}{{ section.settings.image_reviews | img_url: '275x' }} 275w,{%- endif -%}
                                 {%- if section.settings.image_reviews.width >= 330 -%}{{ section.settings.image_reviews | img_url: '330x' }} 330w,{%- endif -%}
                                 {%- if section.settings.image_reviews.width >= 445 -%}{{ section.settings.image_reviews | img_url: '445x' }} 445w,{%- endif -%}
                                 {%- if section.settings.image_reviews.width >= 550 -%}{{ section.settings.image_reviews | img_url: '550x' }} 550w,{%- endif -%}
                                 {%- if section.settings.image_reviews.width >= 710 -%}{{ section.settings.image_reviews | img_url: '710x' }} 710w,{%- endif -%}
                                 {%- if section.settings.image_reviews.width >= 828 -%}{{ section.settings.image_reviews | img_url: '828x' }} 828w,{%- endif -%}
                                 {{ section.settings.image_reviews | img_url: 'master' }} {{ section.settings.image_reviews.width }}w"
-                                                 src="{{ section.settings.image_reviews | img_url: '90x' }}"
+                                                 data-src="{{ section.settings.image_reviews | img_url: '90x' }}"
                                                  alt="{{ section.settings.image_reviews.alt }}">
                                         </div>
                                     {%- endif -%}
@@ -1097,14 +1112,15 @@
                                         <div class=" prod2-review__slide-img">
                                             <img loading="lazy" class="snippet-image__image"
 
-                                                 srcset="{%- if section.settings.image_reviews2.width >= 275 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 275w,{%- endif -%}
+                                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" 
+                                              data-srcset="{%- if section.settings.image_reviews2.width >= 275 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 275w,{%- endif -%}
                                 {%- if section.settings.image_reviews2.width >= 330 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 330w,{%- endif -%}
                                 {%- if section.settings.image_reviews2.width >= 445 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 445w,{%- endif -%}
                                 {%- if section.settings.image_reviews2.width >= 550 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 550w,{%- endif -%}
                                 {%- if section.settings.image_reviews2.width >= 710 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 710w,{%- endif -%}
                                 {%- if section.settings.image_reviews2.width >= 828 -%}{{ section.settings.image_reviews2 | img_url: '90x' }} 828w,{%- endif -%}
                                 {{ section.settings.image_reviews2 | img_url: 'master' }} {{ section.settings.image_reviews2.width }}w"
-                                                 src="{{ section.settings.image_reviews2 | img_url: '90x' }}"
+                                                 data-src="{{ section.settings.image_reviews2 | img_url: '90x' }}"
                                                  alt="{{ section.settings.image_reviews2.alt }}">
                                         </div>
                                     {%- endif -%}
@@ -1127,14 +1143,15 @@
                                         <div class=" prod2-review__slide-img">
                                             <img loading="lazy" class="snippet-image__image"
 
-                                                 srcset="{%- if section.settings.image_reviews3.width >= 275 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 275w,{%- endif -%}
+                                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" 
+                                              data-srcset="{%- if section.settings.image_reviews3.width >= 275 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 275w,{%- endif -%}
                                 {%- if section.settings.image_reviews3.width >= 330 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 330w,{%- endif -%}
                                 {%- if section.settings.image_reviews3.width >= 445 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 445w,{%- endif -%}
                                 {%- if section.settings.image_reviews3.width >= 550 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 550w,{%- endif -%}
                                 {%- if section.settings.image_reviews3.width >= 710 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 710w,{%- endif -%}
                                 {%- if section.settings.image_reviews3.width >= 828 -%}{{ section.settings.image_reviews3 | img_url: '90x' }} 828w,{%- endif -%}
                                 {{ section.settings.image_reviews3 | img_url: 'master' }} {{ section.settings.image_reviews3.width }}w"
-                                                 src="{{ section.settings.image_reviews3 | img_url: '90x' }}"
+                                                 data-src="{{ section.settings.image_reviews3 | img_url: '90x' }}"
                                                  alt="{{ section.settings.image_reviews3.alt }}">
                                         </div>
                                     {%- endif -%}
@@ -1170,13 +1187,13 @@
                         <div class="product2__news-item">
                             <img loading="lazy" class="snippet-image__image"
 
-                                 srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
+                                 data-srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
                       {%- if section.settings.image_news1.width >= 275 -%}{{ section.settings.image_news1 | img_url: '275x' }} 275w,{%- endif -%}
                       {%- if section.settings.image_news1.width >= 550 -%}{{ section.settings.image_news1 | img_url: '550x' }} 550w,{%- endif -%}
                       {%- if section.settings.image_news1.width >= 710 -%}{{ section.settings.image_news1 | img_url: '710x' }} 710w,{%- endif -%}
                       {%- if section.settings.image_news1.width >= 1420 -%}{{ section.settings.image_news1 | img_url: '1420x' }} 1420w,{%- endif -%}
                       {{ section.settings.image_news1 | img_url: 'master' }} {{ section.settings.image_news1.width }}w"
-                                 src="{{ section.settings.image_news1 | img_url: '47x' }}"
+                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ section.settings.image_news1 | img_url: '47x' }}"
                                  alt="{{ section.settings.image_news1.alt }}">
                         </div>
                     {%- endif -%}
@@ -1184,13 +1201,13 @@
                         <div class="product2__news-item">
                             <img class="snippet-image__image"
                                  loading="lazy"
-                                 srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
+                                 data-srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
                       {%- if section.settings.image_news2.width >= 275 -%}{{ section.settings.image_news2 | img_url: '275x' }} 275w,{%- endif -%}
                       {%- if section.settings.image_news2.width >= 550 -%}{{ section.settings.image_news2 | img_url: '550x' }} 550w,{%- endif -%}
                       {%- if section.settings.image_news2.width >= 710 -%}{{ section.settings.image_news2 | img_url: '710x' }} 710w,{%- endif -%}
                       {%- if section.settings.image_news2.width >= 1420 -%}{{ section.settings.image_news2 | img_url: '1420x' }} 1420w,{%- endif -%}
                       {{ section.settings.image_news2 | img_url: 'master' }} {{ section.settings.image_news2.width }}w"
-                                 src="{{ section.settings.image_news2 | img_url: '47x' }}"
+                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ section.settings.image_news2 | img_url: '47x' }}"
                                  alt="{{ section.settings.image_news2.alt }}">
                         </div>
                     {%- endif -%}
@@ -1198,13 +1215,13 @@
                         <div class="product2__news-item">
                             <img class="snippet-image__image"
                                  loading="lazy"
-                                 srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
+                                 data-srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
                       {%- if section.settings.image_news3.width >= 275 -%}{{ section.settings.image_news3 | img_url: '275x' }} 275w,{%- endif -%}
                       {%- if section.settings.image_news3.width >= 550 -%}{{ section.settings.image_news3 | img_url: '550x' }} 550w,{%- endif -%}
                       {%- if section.settings.image_news3.width >= 710 -%}{{ section.settings.image_news3 | img_url: '710x' }} 710w,{%- endif -%}
                       {%- if section.settings.image_news3.width >= 1420 -%}{{ section.settings.image_news3 | img_url: '1420x' }} 1420w,{%- endif -%}
                       {{ section.settings.image_news3 | img_url: 'master' }} {{ section.settings.image_news3.width }}w"
-                                 src="{{ section.settings.image_news3 | img_url: '47x' }}"
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ section.settings.image_news3 | img_url: '47x' }}"
                                  alt="{{ section.settings.image_news3.alt }}">
                         </div>
                     {%- endif -%}
@@ -1212,13 +1229,13 @@
                         <div class="product2__news-item">
                             <img class="snippet-image__image"
                                  loading="lazy"
-                                 srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
+                                 data-srcset="{%- if section.settings.image_news2.width >= 47 -%}{{ section.settings.image_news2 | img_url: '47x' }} 47w,{%- endif -%}
                       {%- if section.settings.image_news4.width >= 275 -%}{{ section.settings.image_news4 | img_url: '275x' }} 275w,{%- endif -%}
                       {%- if section.settings.image_news4.width >= 550 -%}{{ section.settings.image_news4 | img_url: '550x' }} 550w,{%- endif -%}
                       {%- if section.settings.image_news4.width >= 710 -%}{{ section.settings.image_news4 | img_url: '710x' }} 710w,{%- endif -%}
                       {%- if section.settings.image_news4.width >= 1420 -%}{{ section.settings.image_news4 | img_url: '1420x' }} 1420w,{%- endif -%}
                       {{ section.settings.image_news4 | img_url: 'master' }} {{ section.settings.image_news4.width }}w"
-                                 src="{{ section.settings.image_news4 | img_url: '47x' }}"
+                                 dsrc="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ section.settings.image_news4 | img_url: '47x' }}"
                                  alt="{{ section.settings.image_news4.alt }}">
                         </div>
                     {%- endif -%}
@@ -1400,15 +1417,17 @@
     </section>
 {% endif %}
 
-<section class="page-width product2-reviews">
-    <h2 class="product2-reviews__title">Product reviews</h2>
-    <div class="product2-reviews__trust-index">
-        <script defer async src='https://cdn.trustindex.io/loader.js?ee88c891095d710d2b6646f9f3d'></script>
-    </div>
-    <div class="product2-reviews__buttons">
-        <a href="https://www.trustindex.io/reviews/welzo.com" class="product2-reviews__button">Show all reviews</a>
-    </div>
-</section>
+{% if product.template_suffix != 'supplements' %}
+    <section class="page-width product2-reviews">
+        <h2 class="product2-reviews__title">Product reviews</h2>
+        <div class="product2-reviews__trust-index">
+            <script type="lazyload_int" data-src='https://cdn.trustindex.io/loader.js?ee88c891095d710d2b6646f9f3d'></script>
+        </div>
+        <div class="product2-reviews__buttons">
+            <a href="https://www.trustindex.io/reviews/welzo.com" class="product2-reviews__button">Show all reviews</a>
+        </div>
+    </section>
+{% endif %}
 
 {%- if product.metafields.accentuate.related_title_pdp2 -%}
     <section class="page-width product2-related">
@@ -1442,17 +1461,93 @@
 {% endif %}
 
 <script>
+
+    // max quantity add to cart functions
+
+    $(document).ready(function (){
+        let productCartQuantity = parseInt({{ product_cart_quantity }});
+        let productMaxQuantity = parseInt({{ product.metafields.custom.max_quantity }});
+        let currentAvailableQuantity = parseInt({{ current_available_quantity }});
+        let productID = parseInt({{ product.id }});
+
+        if(productCartQuantity >= productMaxQuantity) {
+            disableAddToCart();
+        }
+
+        if (productMaxQuantity) {
+            $('#form-add-to-cart-button-id').click(function (event, params){
+                if (params) {
+                    addToCart(event, true);
+                } else {
+                    addToCart(event);
+                }
+            });
+        }
+
+        function disableAddToCart() {
+            $('#form-add-to-cart-button-id, #add-to-cart-modal-opener').attr("disabled", "disabled");
+        }
+
+        function addToCart(event, pass){
+            if (event && !pass) {
+                event.preventDefault();
+                checkCartProductQuantity();
+            } else if (event && pass) {
+                let quantityAddedProduct = parseInt($('.quantity__input').val());
+                currentAvailableQuantity -= quantityAddedProduct;
+
+                if (currentAvailableQuantity <= -1) {
+                    event.preventDefault();
+                    currentAvailableQuantity += quantityAddedProduct;
+                } else if (currentAvailableQuantity <= 0) {
+                    setTimeout(function () {
+                        disableAddToCart();
+                    }, 200)
+                }
+            }
+        }
+
+        function checkCartProductQuantity() {
+            $.ajax({
+                type: 'GET',
+                url: '/cart.js',
+                cache: false,
+                dataType: 'json',
+                success: function(cart) {
+                    let cartProductQuantity = 0;
+                    let quantityAddedProduct = parseInt($('.quantity__input').val());
+                    let potentialСartProductQuantity = 0;
+
+                    cart.items.forEach(function (item){
+                        if (item.product_id === productID){
+                            cartProductQuantity += parseInt(item.quantity);
+                        }
+                    })
+
+                    potentialСartProductQuantity = cartProductQuantity + quantityAddedProduct;
+
+                    if (potentialСartProductQuantity <= productMaxQuantity) {
+                        $('#form-add-to-cart-button-id').trigger('click', 'passed');
+                    }
+
+                    if (potentialСartProductQuantity === productMaxQuantity || cartProductQuantity === productMaxQuantity) {
+                        disableAddToCart();
+                    }
+                }
+            });
+        }
+    })
+</script>
+
+<script>
     $(document).ready(function() {
         var titleElement = $(".jdgm-rev-widg__title");
         var reviewCountElement = $(".product2-review span");
-
-        console.log('titleElement ' + titleElement);
 
         if (titleElement.length > 0) {
             var titleText = titleElement.text();
             var regex = /(\d+) Reviews/;
             var matches = titleText.match(regex);
-            console.log('Reviews ' + matches);
 
             if (matches && matches.length > 1) {
                 var reviewCount = matches[1];
@@ -1471,7 +1566,7 @@
 
 </script>
 
-{% javascript %}
+<script type="lazyload_int">
 class ProductModal extends ModalDialog {
 constructor() {
 super();
@@ -1506,13 +1601,13 @@ activeMedia.loadContent();
 }
 
 if (!customElements.get('product-modal')) customElements.define('product-modal', ProductModal);
-{% endjavascript %}
+</script>
 
 {% if product.media.size > 0 %}
     <script src="{{ 'media-gallery.aio.min.js' | asset_url }}" defer="defer"></script>
 {% endif %}
 
-<script>
+<script type="lazyload_int">
     document.addEventListener('DOMContentLoaded', function() {
         function isIE() {
             const ua = window.navigator.userAgent;
@@ -1535,7 +1630,7 @@ if (!customElements.get('product-modal')) customElements.define('product-modal',
     });
 </script>
 
-<script>
+<script type="lazyload_int">
     document.addEventListener('DOMContentLoaded', () => {
         new Swiper(".product2-related__items", {
             slidesPerView: 2.2,
@@ -1717,7 +1812,7 @@ if (!customElements.get('product-modal')) customElements.define('product-modal',
     });
 </script>
 
-<script>
+<script type="lazyload_int">
     $(document).ready(function(){
         if($(".product2__form-block").length){
             if(window.innerWidth < 767) {

@@ -178,7 +178,7 @@ $(document).ready(function(){
                 changePurchaseOptionsPrice($(this));
             })
             clearInterval(checkSealsubs);
-        } else if(intervalCounter === 100) {
+        } else if(intervalCounter === 200) {
             clearInterval(checkSealsubs);
         }
         intervalCounter++;

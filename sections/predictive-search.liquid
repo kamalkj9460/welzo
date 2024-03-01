@@ -11,9 +11,47 @@
     {%- endif -%}
     <ul id="predictive-search-results-list" class="predictive-search__results-list list-unstyled" role="listbox" aria-labelledby="predictive-search-products">
       {%- for product in predictive_search.resources.products -%}
+
+          {% assign variant_lowest_price_id = product.first_available_variant.id %}
+          {% assign variant_lowest_price_price = product.first_available_variant.price %}
+          {% assign variant_lowest_price_variant = product.first_available_variant %}
+
+          {% for variant in product.variants %}
+              {% if variant.available %}
+                  {% if variant.price < variant_lowest_price_price %}
+                      {% assign variant_lowest_price_price = variant.price %}
+                      {% assign variant_lowest_price_id = variant.id %}
+                      {% assign variant_lowest_price_variant = variant %}
+                  {% endif %}
+              {% endif %}
+          {% endfor %}
+
+          {%- liquid
+              assign product_url = product.url
+
+              if product_url contains "&variant="
+                  assign product_url = product.url | split: "&variant=" | first
+                  assign product_url = product.url | append: "&variant="
+                  assign product_url = product.url | append: variant_lowest_price_id
+              else
+                  for variant in card_product.variants
+                      if variant.available
+                          if variant.price < variant_lowest_price_price
+                              assign variant_lowest_price_price = variant.price
+                              assign variant_lowest_price_id = variant.id
+                              assign variant_lowest_price_variant = variant
+                          endif
+                      endif
+                  endfor
+
+                  assign product_url = product_url | append: "?&variant="
+                  assign product_url = product_url | append: variant_lowest_price_id
+              endif
+          -%}
+
         {% unless product.title contains "personalised" %}
             <li id="predictive-search-option-{{ forloop.index }}" class="predictive-search__list-item" role="option" aria-selected="false">
-              <a href="{{ product.url }}" class="predictive-search__item predictive-search__item--link link link--text" tabindex="-1">
+              <a href="{{ product_url }}" class="predictive-search__item predictive-search__item--link link link--text" tabindex="-1">
                 {%- if product.featured_media != blank -%}
                   <img loading="lazy" class="predictive-search__image"
                     src="{{ product.featured_media | img_url: '150x' }}"

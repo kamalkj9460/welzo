@@ -21,6 +21,28 @@
   if ratio == 0 or ratio == nil
     assign ratio = 1
   endif
+
+  assign product_url = card_collection.url
+
+  if product_url contains "&variant="
+    assign variant_lowest_price_id = card_collection.first_available_variant.id
+    assign variant_lowest_price_price = card_collection.first_available_variant.price
+    assign variant_lowest_price_variant = card_collection.first_available_variant
+
+    for variant in card_collection.variants
+      if variant.available
+        if variant.price < variant_lowest_price_price
+          assign variant_lowest_price_price = variant.price
+          assign variant_lowest_price_id = variant.id
+          assign variant_lowest_price_variant = variant
+        endif
+      endif
+    endfor
+
+    assign product_url = card_collection.url | split: "&variant=" | first
+    assign product_url = product_url | append: "&variant="
+    assign product_url = product_url | append: variant_lowest_price_id
+  endif
 -%}
 
 <div class="card-wrapper animate-arrow">
@@ -62,7 +84,7 @@
       <div class="card__content">        
         <div class="card__information">
           <h3 class="card__heading">
-            <a href="{{ card_collection.url }}" class="full-unstyled-link">
+            <a href="{{ product_url }}" class="full-unstyled-link">
               {%- if card_collection.title != blank -%}
                 {{- card_collection.title | escape -}}
               {%- else -%}
@@ -83,7 +105,7 @@
       <div class="card__content">
         <div class="card__information">
           <h3 class="card__heading">
-            <a href="{{ card_collection.url }}" class="full-unstyled-link">
+            <a href="{{ product_url }}" class="full-unstyled-link">
               {%- if card_collection.title != blank -%}
                 {{- card_collection.title | escape -}}
               {%- else -%}

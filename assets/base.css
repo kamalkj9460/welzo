@@ -1971,7 +1971,6 @@ input[type='checkbox'] {
   border: 0;
   padding: 0 0.5rem;
   width: 100%;
-  flex-grow: 1;
   -webkit-appearance: none;
   appearance: none;
 }

@@ -1,4 +1,7 @@
-{{ 'how2.aio.min.css' | asset_url | stylesheet_tag }}
+{% unless template contains "index" or template contains "collection" or template contains "product"  %}
+    <style>.how2{position:relative;width:100%;background-color:#213b94}.how2__background-block{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}.how2__image-background{width:100%;height:100%;object-fit:cover}.how2__background-line{position:absolute;display:block!important;top:50%;left:0;width:100%;height:1px;border:2px dashed rgba(242,240,243,.2);z-index:1}.how2__page{position:relative;z-index:5}.how2-item__number{display:flex;align-items:center;justify-content:center;width:55px;height:55px;border-radius:50%;background:#fef2f8;margin-bottom:40px}.how2-item__number span{font-style:normal;font-weight:700;font-size:18px;line-height:28px;text-align:center;letter-spacing:-.4px;color:#e5007d}.how2__title{font-family:Quicksand;font-style:normal;font-weight:700;font-size:36px;line-height:46px;letter-spacing:-.8px;color:#fff;margin-bottom:5%}.how2__items{display:flex;justify-content:space-between}.how2__item{display:flex;flex-direction:column;width:25%;margin-bottom:5%}.how2-item__title{font-family:Poppins;font-style:normal;font-weight:600;font-size:18px;line-height:26px;letter-spacing:-.355556px;color:#fff}.how2-item__text{font-family:Poppins;font-style:normal;font-weight:400;font-size:14px;line-height:24px;letter-spacing:-.3px;color:#fff}@media screen and (max-width:750px){.how2__title{font-size:36px;line-height:46px}.how2-item__title{font-size:18px;line-height:26px}.how2-item__text{font-size:14px;line-height:24px}.how2__items{display:block}.how2__item{flex-direction:row;width:100%}.how2__label{flex:0 0 25%}}</style>
+{% endunless %} 
+<link rel="stylesheet" data-href="{{ 'how2.aio.min.css' | asset_url }}">
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -19,13 +22,13 @@
     <div class="how2__background-block">
       <img loading="lazy"
               class="how2__image-background"
-
-              srcset="{%- if section.settings.image_background.width >= 275 -%}{{ section.settings.image_background | img_url: '275x' }} 275w,{%- endif -%}
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad"
+              data-srcset="{%- if section.settings.image_background.width >= 275 -%}{{ section.settings.image_background | img_url: '275x' }} 275w,{%- endif -%}
               {%- if section.settings.image_background.width >= 550 -%}{{ section.settings.image_background | img_url: '550x' }} 550w,{%- endif -%}
               {%- if section.settings.image_background.width >= 710 -%}{{ section.settings.image_background | img_url: '710x' }} 710w,{%- endif -%}
               {%- if section.settings.image_background.width >= 1420 -%}{{ section.settings.image_background | img_url: '1420x' }} 1420w,{%- endif -%}
               {{ section.settings.image_background | img_url: 'master' }} {{ section.settings.image_background.width }}w"
-              src="{{ section.settings.image_background | img_url: '550x' }}"
+              data-src="{{ section.settings.image_background | img_url: '550x' }}"
               alt="{{ section.settings.title }}"
       >
     </div>

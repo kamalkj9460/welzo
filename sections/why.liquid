@@ -1,4 +1,7 @@
-{{ 'why.aio.min.css' | asset_url | stylesheet_tag }}
+{% unless template contains "index" or template contains "collection" or template contains "product"  %}
+    <style>.why{position:relative;width:100%;background-color:#213b94}.why__background-block{position:absolute;top:0;left:0;width:100%;height:100%}.why__image-background{width:100%;height:100%;object-fit:cover}.why__title{width:50%;font-family:Quicksand;font-style:normal;color:#fff}.why__items{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:8%;margin-top:8%}.why__item{display:flex;margin-bottom:5%}.why-item__image img{width:100%}.why-item__image{width:20%}.why-item__content{width:80%;padding-left:8%}.why-item__title{font-family:Poppins;font-style:normal;font-weight:600;font-size:16px;line-height:26px;letter-spacing:-.355556px;color:#fff;margin-bottom:5%}.why-item__text{font-family:Poppins;font-style:normal;font-weight:400;font-size:14px;line-height:24px;letter-spacing:-.3px;color:#fff;mix-blend-mode:normal;opacity:.5}.why__logos-block{display:flex;align-items:center;justify-content:center;width:100%;margin-top:10%}.why__image-logos{width:60%;object-fit:cover}@media screen and (max-width:750px){.why__title{width:100%}.why__logos-block{margin-top:20%}.why__image-logos{width:80%;object-fit:cover}}@media screen and (max-width:550px){.why__logos-block{margin-top:30%}.why__image-logos{width:100%;object-fit:cover}}</style>
+{% endunless %} 
+<link rel="stylesheet" data-href="{{ 'why.aio.min.css' | asset_url }}">
 
 {%- style -%}
   .section-{{ section.id }}-padding {

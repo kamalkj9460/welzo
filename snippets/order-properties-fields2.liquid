@@ -35,27 +35,29 @@
                   {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] != blank %}
                     <div id="popup-question__item-error-{{ forloop.index0 }}" class="popup-question__item-error">{{product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] }}</div>
                   {% endif %}
-                </div>  
-              
+                </div>
+
               {% when "date" %}
                 <div class="popup-question__item-input-box">
                   <div class="popup-question__item-input-item popup-question__item-input-date-box">
-                    <input 
-                      type="text" 
-                      required 
-                      class="popup-question__item-input-date" 
-                      name="properties[popup_question_field-{{ forloop.index0 }}]" 
-                      id="popup_question_field-{{ forloop.index0 }}" 
-                      autocomplete="off" 
-                      placeholder="dd/mm/yyyy"
-                      maxlength="10">
-                  </div>  
+                    <input
+                            type="text"
+                            required
+                            class="popup-question__item-input-date"
+                            name="properties[popup_question_field-{{ forloop.index0 }}]"
+                            id="popup_question_field-{{ forloop.index0 }}"
+                            autocomplete="off"
+                            placeholder="dd-mm-yyyy"
+                            maxlength="10">
+                  </div>
                   {% if product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] != blank %}
                     <div id="popup-question__item-error-{{ forloop.index0 }}" class="popup-question__item-error">{{product.metafields.accentuate.popup_question_text_for_wrong_answer[forloop.index0] }}</div>
+                  {% else %}
+                    <div id="popup-question__item-error-{{ forloop.index0 }}" class="popup-question__item-error">You need to enter date in correct format and be older than 18 years old</div>
                   {% endif %}
-                </div> 
-              
-              {% when "radio" %} 
+                </div>
+
+              {% when "radio" %}
                 <div class="{% if inputParamCount[1] and inputParamCount[1] != '' %}popup-question__item-input-box popup-question__item-input-box-double-field{% else %}popup-question__item-input-box{% endif %}">
                   {% assign forLoopIndex = forloop.index0 %}
                   {% assign inputParamItems = inputParam[1] | split: ":" %}
@@ -698,4 +700,56 @@
       });
     }
   });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded',function (){
+    /// Date picker functions
+
+    let formSubmited = false;
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1; //January is 0!
+    let yyyy = today.getFullYear();
+
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    let todayDate = dd + '-' + mm + '-' + yyyy;
+    let majorityYearsPlus = yyyy - 18;
+
+    let majorityDatePlus = dd + '-' + mm + '-' + majorityYearsPlus;
+
+    let dateElement = document.querySelector('.popup-question__item-input-date');
+    let datepicker = new Datepicker(dateElement, {
+      container: '.popup-question__item-input-date-box',
+      startView: '2:decades',
+      format: 'dd-mm-yyyy',
+      maxDate: majorityDatePlus,
+      minDate: '01-01-1900',
+      autohide: true
+    });
+
+    $('.modal-fields__button').click(function (e) {
+      setBackEndDateFormat  ();
+    });
+
+    /// Set format date which uses the backend
+    function setBackEndDateFormat() {
+      let dateInput = $('.popup-question__item-input-date-box .popup-question__item-input-date');
+      let date = dateInput.val();
+      if (date !== '') {
+        let splitedDate = date.split('-');
+
+        if (splitedDate[2].length === 4) {
+          date = splitedDate[2] + '-' + splitedDate[1] + '-' + splitedDate[0];
+          dateInput.val(date);
+        }
+      }
+    }
+  })
 </script>

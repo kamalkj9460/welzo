@@ -1,0 +1,31 @@
+{% if accentuate_fields.popup_question_field %}
+    {%- for popup_question_field in accentuate_fields.popup_question_field -%}
+        {% assign inputParamCount = popup_question_field | split: "-----field-----" %}
+        {% assign inputParam = inputParamCount[0] | split: "|" %}
+        {% case inputParam[0] %}
+            {% when "radio" %}
+                {% if accentuate_fields.popup_question_title[forloop.index0] and accentuate_fields.popup_question_title[forloop.index0] != blank %}
+                    <input class="properties_other popup-question-{{ forloop.index0 }}-h" type="text" name="properties[_popup-question-{{ forloop.index0 }}]" value="{{ accentuate_fields.popup_question_title[forloop.index0] }}" >
+                {% endif %}
+                {% if accentuate_fields.popup_question_text[forloop.index0] and accentuate_fields.popup_question_text[forloop.index0] != blank %}
+                    <input class="properties_other popup-question-{{ forloop.index0 }}-h" type="text" name="properties[_popup-question-{{ forloop.index0 }}-additional-text]" value="{{ accentuate_fields.popup_question_text[forloop.index0] | escape }}" >
+                {% endif %}
+                <input class="properties_other popup_question_field-{{ forloop.index0 }}-h" type="text" name="properties[_popup-question-answer-{{ forloop.index0 }}]" value="popup_question" >
+
+                {% if accentuate_fields.popup_question_additional_radio_field[forloop.index0] and accentuate_fields.popup_question_additional_radio_field[forloop.index0] != blank %}
+                    {% assign radAdditionalField = accentuate_fields.popup_question_additional_radio_field[forloop.index0] | split: "|" %}
+                    {% if radAdditionalField[1] and radAdditionalField[1] != blank %}
+                        <input class="properties_other popup_question_field-{{ forloop.index0 }}-radAddField-h" type="text" name="properties[_popup-question-answer-additional-field-{{ forloop.index0 }}]" value="popup_question" >
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if accentuate_fields.popup_question_title[forloop.index0] and accentuate_fields.popup_question_title[forloop.index0] != blank %}
+                    <input class="properties_other popup-question-{{ forloop.index0 }}-h" type="text" name="properties[_popup-question-{{ forloop.index0 }}]" value="{{ accentuate_fields.popup_question_title[forloop.index0] }}" >
+                {% endif %}
+                {% if accentuate_fields.popup_question_text[forloop.index0] and accentuate_fields.popup_question_text[forloop.index0] != blank %}
+                    <input class="properties_other popup-question-{{ forloop.index0 }}-h" type="text" name="properties[_popup-question-{{ forloop.index0 }}-additional-text]" value="{{ accentuate_fields.popup_question_text[forloop.index0] | escape }}" >
+                {% endif %}
+                <input class="properties_other popup_question_field-{{ forloop.index0 }}-h" type="text" name="properties[_popup-question-answer-{{ forloop.index0 }}]" value="popup_question" >
+        {% endcase %}
+    {% endfor %}
+{% endif %}

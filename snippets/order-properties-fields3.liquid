@@ -11,6 +11,7 @@
           {% assign inputParamCount = popup_question_field | split: "-----field-----" %}
 
           {% assign inputParam = inputParamCount[0] | split: "|" %}
+
           {% case inputParam[0] %}
             {% when "checkbox" %}
               <div class="popup-question__item-input-box ">
@@ -75,7 +76,7 @@
                               name="properties[popup_question_field-{{ forLoopIndex }}]"
                               id="popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}"
                               value="{{ inputParamItem }}"
-                              autocomplete="off">
+                              autocomplete="off" {% if inputParam[2] != blank and inputParamItem == inputParam[2] and radAdditionalField[1] == blank %} data-ans="true" {% endif %}>
                       <label for="popup_question_field-{{ forLoopIndex }}-{{ forloop.index0 }}">
                         {{ inputParamItem }}
                       </label>
@@ -261,6 +262,9 @@
     {%- for popup_question_text_for_wrong_answer in product.metafields.accentuate.popup_question_text_for_wrong_answer -%}
     {% if popup_question_text_for_wrong_answer != blank %}
     {% assign inputParamCount = product.metafields.accentuate.popup_question_field[forloop.index0] | split: "-----field-----" %}
+
+    // inputParam with variants and answer
+
     {% assign inputParam = inputParamCount[0] | split: "|" %}
 
     {% case inputParam[0] %}
@@ -956,7 +960,10 @@
     {% endcase %}
     {% endfor %}
     {% endif %}
+  });
 
+  document.addEventListener('DOMContentLoaded', function () {
+    let formSubmited = false;
     let today = new Date();
     let dd = today.getDate();
     let mm = today.getMonth() + 1; //January is 0!
@@ -984,13 +991,9 @@
       autohide: true
     });
 
-  });
+    /// Validate Fields ///
 
-  /// Validate Fields ///
-
-  document.addEventListener('DOMContentLoaded', function () {
     $('.modal-fields__button').click(function (e) {
-
       checkFieldWithoutWrongAnswer();
     });
 
@@ -999,17 +1002,16 @@
     let modalFieldsForm = document.querySelector('.modal-fields');
     let addTocartButton = document.getElementById('form-add-to-cart-button-id');
     let addTocartModalOpener = document.getElementById('add-to-cart-modal-opener');
-
+    let modalFieldsPrepareOpener = document.querySelector('#modal-opener_prepare');
+    let priceChecker = document.querySelector('.actions-form-container .table-price-checker');
+    let productVariants = document.querySelector('.actions-form-container .product2__variants');
 
     // add to cart button observer
 
     let addButtonObserver = new MutationObserver(function (mutations) {
       mutations.forEach(function (mutation) {
-
         if (mutation.attributeName === 'style') {
-
-          addTocartButton.style.display = 'none';
-          addTocartModalOpener.style.display = 'block';
+          disallowSubmitForm();
         }
       });
     });
@@ -1023,7 +1025,7 @@
       let isAllChecked = true;
 
       $('.question__item-without-wrong-answer').each(function () {
-        if ($(this).find('.popup-question__item-input-radio-box').length > 0){  //check input is type radio
+        if ($(this).find('.popup-question__item-input-radio-box').length > 0) {  //check input is type radio
           if ($(this).find('.popup-question__item-input-radio:checked').length <= 0) {
             isAllChecked = false;
             $(this).find('.popup-question__item-error').show();
@@ -1033,22 +1035,28 @@
 
           if ($(this).hasClass('additional-field-show')) {  // check if has additional field
             let additionlaField = $(this).find('.popup-question__item-input-radio-radAddField');
-            if (additionlaField.val() === ''){
+            if (additionlaField.val() === '') {
               isAllChecked = false;
               $(this).find('.popup-question__item-error').show();
-              additionlaField.on('change', function (){
-                checkFieldWithoutWrongAnswer();
-              })
+              if (additionlaField.hasClass('listened') === false) {
+                additionlaField.on('change', function () {
+                  checkFieldWithoutWrongAnswer();
+                });
+                additionlaField.addClass('listened');
+              }
             }
           }
         } else if ($(this).find('.popup-question__item-input-text-box').length > 0) { //check input is type text
 
-          if ($(this).find('.popup-question__item-input-text').val() === ''){
+          if ($(this).find('.popup-question__item-input-text').val() === '') {
             isAllChecked = false;
             $(this).find('.popup-question__item-error').show();
-            $(this).on('change', function (){
-              checkFieldWithoutWrongAnswer();
-            })
+            if ($(this).hasClass('listened') === false) {
+              $(this).on('change', function () {
+                checkFieldWithoutWrongAnswer();
+              })
+              $(this).addClass('listened');
+            }
           } else {
             $(this).find('.popup-question__item-error').hide();
           }
@@ -1056,16 +1064,16 @@
 
         // Without wrong answer handler
         $('.question__item-without-wrong-answer .popup-question__item-input-item').click(function () {
-          setTimeout(function (){
+          setTimeout(function () {
             checkFieldWithoutWrongAnswer();
-          },100)
+          }, 100)
         })
       })
 
-      if(isAllChecked) {
+      if (isAllChecked) {
         checkAllField();
       } else {
-        submitForm(isAllChecked);
+        disallowSubmitForm();
       }
     }
 
@@ -1073,7 +1081,32 @@
       let isAllChecked = true;
 
       $('.popup-question__item-input-radio-box').each(function () {
+        let hasAnswer = $(this).find('.popup-question__item-input-radio[data-ans]').length > 0;
+
         if ($(this).find('.popup-question__item-input-radio:checked').length <= 0) {
+          isAllChecked = false;
+          $(this).find('.popup-question__item-error').show();
+        } else {
+
+          $(this).find('.popup-question__item-error').hide();
+
+          /// Check correct answer
+
+          if (!hasAnswer) {
+            $(this).find('.popup-question__item-error').hide();
+          } else {
+            if ($(this).find('.popup-question__item-input-radio:checked').data('ans') === true) {
+              $(this).find('.popup-question__item-error').hide();
+            } else {
+              isAllChecked = false;
+              $(this).find('.popup-question__item-error').show();
+            }
+          }
+        }
+      })
+
+      $('.popup-question__item-input-text-box').each(function () {
+        if ($(this).find('.popup-question__item-input-text').val() === '') {
           isAllChecked = false;
           $(this).find('.popup-question__item-error').show();
         } else {
@@ -1081,8 +1114,8 @@
         }
       })
 
-      $('.popup-question__item-input-text-box').each(function () {
-        if ($(this).find('.popup-question__item-input-text').val() === ''){
+      $('.popup-question__item-input-box-double-field').each(function () {
+        if ($(this).find('.popup-question__item-input-secondtextfield input[type="text"]').val() === '') {
           isAllChecked = false;
           $(this).find('.popup-question__item-error').show();
         } else {
@@ -1093,7 +1126,7 @@
       if ($('.popup-question__item-input-date-box .popup-question__item-input-date').length === 1) {
         checkDateField(isAllChecked);
       } else {
-        submitForm(isAllChecked);
+        disallowSubmitForm();
       }
     }
 
@@ -1118,10 +1151,10 @@
       let selectedDate = '';
       let selectedYear = '';
 
-      if(dateInputValue !== '' && dateInputValue.includes('-') && !hasLetter(dateInputValue)) {
+      if (dateInputValue !== '' && dateInputValue.includes('-') && !hasLetter(dateInputValue)) {
         let splitedDate = dateInputValue.split('-');
 
-        if (splitedDate.length === 3){  /// if = 3 = mm-dd-yyyy
+        if (splitedDate.length === 3) {  /// if = 3 = mm-dd-yyyy
           if (splitedDate[2].length === 4) {
             selectedDate = splitedDate[2] + '-' + splitedDate[1] + '-' + splitedDate[0];
             selectedYear = parseInt(splitedDate[2]);
@@ -1135,9 +1168,10 @@
         majorityDate = new Date(majorityDate);
       }
 
-      if (isAllChecked){
-        if (selectedDate !== '' && selectedYear >= 1900  && selectedDate <= majorityDate) {
+      if (isAllChecked) {
+        if (selectedDate !== '' && selectedYear >= 1900 && selectedDate <= majorityDate) {
           dateInput.parents('.popup-question__item-input-box').find('.popup-question__item-error').hide();
+          dateElement.dispatchEvent(new Event('input', { bubbles: true }));
           isAllChecked = true;
         } else {
           isAllChecked = false;
@@ -1150,22 +1184,43 @@
 
     // Submit form
 
-    function submitForm(isAllChecked){
+    function submitForm(isAllChecked) {
       if (isAllChecked) {
         addButtonObserver.disconnect();
         buttonModalSendForm.disabled = false;
         errorMessageFieldsForm.style.display = 'none';
         addTocartButton.style.display = 'block';
         addTocartModalOpener.style.display = 'none';
+        formSubmited = true;
+        modalFieldsPrepareOpener.classList.add('inactive')
+
+        if ($('.actions-form-container').length > 0 && $('.actions-form-container.only-one-variant').length === 0) {
+          priceChecker.classList.add('inactive');
+          productVariants.classList.add('active');
+        }
 
         setBackEndDateFormat();
       } else {
+        if (!formSubmited) {
+          disallowSubmitForm();
+        }
+      }
+    }
+
+    function disallowSubmitForm() {
+      modalFieldsForm.setAttribute('open', '');
+      buttonModalSendForm.disabled = true;
+      errorMessageFieldsForm.style.display = 'block';
+      addTocartButton.style.display = 'none';
+      addTocartModalOpener.style.display = 'block';
+
+      setTimeout(function () {
         modalFieldsForm.setAttribute('open', '');
         buttonModalSendForm.disabled = true;
         errorMessageFieldsForm.style.display = 'block';
         addTocartButton.style.display = 'none';
         addTocartModalOpener.style.display = 'block';
-      }
+      }, 10)
     }
 
     /// Set format date which uses the backend
@@ -1186,5 +1241,5 @@
       return str.match(/[a-z]/i) !== null;
     }
 
-  })
+  });
 </script>

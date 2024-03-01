@@ -63,12 +63,12 @@
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
-      margin: 0 0 50px;
+    margin: 0 0 50px;
   }
 }
 
 .mcd_moreinfo-search .mcd_moreinfo-icons {
-    display: flex;
+  display: flex;
 }
 
 .mcd_moreinfo-search .mcd_moreinfo-icon {
@@ -133,7 +133,7 @@
     font-size: 40px;
     line-height: 50px;
   }
-  
+
   .template-search__search .search__input.field__input {
     max-width: 311px;
     padding: 0.5rem 0.5rem 0.5rem 5rem;
@@ -155,6 +155,22 @@
 
 .template-search__header {
   margin-bottom: 3rem;
+}
+
+@media (max-width: 989px) {
+  .template-search__header {
+    flex-wrap: wrap!important;
+  }
+
+  .template-search__search {
+    width: auto;
+  }
+}
+
+@media (max-width: 440px) {
+  .template-search__search .search__input.field__input {
+    max-width: 210px !important;
+  }
 }
 
 .template-search__search .search__input {
@@ -213,15 +229,15 @@
   height: 1.8rem;
 }
 
-.product2__form .button, 
-.product2__form .shopify-challenge__button, 
+.product2__form .button,
+.product2__form .shopify-challenge__button,
 .product2__form .customer button {
   background-color: #0A0569;
 }
 
 
-.underline-links-hover:hover .product2__form .button, 
-.underline-links-hover:hover .product2__form .shopify-challenge__button, 
+.underline-links-hover:hover .product2__form .button,
+.underline-links-hover:hover .product2__form .shopify-challenge__button,
 .underline-links-hover:hover .product2__form .customer button {
   text-decoration: none;
   text-underline-offset: 0;

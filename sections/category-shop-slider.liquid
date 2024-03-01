@@ -1,4 +1,7 @@
-{{ 'category-shop-slider.aio.min.css' | asset_url | stylesheet_tag }}
+{% unless template contains "index" or template contains "collection" or template contains "product"  %}
+    <style>.category-shop{overflow:hidden}.category-shop__swiper{width:100%;margin-top:10px}.category-shop__list{margin:0;padding:0;display:flex;justify-content:space-between;align-items:stretch;list-style-type:none}.category-shop__link{display:flex;flex-direction:column;justify-content:flex-start;height:100%;color:var(--color-foreground);text-decoration:none;color:#12022f}.category-shop__image-wrapper{width:158px;height:158px;border-radius:16px}.category-shop__image{width:100%;height:100%;object-fit:cover;object-position:center center;border-radius:16px}.category-shop__header{display:flex;justify-content:space-between;align-items:center}.category-shop__title{display:flex;align-items:center;column-gap:20px;max-width:538px;width:100%}.category-shop__caption{margin-top:18px;font-weight:600;font-size:16px;line-height:24px}@media screen and (max-width:767px){.category-shop__title{justify-content:space-between;max-width:unset}}</style>
+{% endunless %} 
+<link rel="stylesheet" data-href="{{ 'category-shop-slider.aio.min.css' | asset_url }}">
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -29,7 +32,7 @@
           <li class="swiper-slide category-shop__item slider-block">
             <a class="category-shop__link" href="{{ block.settings.link }}">
               <div class="category-shop__image-wrapper">
-                  <img loading="lazy" class="category-shop__image" src="{{ block.settings.image | img_url: 'master' }}" alt="">
+                  <img loading="lazy" class="category-shop__image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ block.settings.image | img_url: 'master' }}" alt="">
               </div>
               <span class="category-shop__caption">{{ block.settings.caption }}</span>
             </a>
@@ -40,7 +43,7 @@
   </div>
 </div>
 
-{% javascript %}
+<script type="lazyload_int">
   const swiperCategoryShop = new Swiper(".category-shop__swiper", {
     slidesPerView: 2.1,
     spaceBetween: 15,
@@ -67,7 +70,7 @@
       },
     },
   });
-{% endjavascript %}
+  </script>
 
 {% schema %}
 {

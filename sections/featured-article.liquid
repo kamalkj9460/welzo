@@ -35,7 +35,7 @@
                     {%- if featured_article.image.width >= 550 -%}{{ featured_article.image | img_url: '550x' }} 550w,{%- endif -%}
                     {%- if featured_article.image.width >= 710 -%}{{ featured_article.image | img_url: '710x' }} 710w,{%- endif -%}
                     {%- if featured_article.image.width >= 1420 -%}{{ featured_article.image | img_url: '1420x' }} 1420w,{%- endif -%}
-                    {{ featured_article.image | img_url: 'master' }} {{ featured_article.image.width }}w"
+                    {{ featured_article.image | img_url: '550x' }} {{ featured_article.image.width }}w"
             src="{{ featured_article.image | img_url: '550x' }}"
             alt="{{ featured_article.image.alt }}"
           >

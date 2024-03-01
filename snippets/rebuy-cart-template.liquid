@@ -167,7 +167,9 @@
                 v-html="item.variant_title"
                 v-if="item.variant_title"
               ></div>
-
+  <span class="quantity-message codeine" v-if="item?.product?.tags?.toLowerCase().includes(` codeine`)">Restricted: One Codeine containing product allowed</span>
+  <span class="quantity-message pseudophedrine" v-if="item?.product?.tags?.toLowerCase().includes(` pseudoephedrine`)">Restricted: One Pseudoephedrine containing product allowed</span>
+  <span class="quantity-message restricted" v-if="item?.product?.tags?.toLowerCase().includes(` restricted`)">Restricted</span> 
               <div
                 class="rebuy-cart__flyout-item-discount-message"
                 v-if="hasLineItemDiscount(item)"
@@ -622,3 +624,120 @@
 </div>
 </script>
 {% endraw %}
+
+<style>
+  .rebuy-cart__flyout-item.tag-restricted .rebuy-cart__flyout-item-quantity{
+    display: none;
+  }
+</style>
+
+<script>  
+  
+function updateCheckoutButton() {
+  let cartItems = Rebuy.Cart.items();
+const checkoutButton = document.querySelector(".rebuy-cart__checkout-button");
+  let codeineCount = 0;
+  let pseudoephedrineCount = 0;
+  let restrictedCount = 0;
+
+  cartItems.forEach((item) => {
+    const tagsArray = (item?.product?.tags || '').toLowerCase().split(',').map(tag => tag.trim());
+
+    if (tagsArray.includes("codeine")) {
+      codeineCount ++;
+    } else if (tagsArray.includes(" pseudoephedrine")) {
+      pseudoephedrineCount ++;
+    } else if (tagsArray.includes("restricted")) {
+      restrictedCount ++;
+    }
+  });
+
+  if (codeineCount > 1) {
+    console.log("codieneCount: ",codeineCount)
+    document.querySelectorAll(".quantity-message.codeine").forEach((element) => {
+      element.style.display = "block";
+    });
+    checkoutButton.disabled = true;
+  } else {
+    document.querySelectorAll(".quantity-message.codeine").forEach((element) => {
+      element.style.display = "none";
+    });
+  }
+
+  if (pseudoephedrineCount > 1) {
+    document.querySelectorAll(".quantity-message.pseudophedrine").forEach((element) => {
+      element.style.display = "block";
+    });
+    checkoutButton.disabled = true;
+  } else {
+    document.querySelectorAll(".quantity-message.pseudophedrine").forEach((element) => {
+      element.style.display = "none";
+    });
+  }
+
+  if (restrictedCount > 1) {
+    console.log("restrictedCount: ",restrictedCount)
+    document.querySelectorAll(".quantity-message.restricted").forEach((element) => {
+      element.style.display = "block";
+    });
+    checkoutButton.disabled = true;
+  } else {
+    document.querySelectorAll(".quantity-message.restricted").forEach((element) => {
+      element.style.display = "none";
+    });
+  }
+console.log("pCount: ",pseudoephedrineCount)
+console.log("codieneCount: ",codeineCount)
+  // Re-enable the checkout button if none of the conditions are met
+  if (codeineCount <= 1 && pseudoephedrineCount <= 1 && restrictedCount <= 1) {
+    checkoutButton.disabled = false;
+  }
+}
+// On Change update
+  document.addEventListener('rebuy:cart.change', (event) => { 
+    setTimeout(()=> {
+      updateCheckoutButton();
+      console.log("change ran")
+    },800)
+  
+});
+
+  
+
+
+document.addEventListener('rebuy:smartcart.show', (event) => {
+   updateCheckoutButton();
+});
+
+  
+</script>
+
+<style>
+.quantity-message{
+  color: black;
+  font-family: Poppins, sans-serif;
+  width: 110px;
+  text-align: center;
+  display: block;
+  margin-left: 1px;
+  font-weight: 400;
+  line-height: 24px;
+  white-space: nowrap;
+  width: fit-content;
+  padding-inline: 5px;
+  background: #FEF2F8;
+  border-radius: 25px;
+  border: 1px solid #e5007d;
+  white-space: break-spaces;
+  font-size: 8.5px;
+  line-height: normal;
+}
+
+.rebuy-cart__flyout-item-quantity {
+  width: 80% !important;
+}
+
+.rebuy-cart__flyout-item-price {
+  width: 20% !important;
+}
+</style>

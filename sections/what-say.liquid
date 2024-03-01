@@ -1,5 +1,8 @@
-{{ 'what-say.aio.min.css' | asset_url | stylesheet_tag }}
-{{ 'why.aio.min.css' | asset_url | stylesheet_tag }}
+{% unless template contains "index" or template contains "collection" or template contains "product"  %}
+    <style>.what-say__content{overflow:hidden}.what-say__testimonials{position:relative}.what-say__header{display:flex;align-items:center;justify-content:space-between}.what-say .slider-navigation__button svg path{fill:#ffffff}.what-say .slider-navigation__button:hover svg path{fill:#E5007D}.what-say__header h2{color:#fff}.what-say__header--why{margin-top:80px}.what-say__slide{display:flex;flex-direction:column}.what-say__text{margin-top:7px;font-weight:400;font-size:16px;line-height:26px;letter-spacing:-.4px;color:#fff}.what-say__image-wrapper{margin-top:32px;width:48px;height:48px;display:flex;justify-content:center;align-items:center;border-radius:50%;overflow:hidden}.what-say__image-wrapper img{width:100%;height:100%;object-fit:cover}.what-say__name{margin-top:12px;font-weight:600;font-size:16px;letter-spacing:-.355556px;color:#fff}.what-say__profession{margin-top:4px;font-weight:400;font-size:14px;letter-spacing:-.3px;color:#8893be}.what-say__slider .swiper-pagination{bottom:-68px}.what-say__slider .swiper-pagination-bullet{width:16px;height:2px;background:#fff;opacity:.5;border-radius:3px}.what-say__slider .swiper-pagination-bullet-active{opacity:1;background:#e5007d}div.what-say__divider{margin-top:150px;display:block;width:100%;height:1px;background-color:#ffffff66}.what-say .why__items{margin:6% 0 3% 0}.what-say .swiper-button-next,.what-say .swiper-button-prev{display:block!important;opacity:1}@media screen and (max-width:767px){.what-say__slider .swiper-pagination{text-align:left}}.why{position:relative;width:100%;background-color:#213b94}.why__background-block{position:absolute;top:0;left:0;width:100%;height:100%}.why__image-background{width:100%;height:100%;object-fit:cover}.why__title{width:50%;font-family:Quicksand;font-style:normal;color:#fff}.why__items{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:8%;margin-top:8%}.why__item{display:flex;margin-bottom:5%}.why-item__image img{width:100%}.why-item__image{width:20%}.why-item__content{width:80%;padding-left:8%}.why-item__title{font-family:Poppins;font-style:normal;font-weight:600;font-size:16px;line-height:26px;letter-spacing:-.355556px;color:#fff;margin-bottom:5%}.why-item__text{font-family:Poppins;font-style:normal;font-weight:400;font-size:14px;line-height:24px;letter-spacing:-.3px;color:#fff;mix-blend-mode:normal;opacity:.5}.why__logos-block{display:flex;align-items:center;justify-content:center;width:100%;margin-top:10%}.why__image-logos{width:60%;object-fit:cover}@media screen and (max-width:750px){.why__title{width:100%}.why__logos-block{margin-top:20%}.why__image-logos{width:80%;object-fit:cover}}@media screen and (max-width:550px){.why__logos-block{margin-top:30%}.why__image-logos{width:100%;object-fit:cover}}</style>
+{% endunless %} 
+<link rel="stylesheet" data-href="{{ 'what-say.aio.min.css' | asset_url }}">
+<link rel="stylesheet" data-href="{{ 'why.aio.min.css' | asset_url }}">
 
 {%- style -%}
   #What-say-{{ section.id }} {
@@ -45,20 +48,20 @@
             {%- if block.type == "testimonial" -%}
               <div class="swiper-slide what-say__slide">
                 <div class="what-say__icon">
-                  <img loading="lazy" class="condition-shop__icon" src="{{ section.settings.quote_icon | img_url: 'master' }}" alt="">
+                  <img loading="lazy" class="condition-shop__icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="{{ section.settings.quote_icon | img_url: 'master' }}" alt="">
                 </div>
                 <div class="what-say__text">
                   {{ block.settings.text }}
                 </div>
                 <div class="what-say__image-wrapper">
                   <img loading="lazy"
-                   
-                    srcset="{%- if block.settings.image.width >= 275 -%}{{ block.settings.image | img_url: '275x' }} 275w,{%- endif -%}
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad"
+                    data-srcset="{%- if block.settings.image.width >= 275 -%}{{ block.settings.image | img_url: '275x' }} 275w,{%- endif -%}
                             {%- if block.settings.image.width >= 550 -%}{{ block.settings.image | img_url: '550x' }} 550w,{%- endif -%}
                             {%- if block.settings.image.width >= 710 -%}{{ block.settings.image | img_url: '710x' }} 710w,{%- endif -%}
                             {%- if block.settings.image.width >= 1420 -%}{{ block.settings.image | img_url: '1420x' }} 1420w,{%- endif -%}
                             {{ block.settings.image | img_url: 'master' }} {{ block.settings.image.width }}w"
-                    src="{{ block.settings.image | img_url: '550x' }}"
+                    data-src="{{ block.settings.image | img_url: '550x' }}"
                     alt="{{ block.settings.image }}"
                   >
                 </div>
@@ -108,7 +111,7 @@
   </div>
 </div>
 
-<script>
+<script type="lazyload_int">
   const swiperWhatSay = new Swiper(".what-say__slider", {
     slidesPerView: 1,
     slidesPerGroup: 1,

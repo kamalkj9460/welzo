@@ -10,8 +10,10 @@
     Usage:
     {% render 'pdp-slider', product: product, show_thumb: tru, show_logos: true %}
 {% endcomment %}
-
-{{ 'component-pdp-slider.aio.min.css' | asset_url | stylesheet_tag }}
+{% unless template contains "index" or template contains "collection" or template contains "product"  %}
+    <style>.pdp-slider__container-main{position:relative;width:100%;padding-bottom:100%;z-index:0}.pdp-slider__wrapper-main{position:absolute;top:0;left:0;width:100%;height:100%}.pdp-slider__container-thumbs{position:relative;width:100%;padding-bottom:22%;margin:20px 0 50px 0;z-index:0}.pdp-slider__wrapper-thumbs{position:absolute;top:0;left:0;width:100%;height:100%}.swiper{width:100%;height:100%}.swiper-slide{text-align:center;font-size:18px;background:#fff;display:-webkit-box;display:-ms-flexbox;display:-webkit-flex;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;-webkit-align-items:center;align-items:center;border-radius:16px;overflow:hidden}.swiper-slide img{display:block;width:100%;height:100%;object-fit:cover}.swiper{width:100%}.swiper-slide{background-size:cover;background-position:center}.pdp-main-slider{width:100%}.pdp-thumbs-slider{height:100%;box-sizing:border-box}.pdp-thumbs-slider .swiper-slide{width:25%;height:100%;opacity:.6;border-radius:16px;overflow:hidden}.pdp-thumbs-slider .swiper-slide-thumb-active{opacity:1}.swiper-slide img{display:block;width:100%;height:100%;object-fit:cover}.pdp-slider__logos{width:100%}@media screen and (max-width:750px){.pdp-slider__logos{display:none}}.pdp-slider__logos-mob{display:block}@media screen and (min-width:750px){.pdp-slider__logos-mob{display:none}}.pdp-slider__logos-holder{padding:20px 0}.pdp-slider__logos-title{font-family:Poppins;font-style:normal;font-weight:600;font-size:12px;line-height:24px;letter-spacing:2px;text-transform:uppercase;color:#857d94;margin:0}.pdp-slider__logos-list{display:flex;justify-content:space-between}.pdp-slider__logos-item:first-child{margin:0}.pdp-slider__logos-item{background:#fff;box-shadow:0 4px 16px #0000001c;border-radius:16px;display:flex;justify-content:center;align-items:center;padding:8px 5px;margin:0 0 0 4px;max-width:82px}.pdp-slider__logos__image{width:100%;height:100%;object-fit:contain}</style>
+{% endunless %} 
+<link rel="stylesheet" data-href="{{ 'component-pdp-slider.aio.min.css' | asset_url }}">
 
 <div class="pdp-slider {% if mobile_slider %}mobile{% endif %}">
     <div class="pdp-slider__wrapper">
@@ -21,16 +23,18 @@
                     <div class="swiper-wrapper">
                         {%- for media in product.media -%}
                             <div class="swiper-slide">
-                                <img loading="lazy"  srcset="{% if media.preview_image.width >= 54 %}{{ media.preview_image | img_url: '54x' }} 54w,{% endif %}
-                              {% if media.preview_image.width >= 74 %}{{ media.preview_image | img_url: '74x' }} 74w,{% endif %}
-                              {% if media.preview_image.width >= 104 %}{{ media.preview_image | img_url: '104x' }} 104w,{% endif %}
-                              {% if media.preview_image.width >= 162 %}{{ media.preview_image | img_url: '162x' }} 162w,{% endif %}
-                              {% if media.preview_image.width >= 208 %}{{ media.preview_image | img_url: '208x' }} 208w,{% endif %}
-                              {% if media.preview_image.width >= 324 %}{{ media.preview_image | img_url: '324x' }} 324w,{% endif %}
-                              {% if media.preview_image.width >= 416 %}{{ media.preview_image | img_url: '416x' }} 416w,{% endif %},
-                              {% if media.preview_image.width >= 1024 %}{{ media.preview_image | img_url: '1024x' }} 416w,{% endif %},
-                              {{ media.preview_image | img_url: 'master' }} {{ media.preview_image.width }}w"
-                                     src="{{ media | img_url }}"
+                                <img loading="lazy"  
+                                      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad"
+                                      data-srcset="{% if media.preview_image.width >= 54 %}{{ media.preview_image | img_url: '54x' }} 54w,{% endif %}
+                                      {% if media.preview_image.width >= 74 %}{{ media.preview_image | img_url: '74x' }} 74w,{% endif %}
+                                      {% if media.preview_image.width >= 104 %}{{ media.preview_image | img_url: '104x' }} 104w,{% endif %}
+                                      {% if media.preview_image.width >= 162 %}{{ media.preview_image | img_url: '162x' }} 162w,{% endif %}
+                                      {% if media.preview_image.width >= 208 %}{{ media.preview_image | img_url: '208x' }} 208w,{% endif %}
+                                      {% if media.preview_image.width >= 324 %}{{ media.preview_image | img_url: '324x' }} 324w,{% endif %}
+                                      {% if media.preview_image.width >= 416 %}{{ media.preview_image | img_url: '416x' }} 416w,{% endif %},
+                                      {% if media.preview_image.width >= 1024 %}{{ media.preview_image | img_url: '1024x' }} 416w,{% endif %},
+                                      {{ media.preview_image | img_url: '1024x' }} {{ media.preview_image.width }}w"
+                                     data-src="{{ media | img_url }}"
                                      alt="{{ featured_media.alt | escape }}"
 
                                 >

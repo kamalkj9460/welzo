@@ -1,4 +1,7 @@
-{{ 'faq.aio.min.css' | asset_url | stylesheet_tag }}
+{% unless template contains "index" or template contains "collection" or template contains "product"  %}
+      <style>.faq{width:100%}.faq-info{display:flex;align-items:center;justify-content:center;width:100%;padding-bottom:30px}.faq-info__button svg{width:18px;height:18px}.faq-info__button{display:flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:20%;background:#fef2f8}.faq__title{width:100%;margin:0;font-family:Quicksand;font-style:normal;font-weight:700;font-size:36px;line-height:46px;text-align:center;letter-spacing:-.8px;color:#12022f}.faq-accordion{display:flex;margin-top:5%}.faq__left-col{width:50%;padding-right:5%}.faq__right-col{width:50%;padding-left:5%}@media (max-width:768px){.faq-accordion{display:block;margin-top:5%}.faq__left-col{width:100%;padding:0}.faq__right-col{width:100%;padding:0}.faq__title{font-size:24px;line-height:34px}}</style>
+  {% endunless %} 
+  <link rel="stylesheet" data-href="{{ 'faq.aio.min.css' | asset_url }}">
 
 {%- style -%}
   .section-{{ section.id }}-padding {

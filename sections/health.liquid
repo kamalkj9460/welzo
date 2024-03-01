@@ -55,13 +55,13 @@
           <div class="health-photo-block__background"></div>
           <img loading="lazy"
                   class="health-photo-block__photo"
-                 
-                  srcset="{%- if section.settings.image_photo.width >= 275 -%}{{ section.settings.image_photo | img_url: '275x' }} 275w,{%- endif -%}
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad"
+                  data-srcset="{%- if section.settings.image_photo.width >= 275 -%}{{ section.settings.image_photo | img_url: '275x' }} 275w,{%- endif -%}
                   {%- if section.settings.image_photo.width >= 550 -%}{{ section.settings.image_photo | img_url: '550x' }} 550w,{%- endif -%}
                   {%- if section.settings.image_photo.width >= 710 -%}{{ section.settings.image_photo | img_url: '710x' }} 710w,{%- endif -%}
                   {%- if section.settings.image_photo.width >= 1420 -%}{{ section.settings.image_photo | img_url: '1420x' }} 1420w,{%- endif -%}
                   {{ section.settings.image_photo | img_url: 'master' }} {{ section.settings.image_photo.width }}w"
-                  src="{{ section.settings.image_photo | img_url: '550x' }}"
+                  data-src="{{ section.settings.image_photo | img_url: '550x' }}"
                   alt="{{ section.settings.title }}"
           >
         </div>

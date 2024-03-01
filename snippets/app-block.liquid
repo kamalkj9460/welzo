@@ -1,0 +1,95 @@
+<script type="lazyload_int">
+//gtag starts here
+const script = document.createElement('script');
+script.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=AW-10949877442');
+script.setAttribute('async', '');
+document.head.appendChild(script);
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-10949877442');
+//gtag ends here
+
+
+//ec + purchase code starts here
+analytics.subscribe("checkout_completed", (event) => {
+  gtag('set', 'user_data', {
+    "email": event.data.checkout.email,
+    "phone_number": event.data.checkout.phone
+  });
+  gtag('event', 'conversion', {
+    'send_to': 'AW-10949877442/Cr7XCK3Rk40ZEMK9p-Uo',
+    'value': event.data.checkout.totalPrice.amount,
+    'transaction_id': event.data.checkout.order.id,
+    'currency': event.data.checkout.currencyCode
+  });
+});  
+</script>
+<!-- BEGIN app block: shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507 -->
+<script type="lazyload_int" data-src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=WkRK9v"></script>
+<script type="lazyload_int">!function(){if(!window.klaviyo){window._klOnsite=window._klOnsite||[];try{window.klaviyo=new Proxy({},{get:function(n,i){return"push"===i?function(){var n;(n=window._klOnsite).push.apply(n,arguments)}:function(){for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];var t="function"==typeof o[o.length-1]?o.pop():void 0,e=new Promise((function(n){window._klOnsite.push([i].concat(o,[function(i){t&&t(i),n(i)}]))}));return e}}})}catch(n){window.klaviyo=window.klaviyo||[],window.klaviyo.push=function(){var n;(n=window._klOnsite).push.apply(n,arguments)}}}}();</script>
+{% if template contains 'product' %}
+<script id="viewed_product">
+    if (item == null) {
+        var _learnq = _learnq || [];
+        var item = {
+            Name: {{ product.title | json }},
+            ProductID: {{ product.id | json }},            
+            Categories: {{ product.collections | map: 'title' | json }},
+            ImageURL: "https:{{ product.featured_image.src | img_url: 'grande' }}",
+            URL: "{{ shop.secure_url }}{{ product.url }}",
+            Brand: {{ product.vendor | json }},
+            Price: {{ product.price | money | json }},
+            CompareAtPrice: {{ product.compare_at_price_max | money | json }}
+        };
+        _learnq.push(['track', 'Viewed Product', item]);
+        _learnq.push(['trackViewedItem', {
+            Title: item.Name,
+            ItemId: item.ProductID,
+            Categories: item.Categories,
+            ImageUrl: item.ImageURL,
+            Url: item.URL,
+            Metadata: {
+                Brand: item.Brand,
+                Price: item.Price,
+                CompareAtPrice: item.CompareAtPrice
+            }
+        }]);
+    }
+</script>
+{% endif %}
+<!-- END app app block -->
+{% render 'judgeme_core' %}
+<!-- BEGIN app block: shopify://apps/seal-subscriptions/blocks/subscription-script-append/13b25004-a140-4ab7-b5fe-29918f759699 -->
+<script type="lazyload_int">
+	/**	SealSubs loader,version number: 2.0 */
+	(function(){
+		var loadScript=function(a,b){var c=document.createElement("script");c.setAttribute("defer", "defer");c.type="text/javascript",c.readyState?c.onreadystatechange=function(){("loaded"==c.readyState||"complete"==c.readyState)&&(c.onreadystatechange=null,b())}:c.onload=function(){b()},c.src=a,document.getElementsByTagName("head")[0].appendChild(c)};
+		// Set variable to prevent the other loader from requesting the same resources
+		window.seal_subs_app_block_loader = true;
+		appendScriptUrl('welzohealth.myshopify.com');
+
+		// get script url and append timestamp of last change
+		function appendScriptUrl(shop) {
+			var timeStamp = Math.floor(Date.now() / (1000*1*1));
+			var timestampUrl = 'https://app.sealsubscriptions.com/shopify/public/status/shop/'+shop+'.js?'+timeStamp;
+			loadScript(timestampUrl, function() {
+				// append app script
+				if (typeof sealsubscriptions_settings_updated == 'undefined') {
+					sealsubscriptions_settings_updated = 'default-by-script';
+				}
+				var scriptUrl = "https://cdn-app.sealsubscriptions.com/shopify/public/js/sealsubscriptions-main.js?shop="+shop+"&"+sealsubscriptions_settings_updated;
+				loadScript(scriptUrl, function(){});
+			});
+		}
+	})();
+	var SealSubsScriptAppended = true;
+</script>
+<!-- END app app block -->
+<!-- BEGIN app block: shopify://apps/order-limits-minmaxify/blocks/app-embed-block/3acfba32-89f3-4377-ae20-cbb9abc48475 -->
+<script type="text/javascript">minMaxifyContext={cartItemExtras: []}</script>
+<script type="lazyload_int" data-src="https://limits.minmaxify.com/welzohealth.myshopify.com?v=105&r=20230802132523" ></script>
+<link data-href="https://cdn.shopify.com/extensions/4bc4f158-0cf7-442a-b372-a59c15de7a9f/3.20.0/assets/style.css" rel="stylesheet" type="text/css" media="all">
+<!-- END app app block -->
+<script type="lazyload_int" data-src="https://cdn.shopify.com/extensions/d843f439-bc78-44a1-b999-90391348dc84/rebuy-personalization-engine-13/assets/rebuy-extensions.js"></script>

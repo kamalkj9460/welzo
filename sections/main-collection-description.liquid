@@ -1,4 +1,7 @@
-{{ 'component-collection-description.aio.min.css' | asset_url | stylesheet_tag }}
+{% unless template contains "index" or template contains "collection" or template contains "product"  %}
+    <style>.mcd_wrapper{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between}.mcd_description{width:100%}.mcd_moreinfo{display:none}.mcd_description-title{font-family:Quicksand;font-style:normal;font-weight:600;font-size:20px;line-height:25px;color:#12022f;margin:0}.mcd_description-text{font-family:Poppins;font-style:normal;font-weight:500;font-size:12px;line-height:24px;letter-spacing:-.3px;color:#000;margin:0}.mcd_description-text-open{font-family:Poppins;font-style:normal;font-weight:400;font-size:12px;line-height:18px;color:#d32f7c;text-decoration:none}@media only screen and (min-width:750px){.mcd_description-title{font-size:40px;line-height:50px;margin:0}.mcd_description-text{font-weight:400;font-size:16px;line-height:26px;letter-spacing:-.04em;color:#12022f;margin:0}.mcd_description-text-open{font-size:15px;line-height:22px}.mcd_description{width:68%}.mcd_moreinfo{width:32%;padding:20px 0 0 5%;display:block}}.mcd_description-text.short .mcd_description-text-small{display:block}.mcd_description-text.short .mcd_description-text-full{display:none}.mcd_description-text .mcd_description-text-small{display:none}.mcd_description-text .mcd_description-text-full{display:block}.mcd_moreinfo-icons{display:flex}.mcd_moreinfo-icon{font-weight:500;font-size:12px;line-height:24px;letter-spacing:-.3px;color:#000;display:flex;align-items:center;padding:0 5px 10px 0}.mcd_moreinfo-icon-icon{background-color:rgba(0,0,0,.1);border-radius:16px;width:46px;min-width:46px;max-width:46px;height:46px;display:flex;justify-content:center;align-items:center;margin-right:10px}</style>
+{% endunless %} 
+<link rel="stylesheet" data-href="{{ 'component-collection-description.aio.min.css' | asset_url }}">
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -128,7 +131,7 @@
             }
           </style>
           {% comment %}<script defer async src='https://cdn.trustindex.io/loader.js?ac297c511a5f1631bc465f1fabd'></script>{% endcomment %}
-          <script defer async src='https://cdn.trustindex.io/loader.js?2ff7541186a82522fe065ae717f'></script>
+          <script type="lazyload_int" data-src='https://cdn.trustindex.io/loader.js?2ff7541186a82522fe065ae717f'></script>
         </div>
       {%- endif -%}
       {% if section.settings.enable_delivery_icon or section.settings.enable_licenced_icon %}
@@ -207,9 +210,3 @@
     ]
   }
 {% endschema %}
-
-{% stylesheet %}
-{% endstylesheet %}
-
-{% javascript %}
-{% endjavascript %}

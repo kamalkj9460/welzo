@@ -1,0 +1,70 @@
+<div id="shopify-block-4015264832934714879" class="shopify-block shopify-app-block">
+<script type="lazyload_int">
+  function createEcomSendMainStyleEle() {
+    const ele = document.createElement("link")
+    ele.rel = "stylesheet"
+    ele.href = 'https://cdn.shopify.com/extensions/4bc4f158-0cf7-442a-b372-a59c15de7a9f/3.20.0/assets/style.css'
+    ele.dataset.ecomsendTag = "load-alternate-css"
+
+    return ele
+  }
+
+  if (window.EcomSendApps?.enableAlternateCSSLoading ?? false) {
+    document.head.appendChild(createEcomSendMainStyleEle())
+  }
+
+  function createEcomSendMainJSEle() {
+    const ele = document.createElement("script")
+    ele.defer = true
+    ele.id = "ecomsend-main-js"
+    ele.src = 'https://cdn.shopify.com/extensions/4bc4f158-0cf7-442a-b372-a59c15de7a9f/3.20.0/assets/ecomsend.js'
+
+    if (null === document.getElementById(ele.id)) {
+      document.head.appendChild(ele)
+    }
+  }
+</script>
+
+<style id="ecomsend-custom-style"></style>
+<div id="ecomsend-widget"></div>
+
+
+<!-- BEGIN app snippet: ecomsend-app -->
+  
+<script type="lazyload_int">
+  //EcomSend APPS COMMON JS CODE
+  window.EcomSendApps = window.EcomSendApps || {}
+
+  window.EcomSendApps.design_mode = false
+  
+
+  window.EcomSendApps.common = window.EcomSendApps.common || {}
+  window.EcomSendApps.common.shop = {
+    permanent_domain: 'welzohealth.myshopify.com',
+    currency: "GBP",
+    money_format: "£{% raw %}{{amount}}{% endraw %}",
+    id: 57197527133,
+  }
+  window.EcomSendApps.common.template = 'index'
+</script>
+<!-- END app snippet -->
+
+
+<script>window.shopLocale = 'en'</script>
+<script type="lazyload_int" data-src="https://cdn.shopify.com/extensions/4bc4f158-0cf7-442a-b372-a59c15de7a9f/3.20.0/assets/react_react-dom.min.js"></script>
+<script type="lazyload_int" data-src="https://cdn.shopify.com/extensions/4bc4f158-0cf7-442a-b372-a59c15de7a9f/3.20.0/assets/mobx_react-custom-roulette.min.js" onload="createEcomSendMainJSEle()"></script>
+
+
+
+</div>
+<script type="lazyload_int">  
+  setInterval( function(){
+    lazyIframe = document.querySelectorAll("iframe");
+	lazyIframe.forEach(function(a) {
+		if (a.dataset.src != null && a.dataset.src != "") {
+			a.src = a.dataset.src;
+			delete a.dataset.src;
+		}
+	});
+  });
+</script>

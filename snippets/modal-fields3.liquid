@@ -77,7 +77,10 @@
         // });
     };
 </script>
-<modal-dialog id="PopupModal-{{product.id}}" class="modal-fields">
+
+{% comment %}    Consultation Modal   {% endcomment %}
+
+<modal-dialog id="PopupModal-{{product.id}}" class="modal-fields start">
     <div role="dialog" aria-label="{{ product.title }}" aria-modal="true" class="modal-fields__wrap modal-fields__wrap2" tabindex="-1">
         <div type="button" class="modal-fields__close" aria-label="{{ 'accessibility.close' | t }}"></div>
 
@@ -107,13 +110,254 @@
         </div>
     </div>
 </modal-dialog>
+
+{% comment %}   Prepare Consultation Modal   {% endcomment %}
+
+{% if start_consult_popup != blank %}
+    <modal-dialog id="PopupModal-{{ product.id }}-prepare" class="modal-fields modal-fields-prepare">
+        <div role="dialog" aria-label="{{ product.title }}" aria-modal="true" class="modal-fields__wrap modal-fields__wrap2"
+             tabindex="-1">
+            <div type="button" class="modal-fields__close" aria-label="{{ 'accessibility.close' | t }}"></div>
+            <div class="modal-fields__content-widget modal-widget">
+                <div class="modal-fields__content start-consultation">
+                    <div class="modal-header">
+                        <div class="modal-fields__content-socials">
+                            <p class="modal-fields__caption header-title">{{ start_consult_popup.settings.head_title }}</p>
+                            <div class="mcd_moreinfo-review">
+                                <style>
+                                    @media (max-width: 768px) {
+                                        .modal-fields-prepare .modal-fields__content-socials {
+                                            flex-direction: column;
+                                            align-items: flex-start;
+                                        }
+                                    }
+
+                                    .modal-fields-prepare .modal-fields__content-socials .ti-widget .ti-widget-container .ti-header.source-all {
+                                        padding: 0;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review {
+                                        margin-left: 25px;
+                                        position: relative;
+                                        top: 3px;
+                                    }
+
+                                    @media (max-width: 768px) {
+                                        .modal-fields-prepare .mcd_moreinfo-review {
+                                            margin-left: 0;
+                                        }
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='11'][data-set-id='light-minimal'] .ti-widget-container {
+                                        text-align: left;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='56'][data-set-id='light-minimal'] .ti-widget-container {
+                                        margin: 0;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='11'][data-set-id='light-minimal'] .ti-header {
+                                        padding: 0;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='58'][data-set-id='light-minimal'] a.ti-header:hover {
+                                        background: none !important;
+                                        border: none !important;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget-container .ti-header {
+                                        display: flex !important;
+                                        flex-direction: row !important;
+                                        align-items: center;
+                                    }
+
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-large-logo {
+                                        order: 1;
+                                        position: relative;
+                                        margin: 0 5px;
+                                        padding-left: 5px;
+                                    }
+
+                                    .modal-fields-prepare .ti-widget[data-layout-id='56'][data-set-id='light-minimal'] .ti-large-logo img {
+                                        width: 17px!important;
+                                        height: 15px!important;
+                                        object-fit: cover;
+                                        object-position: left;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-large-logo:after {
+                                        content: '';
+                                        position: absolute;
+                                        top: 2px;
+                                        bottom: 2px;
+                                        left: 0;
+                                        width: 2px;
+                                        background: #D9D9D9;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-stars {
+                                        order: 0;
+                                        margin-top: 0 !important;
+                                        background-image: url({{ 'review-star.png' | asset_img_url: 'master' }});
+                                        background-size: contain;
+                                        background-repeat: no-repeat;
+                                        background-position: left center;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-stars .ti-star {
+                                        opacity: 0;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-text {
+                                        order: 2;
+                                        position: relative;
+                                        padding: 0 6px;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='56'][data-set-id='light-minimal'] .ti-text span, .ti-widget[data-layout-id='56'][data-set-id='light-minimal'] .ti-text strong {
+                                        color: rgba(0, 0, 0, 0.88);
+                                        font-size: 8px;
+                                        font-weight: 400;
+                                        line-height: 350%;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-text:before {
+                                        content: '(';
+                                        position: absolute;
+                                        left: 3px;
+                                        color: rgba(0, 0, 0, 0.88);
+                                        font-size: 8px;
+                                        font-weight: 400;
+                                        line-height: 28px; /* 350% */
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-text:after {
+                                        content: ')';
+                                        position: absolute;
+                                        right: 3px;
+                                        color: rgba(0, 0, 0, 0.88);
+                                        font-size: 8px;
+                                        font-weight: 400;
+                                        line-height: 28px; /* 350% */
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-rating {
+                                        display: none;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='56'][data-set-id='light-minimal'] .ti-large-logo {
+                                        margin-bottom: 0!important;
+                                        height: auto;
+                                    }
+
+                                    .modal-fields-prepare .mcd_moreinfo-review .ti-widget[data-layout-id='56'][data-set-id='light-minimal'][data-pid='2ff7541186a82522fe065ae717f'] .ti-header {
+                                        background-color: transparent!important;
+                                    }
+                                </style>
+                                {% comment %}<script defer async src='https://cdn.trustindex.io/loader.js?ac297c511a5f1631bc465f1fabd'></script>{% endcomment %}
+                                <script type="lazyload_int" data-src='https://cdn.trustindex.io/loader.js?2ff7541186a82522fe065ae717f'></script>
+                            </div>
+                        </div>
+                        <div class="modal-fields__caption-text header-text">{{ start_consult_popup.settings.head_text }}</div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="consultation-steps">
+                            <div class="consultation-step">
+                                <div class="consultation-step-image">
+                                    {%- if start_consult_popup.settings.image_1 != blank -%}
+                                        {%- capture sizes -%}
+                                            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                                            (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+                                        {%- endcapture -%}
+                                        {{
+                                        start_consult_popup.settings.image_1
+                                        | image_url: width: 200
+                                        | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+                                        }}
+                                    {%- else -%}
+                                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    {%- endif -%}
+                                </div>
+                                <div class="consultation-step-time">{{ start_consult_popup.settings.time_1 }}</div>
+                                <div class="consultation-step-header">
+                                    <span class="consultation-step-number">1</span>
+                                    <span class="consultation-step-title">{{ start_consult_popup.settings.step_title_1 }}</span>
+                                </div>
+                                <div class="consultation-step-text">{{ start_consult_popup.settings.step_text_1 }}</div>
+                            </div>
+                            <div class="consultation-step">
+                                <div class="consultation-step-image">
+                                    {%- if start_consult_popup.settings.image_2 != blank -%}
+                                        {%- capture sizes -%}
+                                            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                                            (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+                                        {%- endcapture -%}
+                                        {{
+                                        start_consult_popup.settings.image_2
+                                        | image_url: width: 200
+                                        | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+                                        }}
+                                    {%- else -%}
+                                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    {%- endif -%}
+                                </div>
+                                <div class="consultation-step-time">{{ start_consult_popup.settings.time_2 }}</div>
+                                <div class="consultation-step-header">
+                                    <span class="consultation-step-number">2</span>
+                                    <span class="consultation-step-title">{{ start_consult_popup.settings.step_title_2 }}</span>
+                                </div>
+                                <div class="consultation-step-text">{{ start_consult_popup.settings.step_text_2 }}</div>
+                            </div>
+                            <div class="consultation-step">
+                                <div class="consultation-step-image">
+                                    {%- if start_consult_popup.settings.image_3 != blank -%}
+                                        {%- capture sizes -%}
+                                            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                                            (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+                                        {%- endcapture -%}
+                                        {{
+                                        start_consult_popup.settings.image_3
+                                        | image_url: width: 200
+                                        | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+                                        }}
+                                    {%- else -%}
+                                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    {%- endif -%}
+                                </div>
+                                <div class="consultation-step-time">{{ start_consult_popup.settings.time_3 }}</div>
+                                <div class="consultation-step-header">
+                                    <span class="consultation-step-number">3</span>
+                                    <span class="consultation-step-title">{{ start_consult_popup.settings.step_title_3 }}</span>
+                                </div>
+                                <div class="consultation-step-text">{{ start_consult_popup.settings.step_text_3 }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="ModalClose-{{ product.id }}-prepare" type="submit" class="modal-fields__button_prepare">
+                        <span>Continue consultation ></span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </modal-dialog>
+{% endif %}
+
 <script>
     //form-add-to-cart-button-id
     const formAddCartButton = document.getElementById("form-add-to-cart-button-id");
 
-    const modalFieldsClose = document.querySelector('.modal-fields__close');
-    const modalFields = document.querySelector('.modal-fields');
+    const modalFieldsOpener = document.querySelector('#add-to-cart-modal-opener');
+    const modalFieldsClose = document.querySelector('.modal-fields.start .modal-fields__close');
+    const modalFields = document.querySelector('.modal-fields.start');
     const bodyQ = document.body;
+
+    const modalFieldsPrepareOpener = document.querySelector('#modal-opener_prepare');
+    const modalFieldsPrepareClose = document.querySelector('.modal-fields-prepare .modal-fields__close');
+    const modalFieldsPrepare = document.querySelector('.modal-fields-prepare');
+    const modalFieldsPrepareSubmit = document.querySelector('.modal-fields__button_prepare');
 
     const formSubmit = (event) => {
         // event.preventDefault();
@@ -179,6 +423,17 @@
     modalFieldsClose.addEventListener('click', () => {
         modalFields.removeAttribute('open');
         document.body.classList.remove('overflow-hidden');
+    });
+
+    modalFieldsPrepareClose.addEventListener('click', () => {
+        modalFieldsPrepare.removeAttribute('open');
+        document.body.classList.remove('overflow-hidden');
+    });
+
+    modalFieldsPrepareSubmit.addEventListener('click', () => {
+        modalFieldsPrepare.removeAttribute('open');
+        document.body.classList.remove('overflow-hidden');
+        modalFieldsOpener.click();
     });
 
     {% assign product_cart_quantity = cart | line_items_for: product | sum: 'quantity' %}

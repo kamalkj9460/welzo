@@ -1,0 +1,48 @@
+
+
+  @font-face {
+  font-family: Poppins;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("//welzo.com/cdn/fonts/poppins/poppins_n4.934accbf9f5987aa89334210e6c1e9151f37d3b6.woff2?h1=d2Vsem8uY29t&h2=d2Vsem9oZWFsdGguYWNjb3VudC5teXNob3BpZnkuY29t&hmac=570b15d533935a33bfdcc25e17073c32cd577734e326033f198ffeec24e8d1f2") format("woff2"),
+       url("//welzo.com/cdn/fonts/poppins/poppins_n4.ee28d4489eaf5de9cf6e17e696991b5e9148c716.woff?h1=d2Vsem8uY29t&h2=d2Vsem9oZWFsdGguYWNjb3VudC5teXNob3BpZnkuY29t&hmac=6aa27608ec9bd3d734ae50edd21016da7d07560835b82860d70f0e1d702815d2") format("woff");
+}
+
+  @font-face {
+  font-family: Poppins;
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("//welzo.com/cdn/fonts/poppins/poppins_n7.58aca33913fc6666cc9e8a53f6b16ec5c3c05a3f.woff2?h1=d2Vsem8uY29t&h2=d2Vsem9oZWFsdGguYWNjb3VudC5teXNob3BpZnkuY29t&hmac=2a4f8e2d5145a420afb9326d7770612236b1320bee278860a82943d20e95870e") format("woff2"),
+       url("//welzo.com/cdn/fonts/poppins/poppins_n7.59016f931f3f39434d2e458fba083eb7db7a07d9.woff?h1=d2Vsem8uY29t&h2=d2Vsem9oZWFsdGguYWNjb3VudC5teXNob3BpZnkuY29t&hmac=3a588b27aa62d1807a5c8a9e26cb438c123aa97c638675dd29d044540627880a") format("woff");
+}
+
+  @font-face {
+  font-family: Poppins;
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("//welzo.com/cdn/fonts/poppins/poppins_i4.a7e8d886e15d5fb9bc964a53b3278effbf270e9c.woff2?h1=d2Vsem8uY29t&h2=d2Vsem9oZWFsdGguYWNjb3VudC5teXNob3BpZnkuY29t&hmac=c181553ace7d5408e76b552dbfe9d3ebfaf273fc66bb7ecbdc58359858f625a1") format("woff2"),
+       url("//welzo.com/cdn/fonts/poppins/poppins_i4.e87de252199e27825a41bf81646996685d86452d.woff?h1=d2Vsem8uY29t&h2=d2Vsem9oZWFsdGguYWNjb3VudC5teXNob3BpZnkuY29t&hmac=744c51f9bef2737e80f55737354bfb5936a7f4b3171830cb7555b31719f03004") format("woff");
+}
+
+  @font-face {
+  font-family: Poppins;
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url("//welzo.com/cdn/fonts/poppins/poppins_i7.4f85a5d51a1aecf426eea47ac4570ef7341bfdc1.woff2?h1=d2Vsem8uY29t&h2=d2Vsem9oZWFsdGguYWNjb3VudC5teXNob3BpZnkuY29t&hmac=48b14412772fdf3cc9897124683db059af0c9177ec847ccfe41404aa1a69fc43") format("woff2"),
+       url("//welzo.com/cdn/fonts/poppins/poppins_i7.aff3a08a92d1c136586c611b9fc43d357dfbbefe.woff?h1=d2Vsem8uY29t&h2=d2Vsem9oZWFsdGguYWNjb3VudC5teXNob3BpZnkuY29t&hmac=87a5907ccf57ee5a66bd248135441db0a36209de95c81adc6fffd6f8c0377699") format("woff");
+}
+
+  @font-face {
+  font-family: Quicksand;
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("//welzo.com/cdn/fonts/quicksand/quicksand_n5.abe6ceb49fad3d5860023778027e009981009ec5.woff2?h1=d2Vsem8uY29t&h2=d2Vsem9oZWFsdGguYWNjb3VudC5teXNob3BpZnkuY29t&hmac=502a26e7396b7e88dcd4b5e06c5ac5cb2d4f222260c3d2274e57d3659e0771f1") format("woff2"),
+       url("//welzo.com/cdn/fonts/quicksand/quicksand_n5.4d639807b4c4942f5ab2860d7424ecc88ffa7883.woff?h1=d2Vsem8uY29t&h2=d2Vsem9oZWFsdGguYWNjb3VudC5teXNob3BpZnkuY29t&hmac=9c4ceb798e92f54ac096f8c26b56a67ce016ceb9f66e592575fe394415443689") format("woff");
+}
+
+  

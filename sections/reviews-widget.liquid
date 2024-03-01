@@ -16,6 +16,10 @@
     .section-{{ section.id }}.page-width {
       max-width: {{ section.settings.page_width }}px;
     }
+
+    .section-{{ section.id }}.collection-wdget-reviews .ti-header {
+      display: none!important;
+    }
 {%- endstyle -%}
   
 <section class="section-{{ section.id }} section-{{ section.id }}-padding page-width collection-wdget-reviews {% if section.settings.hide_desktop %} large-up-hide{% endif %}">

@@ -57,7 +57,7 @@
                   <div class="default-article__author-img">
                     {%- if article.user.image != blank -%}
                       <img loading="lazy"
-                        src="{{ article.user.image | img_url: 'master' }}"
+                        src="{{ article.user.image | img_url: '120x' }}"
                         alt="{{ article.author }}"
                       >
                     {%- else -%}
@@ -92,7 +92,7 @@
                 <div class="default-article__author-wrapper">
                   <div class="default-article__author-img">
                     {%- if image -%}
-                      <img loading="lazy" src="{{ image.src }}"/>
+                      <img loading="lazy" src="{{ image.src | replace: 'https://cdn.accentuate.io/558154383453/1708529287485/PD.webp?v=1708529287485', 'https://cdn.shopify.com/s/files/1/0571/9752/7133/files/PD.webp?v=1709030519' | replace: 'https://cdn.accentuate.io/558154580061/1708362454338/PD.webp?v=1708362454338', 'https://cdn.shopify.com/s/files/1/0571/9752/7133/files/PD.webp?v=1709030519' | replace: 'https://cdn.accentuate.io/558151106653/1708095104945/PD.webp?v=1708095104945', 'https://cdn.shopify.com/s/files/1/0571/9752/7133/files/PD.webp?v=1709030519' | replace: 'https://cdn.accentuate.io/558150975581/1708077358491/PD.webp?v=1708077358491', 'https://cdn.shopify.com/s/files/1/0571/9752/7133/files/PD.webp?v=1709030519' | replace: 'https://cdn.accentuate.io/558165721181/1708450610324/PD.webp?v=1708450610325', 'https://cdn.shopify.com/s/files/1/0571/9752/7133/files/PD.webp?v=1709030519'}}"/>
                     {%- else -%}
                       <span></span>
                     {%- endif -%}
@@ -122,7 +122,7 @@
 
   <div class="default-article__article-content article-content page-width">
     <div class="article-content__wrapper article-content" >
-      {{ article.content }}
+      {{ article.content | replace: 'iframe', 'iframelazy' | replace: 'src="https://www.youtube.com', 'data-class="LazyLoad" data-src="https://www.youtube.com' | replace: 'src="https://media.istockphoto.com', 'src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="https://media.istockphoto.com' | replace: 'src="https://cdn.shopify.com', 'src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-class="LazyLoad" data-src="https://cdn.shopify.com'}}
     </div>
       <div class="default-article__article-share article-share article-content__wrapper">
         {%- for block in section.blocks -%}
@@ -177,7 +177,7 @@
   
 </div>
 
-{% javascript %}
+<script type="lazyload_int">
   const swiperRelatedArticles = new Swiper(".related-articles__slider", {
     slidesPerView: 1.2,
     centeredSlides: true,
@@ -194,7 +194,7 @@
       },
     },
   });
-{% endjavascript %}
+</script>
 
 {% schema %}
 {
